@@ -4,6 +4,7 @@ ehthumbs.db
 
 node_modules/
 prepros.cfg
+index.js
 
 # Folder config file
 Desktop.ini
