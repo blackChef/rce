@@ -6,6 +6,8 @@ import memoize from 'lodash/memoize';
 import identity from 'lodash/identity';
 
 export default function({ name = '', update = () => {}, view }) {
+  view.displayName = name;
+
   let component = React.createClass({
     displayName: `wrapper_${name}`,
 
@@ -66,8 +68,6 @@ export default function({ name = '', update = () => {}, view }) {
     render() {
       let { dispatch, dispatcher } = this;
       let otherProps = omit(['constantProps', 'variableProps'], this.props);
-
-      view.displayName = name;
 
       return React.createElement(view, {
         dispatch, dispatcher, ...otherProps
