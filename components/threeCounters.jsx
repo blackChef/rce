@@ -16,7 +16,7 @@ let update = function({ type, payload, model, dispatch }) {
   model.set( init() );
 };
 
-let view = function ({ model, dispatch }) {
+let view = function ({ model, dispatcher }) {
   return (
     <div>
       <section className="section">
@@ -39,7 +39,7 @@ let view = function ({ model, dispatch }) {
       <section className="section">
         <button
           type="button"
-          onClick={() => dispatch('reset')}
+          onClick={dispatcher('reset')}
         >
           reset all
         </button>

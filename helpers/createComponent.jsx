@@ -14,7 +14,7 @@ export default function({ name = '', update = () => {}, view }) {
   view.displayName = componentName;
 
   let component = React.createClass({
-    // "@" indicates it's a hoc/decorator
+    // "@" means it's a hoc/decorator
     displayName: `@RCE_${componentName}`,
 
     dispatch(type, payload) {
@@ -35,13 +35,21 @@ export default function({ name = '', update = () => {}, view }) {
     },
 
     componentWillMount() {
-      this.dispatcher = memoize((type, mapper = a => a) => {
-        return payload => this.dispatch(type, mapper(payload));
-      });
+      // dispatcher returns function that apply dispatch.
+      // it's useful for creating stateless react components.
+      let component = this;
+      let dispatcher = function(type, payloadResolver = a => a) {
+        return function(event) {
+          let payload = payloadResolver(event, component.props);
+          return component.dispatch(type, payload);
+        };
+      };
+
+      this.dispatcher = memoize(dispatcher);
     },
 
     shouldComponentUpdate(nextProps) {
-      // consumer can specify variableProps and constantProps
+      // consumer can specify variableProps and constantProps.
       // variableProps: only these props need to compare
       // constantProps: these props wont change, dont compare them
       // if variableProps are defined, ignore contantProps
