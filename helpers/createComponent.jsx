@@ -3,49 +3,41 @@ import shallowEqual from './shallowEqual.jsx';
 import omit from 'lodash/fp/omit';
 import pick from 'lodash/fp/pick';
 import memoize from 'lodash/memoize';
-import identity from 'lodash/identity';
 
 export default function({ name = '', update = () => {}, view }) {
-  view.displayName = name;
+  // make first letter upper case to match react style
+  let componentName = [
+    name[0].toUpperCase(),
+    name.slice(1)
+  ].join('');
+
+  view.displayName = componentName;
 
   let component = React.createClass({
-    displayName: `wrapper_${name}`,
+    // "@" indicates it's a hoc/decorator
+    displayName: `@RCE_${componentName}`,
 
-    dispatch(type, payload, updateUntilNextTick = false) {
-      // cortex model is async, like react state
-      // inside update, we loose reference after model updated
-      // define model as a getter, so that update can accesss right model reference
+    dispatch(type, payload) {
+      // model mutation is async, like react state
+      // inside component's update function, we loose reference after model updated
       let component = this;
       let args = {
         type, payload,
         dispatch: component.dispatch,
-        get model() {
+        currentModel: component.props.model,
+        model: component.props.model, // alias
+        getLatestModel() {
           return component.props.model;
-        },
+        }
       };
 
-      if (updateUntilNextTick) {
-        component.updateQueue.push( () => update(args, component) );
-      } else {
-        update(args, component);
-      }
+      update(args, component);
     },
 
     componentWillMount() {
-      this.updateQueue = [];
-      this.dispatcher = memoize((type, mapper = identity) => {
+      this.dispatcher = memoize((type, mapper = a => a) => {
         return payload => this.dispatch(type, mapper(payload));
       });
-    },
-
-    componentDidUpdate(prevProps) {
-      // after model updated, execute dispatches inside updateQueue
-      if (prevProps.model !== this.props.model) {
-        if (this.updateQueue.length) {
-          this.updateQueue.forEach( item => item() );
-          this.updateQueue = [];
-        }
-      }
     },
 
     shouldComponentUpdate(nextProps) {
@@ -69,8 +61,11 @@ export default function({ name = '', update = () => {}, view }) {
       let { dispatch, dispatcher } = this;
       let otherProps = omit(['constantProps', 'variableProps'], this.props);
 
+      // order is important here
+      // if component receive "dispatch" or "dispatcher" as prop,
+      // we should overwrite them
       return React.createElement(view, {
-        dispatch, dispatcher, ...otherProps
+        ...otherProps, dispatch, dispatcher,
       });
     },
   });

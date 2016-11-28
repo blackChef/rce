@@ -4,7 +4,7 @@ import isFunction from 'lodash/isFunction';
 
 export default function(Component, initialValue) {
   let container = React.createClass({
-    displayName: 'uncontrolledContainer',
+    displayName: `@Uncontrolled_${Component.displayName}`,
 
     getInitialState() {
       let _initialValue = isFunction(initialValue)? initialValue() : initialValue;
