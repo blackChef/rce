@@ -59,3 +59,6 @@ ReactDOM.render(
   </Router>,
   document.querySelector('.appContainer')
 );
+
+import Perf from 'react-addons-perf';
+window.Perf = Perf;
