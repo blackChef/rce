@@ -1,32 +1,41 @@
 let { resolve } = require('path');
+let SplitByPathPlugin = require('webpack-split-by-path');
+
+let splitByPath = new SplitByPathPlugin([
+  { name: 'cursor', path: resolve(__dirname, './src/dataCursor') },
+  { name: 'react', path: resolve(__dirname, 'node_modules/react') },
+  { name: 'lodash', path: resolve(__dirname, 'node_modules/lodash') },
+]);
 
 module.exports = {
   entry: {
-    index: './index.jsx',
+    index: './src/index.jsx',
   },
   output: {
-    filename: '[name].js' // Template based on keys in entry above
+    path: 'dist',
+    filename: '[name].js',
+    chunkFilename: '[name].js'
   },
+  plugins: [splitByPath],
   resolve: {
-    root: [
+    modules: [
       resolve(__dirname, 'node_modules'),
-      resolve(__dirname, './'),
+      resolve(__dirname, 'src'),
     ]
   },
   module: {
-    loaders: [{
-        test: /\.jsx?$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'babel',
-        query: {
-          plugins: [
-            'transform-es2015-modules-commonjs',
-            'transform-es2015-destructuring',
-            'transform-object-rest-spread',
-          ],
-          presets: ['react']
-        }
-      },
-    ]
+    rules: [{
+      test: /\.jsx?$/,
+      exclude: /(node_modules|bower_components)/,
+      loader: 'babel-loader',
+      query: {
+        plugins: [
+          'transform-es2015-modules-commonjs',
+          'transform-es2015-destructuring',
+          'transform-object-rest-spread',
+        ],
+        presets: ['react']
+      }
+    }, ]
   },
 };

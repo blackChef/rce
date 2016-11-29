@@ -3,8 +3,8 @@ Thumbs.db
 ehthumbs.db
 
 node_modules/
+dist/
 prepros.cfg
-index.js
 
 # Folder config file
 Desktop.ini
