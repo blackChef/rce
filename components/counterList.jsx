@@ -49,15 +49,9 @@ let _counter = createComponent({
 });
 
 
+let getId = (_, props) => props.id;
+
 let view = React.createClass({
-  addCounter() {
-    this.props.dispatch('add');
-  },
-
-  removeLast() {
-    this.props.dispatch('removeLast');
-  },
-
   renderCounter(counterItem) {
     let id = counterItem.id.val();
     return (
@@ -65,7 +59,6 @@ let view = React.createClass({
         key={id}
         model={counterItem.count}
         requestRemove={this.removeCounter(id)}
-        constantProps={['requestRemove']}
       />
     );
   },
@@ -77,8 +70,9 @@ let view = React.createClass({
   },
 
   render() {
+    let { dispatcher } = this.props;
     let counters = this.props.model.toArray().map(this.renderCounter);
-    // console.log(this.props.model);
+
     return (
       <div>
         <section className="section">
@@ -86,8 +80,8 @@ let view = React.createClass({
         </section>
 
         <section className="section">
-          <button type="button" onClick={this.addCounter}>add counter</button>
-          <button type="button" onClick={this.removeLast}>remove last counter</button>
+          <button type="button" onClick={dispatcher('add')}>add counter</button>
+          <button type="button" onClick={dispatcher('removeLast')}>remove last counter</button>
         </section>
       </div>
     );

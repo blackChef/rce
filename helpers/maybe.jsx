@@ -9,5 +9,5 @@ let Null =  React.createClass({
 });
 
 export default function(condition, componentClass) {
-  return either(condition, componentClass, Null);
+  return either(condition, Null, componentClass);
 };

@@ -12,9 +12,9 @@ export default function(condition, leftClass, rightClass) {
       let { props } = this;
 
       if (getConditionResult(props)) {
-        return React.createElement(leftClass, props);
-      } else {
         return React.createElement(rightClass, props);
+      } else {
+        return React.createElement(leftClass, props);
       }
     },
   });
