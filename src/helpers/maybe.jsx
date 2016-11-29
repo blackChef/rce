@@ -3,6 +3,9 @@ import React from 'react';
 
 let Null =  React.createClass({
   displayName: 'Null',
+  shouldComponentUpdate() {
+    return false;
+  },
   render() {
     return null;
   },

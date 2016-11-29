@@ -1,8 +1,9 @@
 import React from 'react';
 import createComponent from 'helpers/createComponent.jsx';
-import { view as Checkbox } from './checkbox.jsx';
 import range from 'lodash/range';
+import curry from 'lodash/curry';
 import { createProxyCursor } from 'dataCursor/index.jsx';
+import { view as Checkbox } from './checkbox.jsx';
 
 let name = 'checkboxGroup_single';
 
@@ -19,7 +20,7 @@ let update = function({ type, payload, model, dispatch }) {
   }
 };
 
-let renderCheckbox = function(model, dispatch, index) {
+let renderCheckbox = curry(function(model, dispatch, index) {
   let curIsChecked = index == model.val();
   let onToggle = newIsChecked => dispatch('toggle', { index, newIsChecked });
   let checkboxModel = createProxyCursor(curIsChecked, onToggle);
@@ -28,13 +29,10 @@ let renderCheckbox = function(model, dispatch, index) {
       <Checkbox model={checkboxModel} label={index} />
     </div>
   );
-};
+});
 
 let view = function({ model, dispatch }) {
-  let _renderCheckbox = renderCheckbox.bind(null, model, dispatch);
-
-  let checkboxList = range(5).map(_renderCheckbox);
-
+  let checkboxList = range(5).map(renderCheckbox(model, dispatch));
   return <div>{checkboxList}</div>;
 };
 

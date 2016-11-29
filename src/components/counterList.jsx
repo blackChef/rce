@@ -9,7 +9,7 @@ import { arrayAppend, arrayRemove, arrayPop } from 'dataCursor/index.jsx';
 let name = 'counterList';
 
 let init = function() {
-  return range(1000).map(item => {
+  return range(0).map(item => {
     return { id: item, count: 0 };
   });
 };
@@ -39,7 +39,6 @@ let renderItem = curry(function(dispatch, counterItemModel) {
       key={id}
       style={{ display: 'flex' }}
     >
-      <span>{id}</span>
       <Counter model={counterItemModel.count}/>
       <button
         type="button"
