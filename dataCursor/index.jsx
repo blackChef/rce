@@ -84,6 +84,7 @@ let createProxyCursor = function(onRequestRead, onRequestUpdate = () => {}) {
 };
 
 
+export { default as toArray } from './nodeMethods/array/toArray.jsx';
 export { default as arrayAppend } from './nodeMethods/array/append.jsx';
 export { default as arrayPop } from './nodeMethods/array/pop.jsx';
 export { default as arrayInsert } from './nodeMethods/array/insert.jsx';

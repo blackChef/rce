@@ -5,7 +5,7 @@ import curry from 'lodash/curry';
 import oMapValues from 'lodash/mapValues';
 import { diff as deepDiff } from 'deep-diff';
 import { s_path } from './symbols.jsx';
-import isInteger from 'lodash/isInteger';
+import toArray from './nodeMethods/array/toArray.jsx';
 
 let wrapObject = function(createInstance, value, path) {
   return oMapValues(value, function(val, key) {
@@ -63,10 +63,7 @@ class BaseClass {
   }
 
   toArray() {
-    return Object.keys(this)
-      .filter(i => isInteger(+i))
-      .sort((a, b) => a - b)
-      .reduce((preVal, key) => preVal.concat(this[key]), []);
+    return toArray(this);
   }
 };
 
