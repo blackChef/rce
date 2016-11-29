@@ -1,6 +1,7 @@
 import React from 'react';
 import memoize from 'lodash/memoize';
 import range from 'lodash/range';
+import curry from 'lodash/curry';
 import createComponent from 'helpers/createComponent.jsx';
 import { view as Counter } from './counter.jsx';
 import { arrayAppend, arrayRemove, arrayPop } from 'dataCursor/index.jsx';
@@ -8,7 +9,7 @@ import { arrayAppend, arrayRemove, arrayPop } from 'dataCursor/index.jsx';
 let name = 'counterList';
 
 let init = function() {
-  return range(0).map(item => {
+  return range(1000).map(item => {
     return { id: item, count: 0 };
   });
 };
@@ -31,63 +32,41 @@ let update = function({ type, payload, model, dispatch }) {
 };
 
 
-let _counter = createComponent({
-  name: '_counter',
-  view({ model, requestRemove }) {
-    return (
-      <div style={{ display: 'flex' }}>
-        <Counter model={model}/>
-        <button
-          type="button"
-          onClick={requestRemove}
-        >
-          remove this counter
-        </button>
-      </div>
-    );
-  }
+let renderItem = curry(function(dispatch, counterItemModel) {
+  let id = counterItemModel.id.val();
+  return (
+    <div
+      key={id}
+      style={{ display: 'flex' }}
+    >
+      <span>{id}</span>
+      <Counter model={counterItemModel.count}/>
+      <button
+        type="button"
+        onClick={() => dispatch('removeItem', id)}
+      >
+        remove this counter
+      </button>
+    </div>
+  );
 });
 
+let view = function({ model, dispatch, dispatcher }) {
+  let counters = model.toArray().map(renderItem(dispatch));
 
-let getId = (_, props) => props.id;
+  return (
+    <div>
+      <section className="section">
+        {counters}
+      </section>
 
-let view = React.createClass({
-  renderCounter(counterItem) {
-    let id = counterItem.id.val();
-    return (
-      <_counter
-        key={id}
-        model={counterItem.count}
-        requestRemove={this.removeCounter(id)}
-      />
-    );
-  },
-
-  componentWillMount() {
-    this.removeCounter = memoize(id => {
-      return () => this.props.dispatch('removeItem', id);
-    });
-  },
-
-  render() {
-    let { dispatcher } = this.props;
-    let counters = this.props.model.toArray().map(this.renderCounter);
-
-    return (
-      <div>
-        <section className="section">
-          {counters}
-        </section>
-
-        <section className="section">
-          <button type="button" onClick={dispatcher('add')}>add counter</button>
-          <button type="button" onClick={dispatcher('removeLast')}>remove last counter</button>
-        </section>
-      </div>
-    );
-  },
-});
-
+      <section className="section">
+        <button type="button" onClick={dispatcher('add')}>add counter</button>
+        <button type="button" onClick={dispatcher('removeLast')}>remove last counter</button>
+      </section>
+    </div>
+  );
+};
 
 view = createComponent({ name, update, view });
 export { init, view };
