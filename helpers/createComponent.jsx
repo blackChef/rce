@@ -50,19 +50,24 @@ export default function({ name = '', update = () => {}, view }) {
 
     shouldComponentUpdate(nextProps) {
       // consumer can specify variableProps and constantProps.
-      // variableProps: only these props need to compare
-      // constantProps: these props wont change, dont compare them
-      // if variableProps are defined, ignore contantProps
+      // variableProps: only these props need to compare.
+      // constantProps: these props wont change, dont compare them.
+      // if variableProps are defined, ignore contantProps.
       // this is useful for props like children or callback
-      let { variableProps = [], constantProps = [] } = this.props;
-      let pickVar = pick(variableProps);
-      let omitConst = omit([...constantProps, 'constantProps']);
+      let { props: curProps} = this;
+      let { variableProps, constantProps } = curProps;
 
-      let isDifferent = variableProps.length ?
-        !shallowEqual(pickVar(this.props), pickVar(nextProps)) :
-        !shallowEqual(omitConst(this.props), omitConst(nextProps));
+      if (variableProps) {
+        let pickVar = pick(variableProps);
+        return !shallowEqual(pickVar(curProps), pickVar(nextProps));
 
-      return isDifferent;
+      } else if (constantProps) {
+        let omitConst = omit([...constantProps, 'constantProps']);
+        return !shallowEqual(omitConst(curProps), omitConst(nextProps));
+
+      } else {
+        return !shallowEqual(curProps, nextProps);
+      }
     },
 
     render() {
