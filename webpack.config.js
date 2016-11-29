@@ -1,4 +1,5 @@
 let { resolve } = require('path');
+let webpack = require('webpack');
 let SplitByPathPlugin = require('webpack-split-by-path');
 
 let splitByPath = new SplitByPathPlugin([
@@ -6,6 +7,10 @@ let splitByPath = new SplitByPathPlugin([
   { name: 'react', path: resolve(__dirname, 'node_modules/react') },
   { name: 'lodash', path: resolve(__dirname, 'node_modules/lodash') },
 ]);
+
+let definePlugin = new webpack.DefinePlugin({
+  'process.env.NODE_ENV': process.env.NODE_ENV,
+});
 
 module.exports = {
   entry: {
@@ -16,7 +21,7 @@ module.exports = {
     filename: '[name].js',
     chunkFilename: '[name].js'
   },
-  plugins: [splitByPath],
+  plugins: [splitByPath, definePlugin],
   resolve: {
     modules: [
       resolve(__dirname, 'node_modules'),
