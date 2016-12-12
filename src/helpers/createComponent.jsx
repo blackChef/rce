@@ -6,10 +6,12 @@ import memoize from 'lodash/memoize';
 
 export default function({ name = '', update = () => {}, view }) {
   // make first letter upper case to match react style
-  let componentName = [
-    name[0].toUpperCase(),
-    name.slice(1)
-  ].join('');
+  let componentName = name === '' ?
+    '' :
+    [
+      name[0].toUpperCase(),
+      name.slice(1)
+    ].join('');
 
   view.displayName = componentName;
 
@@ -41,7 +43,7 @@ export default function({ name = '', update = () => {}, view }) {
       let dispatcher = function(type, payloadResolver = a => a) {
         return function(event) {
           let payload = payloadResolver(event, component.props);
-          return component.dispatch(type, payload);
+          component.dispatch(type, payload);
         };
       };
 
@@ -55,13 +57,13 @@ export default function({ name = '', update = () => {}, view }) {
       // if variableProps are defined, ignore contantProps.
       // this is useful for props like children or callback
       let { props: curProps} = this;
-      let { variableProps, constantProps } = curProps;
+      let { variableProps = [], constantProps = [] } = curProps;
 
-      if (variableProps) {
+      if (variableProps.length) {
         let pickVar = pick(variableProps);
         return !shallowEqual(pickVar(curProps), pickVar(nextProps));
 
-      } else if (constantProps) {
+      } else if (constantProps.length) {
         let omitConst = omit([...constantProps, 'constantProps']);
         return !shallowEqual(omitConst(curProps), omitConst(nextProps));
 
@@ -75,7 +77,7 @@ export default function({ name = '', update = () => {}, view }) {
       let otherProps = omit(['constantProps', 'variableProps'], this.props);
 
       // order is important here
-      // if component receive "dispatch" or "dispatcher" as prop,
+      // if component receive "dispatch" or "dispatcher" as props,
       // we should overwrite them
       return React.createElement(view, {
         ...otherProps, dispatch, dispatcher,

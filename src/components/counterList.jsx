@@ -1,5 +1,6 @@
 import React from 'react';
 import memoize from 'lodash/memoize';
+import once from 'lodash/once';
 import range from 'lodash/range';
 import curry from 'lodash/curry';
 import createComponent from 'helpers/createComponent.jsx';
@@ -9,7 +10,7 @@ import { arrayAppend, arrayRemove, arrayPop } from 'dataCursor/index.jsx';
 let name = 'counterList';
 
 let init = function() {
-  return range(0).map(item => {
+  return range(5).map(item => {
     return { id: item, count: 0 };
   });
 };
@@ -32,14 +33,14 @@ let update = function({ type, payload, model, dispatch }) {
 };
 
 
-let renderItem = curry(function(dispatch, counterItemModel) {
-  let id = counterItemModel.id.val();
+let renderItem = memoize(function(itemModel, dispatch) {
+  let id = itemModel.id.val();
   return (
     <div
       key={id}
       style={{ display: 'flex' }}
     >
-      <Counter model={counterItemModel.count}/>
+      <Counter model={itemModel.count}/>
       <button
         type="button"
         onClick={() => dispatch('removeItem', id)}
@@ -51,7 +52,9 @@ let renderItem = curry(function(dispatch, counterItemModel) {
 });
 
 let view = function({ model, dispatch, dispatcher }) {
-  let counters = model.toArray().map(renderItem(dispatch));
+  let counters = model.toArray().map(function(itemModel) {
+    return renderItem(itemModel, dispatch);
+  });
 
   return (
     <div>

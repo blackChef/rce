@@ -7,8 +7,8 @@ let name = 'threeCounters';
 
 let init = function() {
   return {
-    count: 0,
-    anotherCount: 0,
+    countA: 0,
+    countBC: 0,
   };
 };
 
@@ -21,19 +21,19 @@ let view = function ({ model, dispatcher }) {
     <div>
       <section className="section">
         <div>counterA</div>
-        <Counter model={model.count} />
+        <Counter model={model.countA} />
       </section>
 
       <section className="section">
         <p className="infoBanner">
-          counterB and counterC share same model, thus in sync
+          counterB and counterC share same model
         </p>
 
         <div>counterB</div>
-        <Counter model={model.anotherCount} />
+        <Counter model={model.countBC} />
 
         <div>counterC</div>
-        <Counter model={model.anotherCount} />
+        <Counter model={model.countBC} />
       </section>
 
       <section className="section">

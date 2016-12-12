@@ -70,7 +70,8 @@ let update = function(props) {
 };
 
 
-let renderLoading = function(requestStatus) {
+let renderLoading = function(model) {
+  let requestStatus = model.requestStatus.val();
   if (requestStatus !== 'success') {
     return <div className="infoBanner">{requestStatus}</div>;
   }
@@ -86,8 +87,9 @@ let renderItem = function({ name, count, price }) {
   );
 };
 
-let renderContent = function(model, onSubmit, requestStatus) {
+let renderContent = function(model, onSubmit) {
   if (model.isContentReady.val()) {
+    let requestStatus = model.requestStatus.val();
     let items = model.products.toArray().map(renderItem);
 
     return (
@@ -123,12 +125,11 @@ let view = React.createClass({
 
   render() {
     let { model } = this.props;
-    let requestStatus = model.requestStatus.val();
 
     return (
       <div>
-        {renderLoading(requestStatus)}
-        {renderContent(model, this.onSubmit, requestStatus)}
+        {renderLoading(model)}
+        {renderContent(model, this.onSubmit)}
       </div>
     );
   },
