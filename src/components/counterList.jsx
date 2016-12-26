@@ -34,7 +34,7 @@ let update = function({ type, payload, model, dispatch }) {
 
 
 let renderItem = memoize(function(itemModel, dispatch) {
-  let id = itemModel.id.val();
+  let id = itemModel.id.$val();
   return (
     <div
       key={id}
@@ -52,7 +52,7 @@ let renderItem = memoize(function(itemModel, dispatch) {
 });
 
 let view = function({ model, dispatch, dispatcher }) {
-  let counters = model.toArray().map(function(itemModel) {
+  let counters = model.$toArray().map(function(itemModel) {
     return renderItem(itemModel, dispatch);
   });
 

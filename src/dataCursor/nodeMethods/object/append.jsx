@@ -1,8 +1,8 @@
 import isObject from 'lodash/isPlainObject';
 
 
-// node -> key -> value ->
-// node -> { key1: value, key2: value } ->
+// object node -> key -> value -> ()
+// object node -> { key1: value, key2: value } -> ()
 let add = function(node, ...args) {
   let diffs;
   if ( isObject(args[0]) ) {
@@ -24,7 +24,7 @@ let add = function(node, ...args) {
     }];
   }
 
-  node._requestUpdate(diffs, node);
+  node.$requestUpdate(diffs, node);
 };
 
 

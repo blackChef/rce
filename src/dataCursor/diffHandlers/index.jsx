@@ -30,7 +30,7 @@ let makeFlow = function(diffs, setTarget) {
 };
 
 // root = { a: { b: 0 } }
-// root.a.set({ b: 1 })
+// root.a.$set({ b: 1 })
 // setTarget: a; where update method is called
 // diffTarget: b; where actual diff is happend
 let applyDiffs = function(diffs, setTarget, root) {

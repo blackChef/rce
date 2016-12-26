@@ -14,14 +14,14 @@ let init = function() {
 let update = function({ type, payload, model, dispatch }) {
   let { index, newIsChecked } = payload;
   if (newIsChecked) {
-    model.set(index);
+    model.$set(index);
   } else {
-    model.set(-1);
+    model.$set(-1);
   }
 };
 
 let renderCheckbox = curry(function(model, dispatch, index) {
-  let curIsChecked = index == model.val();
+  let curIsChecked = index == model.$val();
   let onToggle = newIsChecked => dispatch('toggle', { index, newIsChecked });
   let checkboxModel = createProxyCursor(curIsChecked, onToggle);
   return (

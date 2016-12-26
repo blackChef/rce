@@ -4,8 +4,8 @@ import createNode from './utils/createNode.jsx';
 import curry from 'lodash/curry';
 import oMapValues from 'lodash/mapValues';
 import { diff as deepDiff } from 'deep-diff';
-import { s_path } from './symbols.jsx';
-import toArray from './nodeMethods/array/toArray.jsx';
+import { s_path, s_val } from './symbols.jsx';
+import toArray from './nodeMethods/toArray.jsx';
 
 let wrapObject = function(createInstance, value, path) {
   return oMapValues(value, function(val, key) {
@@ -49,20 +49,25 @@ let parseDiff = function(rawDiff) {
 class BaseClass {
   constructor(value, path) {
     this[s_path] = path;
-    this.val = () => value;
+
+    // store raw value
+    this[s_val] = value;
+
+    // return parsed value
+    this.$val = () => value;
   }
 
-  set(newValue) {
-    let curVal = this.val();
+  $set(newValue) {
+    let curVal = this.$val();
     if (curVal === newValue) return;
 
     let rawDiff = deepDiff(curVal, newValue);
     if (!rawDiff) return;
 
-    this._requestUpdate(rawDiff, this);
+    this.$requestUpdate(rawDiff, this);
   }
 
-  toArray() {
+  $toArray() {
     return toArray(this);
   }
 };
@@ -79,7 +84,7 @@ let createFactory = function(onChange) {
       Object.assign(this, children);
     }
 
-    _requestUpdate(rawDiff, setTarget) {
+    $requestUpdate(rawDiff, setTarget) {
       onChange(rawDiff.map( parseDiff), setTarget);
     }
   };

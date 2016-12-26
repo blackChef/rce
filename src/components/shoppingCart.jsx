@@ -44,25 +44,25 @@ let update = function(props) {
   // use map, cleaner than if..else
   let actions = {
     getData() {
-      model.requestStatus.set('loading');
+      model.requestStatus.$set('loading');
       apiCalls.getOrder().then(function(res) {
         let { products } = res;
         let latestModel = getLatestModel();
-        latestModel.requestStatus.set('success');
-        latestModel.products.set(products);
-        latestModel.isContentReady.set(true);
+        latestModel.requestStatus.$set('success');
+        latestModel.products.$set(products);
+        latestModel.isContentReady.$set(true);
       });
     },
 
     saveData() {
-      model.requestStatus.set('loading');
+      model.requestStatus.$set('loading');
 
-      let { products } = model.val();
+      let { products } = model.$val();
 
       apiCalls.updateOrder({ products })
         .then(function() {
           let latestModel = getLatestModel();
-          latestModel.requestStatus.set('success');
+          latestModel.requestStatus.$set('success');
         });
     },
   };
@@ -71,7 +71,7 @@ let update = function(props) {
 
 
 let renderLoading = function(model) {
-  let requestStatus = model.requestStatus.val();
+  let requestStatus = model.requestStatus.$val();
   if (requestStatus !== 'success') {
     return <div className="infoBanner">{requestStatus}</div>;
   }
@@ -79,18 +79,18 @@ let renderLoading = function(model) {
 
 let renderItem = function({ name, count, price }) {
   return (
-    <div key={name.val()} style={{ display: 'flex', marginBottom: '15px' }}>
-      <span style={{ marginRight: '10px' }}>{name.val()}</span>
+    <div key={name.$val()} style={{ display: 'flex', marginBottom: '15px' }}>
+      <span style={{ marginRight: '10px' }}>{name.$val()}</span>
       <Counter model={count} />
-      <span style={{ marginLeft: '10px' }}>${count.val() * price.val()}</span>
+      <span style={{ marginLeft: '10px' }}>${count.$val() * price.$val()}</span>
     </div>
   );
 };
 
 let renderContent = function(model, onSubmit) {
-  if (model.isContentReady.val()) {
-    let requestStatus = model.requestStatus.val();
-    let items = model.products.toArray().map(renderItem);
+  if (model.isContentReady.$val()) {
+    let requestStatus = model.requestStatus.$val();
+    let items = model.products.$toArray().map(renderItem);
 
     return (
       <form onSubmit={onSubmit}>

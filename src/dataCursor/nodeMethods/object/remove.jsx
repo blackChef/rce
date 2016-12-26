@@ -1,10 +1,7 @@
 
-
-
-// node ->
-// ( (val, key) -> Bool shouldRemove ) ->
+// object node -> (itemVal -> key -> bool) -> ()
 let remove = function(node, predicate) {
-  let nodeVal = node.val();
+  let nodeVal = node.$val();
   let removedKeys = Object.keys(nodeVal).reduce(function(preVal, key) {
     let val = nodeVal[key];
     let shouldRemove = predicate(val, key);
@@ -22,7 +19,7 @@ let remove = function(node, predicate) {
     };
   });
 
-  node._requestUpdate(diffs, node);
+  node.$requestUpdate(diffs, node);
 };
 
 export default remove;

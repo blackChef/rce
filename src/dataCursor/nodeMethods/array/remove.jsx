@@ -1,8 +1,9 @@
 import includes from 'lodash/includes';
 import range from 'lodash/range';
 
+// array node -> (itemVal -> index -> length -> bool) -> ()
 let remove = function(node, predicate) {
-  let curNodeVal = node.val();
+  let curNodeVal = node.$val();
 
   let removedIndexes = curNodeVal.reduce(function(preVal, val, index) {
     let shouldRemove = predicate(val, index, curNodeVal.length);
@@ -44,7 +45,7 @@ let remove = function(node, predicate) {
 
   let diffs = [...updateDiffs, ...removeDiffs];
 
-  node._requestUpdate(diffs, node);
+  node.$requestUpdate(diffs, node);
 };
 
 export default remove;

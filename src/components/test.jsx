@@ -12,13 +12,13 @@ let init = counterInit;
 let update = function({ type, payload, model, dispatch }) {};
 
 let Content = either(
-  p => p.model.val() !== 5,
+  p => p.model.$val() !== 5,
   () => <h1>5</h1>,
   Counter
 );
 
 // let Content = maybe(
-//   p => p.model.val() !== 5,
+//   p => p.model.$val() !== 5,
 //   Counter
 // );
 

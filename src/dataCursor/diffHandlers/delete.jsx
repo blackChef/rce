@@ -4,13 +4,9 @@ import cRemove from '../utils/collectionRemove.jsx';
 import { s_path } from '../symbols.jsx';
 import updateValGenerator from './updateValGenerator.jsx';
 
-
-let createValGenerator = curry(function(diffTargetPath, getOldVal, index) {
-  return function getVal() {
-    let oldVal = getOldVal();
-    let valuePath = diffTargetPath.slice(index);
-    return cRemove(valuePath, oldVal);
-  };
+let getNewVal = curry(function(diffTargetPath, oldVal, valPath) {
+  let newVal = cRemove(valPath, oldVal);
+  return newVal;
 });
 
 let handler = function(diff, setTarget, root) {
@@ -22,8 +18,8 @@ let handler = function(diff, setTarget, root) {
   let diffTargetPath = [...setTargetPath, ...diffPath];
 
   let ret = pipe([
-    updateValGenerator(diffTargetPath, createValGenerator(diffTargetPath)),
     cRemove(diffTargetPath),
+    updateValGenerator(diffTargetPath, getNewVal(diffTargetPath)),
   ])(root);
 
   return ret;

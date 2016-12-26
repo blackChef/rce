@@ -2,21 +2,15 @@ import createNode from '../utils/createNode.jsx';
 import curry from 'lodash/curry';
 import oAssoc from '../utils/objectAssoc.jsx';
 import pipe from 'lodash/flow';
-import { s_path } from '../symbols.jsx';
+import { s_path, s_val } from '../symbols.jsx';
 import updateValGenerator from './updateValGenerator.jsx';
 import oSet from '../utils/objectSet.jsx';
+import { toArrIfNeeded } from '../utils/arrayLike.jsx';
 
 
-let createValGenerator = curry(function(diffTargetPath, newValue, getOldVal, index) {
-  return function getVal() {
-    let oldVal = getOldVal();
-    let valuePath = diffTargetPath.slice(index);
-    if (valuePath.length) {
-      return oSet(valuePath, newValue, oldVal);
-    } else {
-      return newValue;
-    }
-  };
+let getNewVal = curry(function(diffTargetPath, newValue, oldVal, valPath) {
+  let newVal = valPath.length ? oSet(valPath, newValue, oldVal) : newValue;
+  return newVal;
 });
 
 let handler = function(diff, setTarget, root) {
@@ -35,7 +29,7 @@ let handler = function(diff, setTarget, root) {
 
   return pipe([
     oAssoc(diffTargetPath, newDiffTarget),
-    updateValGenerator(diffTargetPath, createValGenerator(diffTargetPath, newValue)),
+    updateValGenerator(diffTargetPath, getNewVal(diffTargetPath, newValue)),
   ])(root);
 };
 

@@ -8,14 +8,14 @@ let safeAdd = function(a, b) {
 };
 
 
-// node -> targetIndex -> value | [value] ->
+// array node -> targetIndex -> value | [value] -> ()
 let insert = function(node, targetIndex, maybeArray) {
   if (targetIndex < 0) {
     console.warn('Negative index is not supported');
   }
 
   let values = isArray(maybeArray) ? maybeArray : [maybeArray];
-  let curNodeVal = node.val();
+  let curNodeVal = node.$val();
 
   if ( !isArray(curNodeVal) ) {
     throw('Array insert failed: target node is not an array');
@@ -51,7 +51,7 @@ let insert = function(node, targetIndex, maybeArray) {
     return [...preVal, diffItem];
   }, []);
 
-  node._requestUpdate(diffs, node);
+  node.$requestUpdate(diffs, node);
 };
 
 export default insert;

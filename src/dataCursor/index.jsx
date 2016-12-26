@@ -2,13 +2,14 @@ import createFactory from './cursor.jsx';
 import applyDiffs from './diffHandlers/index.jsx';
 import pipe from 'lodash/flow';
 import curry from 'lodash/curry';
+import defer from 'lodash/defer';
 import { startDiffHandler } from './eventEmitter.jsx';
 import isFunction from 'lodash/isFunction';
 
 
 /*
   root = { a: { b: 0 } }
-  root.a.set({ b: 1 })
+  root.a.$set({ b: 1 })
   setTarget: a; where update method is called
   diffTarget: b; where actual diff is happend
 */
@@ -47,14 +48,14 @@ let initCursor = function(initialValue, onUpdate) {
     if (!isUpdating) {
       isUpdating = true;
 
-      setTimeout(function applyResult() {
+      defer(function applyResult() {
         // let t = performance.now();
         let newRoot = applyDiffQueue(diffQueue, previousRoot);
         // console.log('perf', performance.now() - t);
         onUpdate(newRoot);
         previousRoot = newRoot;
         cleanup();
-      }, 0);
+      });
     }
   };
 
@@ -76,7 +77,7 @@ let createProxyCursor = function(onRequestRead, onRequestUpdate = () => {}) {
   let val = isFunction(onRequestRead) ? onRequestRead() : onRequestRead;
 
   let proxy = initCursor(val, newValue => {
-    onRequestUpdate(newValue.val());
+    onRequestUpdate(newValue.$val());
     proxy.unListen();
   });
 
@@ -84,7 +85,7 @@ let createProxyCursor = function(onRequestRead, onRequestUpdate = () => {}) {
 };
 
 
-export { default as toArray } from './nodeMethods/array/toArray.jsx';
+export { default as toArray } from './nodeMethods/toArray.jsx';
 export { default as arrayAppend } from './nodeMethods/array/append.jsx';
 export { default as arrayPop } from './nodeMethods/array/pop.jsx';
 export { default as arrayInsert } from './nodeMethods/array/insert.jsx';
