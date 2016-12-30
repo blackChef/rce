@@ -1,19 +1,19 @@
 import React from 'react';
-import initModel from 'dataCursor/index.jsx';
+import { initCursor } from 'dataCursor/index.jsx';
 import isFunction from 'lodash/isFunction';
 
 export default function(Component, initialValue) {
   let container = React.createClass({
-    displayName: `@Uncontrolled_${Component.displayName}`,
+    displayName: `@ModelHolder_${Component.displayName}`,
 
     getInitialState() {
       let _initialValue = isFunction(initialValue)? initialValue() : initialValue;
 
-      let initialModel = initModel(_initialValue, newModel => {
+      let initialModel = initCursor(_initialValue, newModel => {
         this.setState({ model: newModel });
       });
 
-      this.unListenToModel = initialModel.unListen;
+      this.unListenToModel = initialModel.$unListen;
 
       return { model: initialModel };
     },

@@ -4,14 +4,20 @@ import omit from 'lodash/fp/omit';
 import pick from 'lodash/fp/pick';
 import memoize from 'lodash/memoize';
 
-export default function({ name = '', update = () => {}, view }) {
-  // make first letter upper case to match react style
-  let componentName = name === '' ?
-    '' :
-    [
+let getComponentName = memoize(function(name) {
+  if (name === '') {
+    return '';
+  } else {
+    return  [
       name[0].toUpperCase(),
       name.slice(1)
     ].join('');
+  }
+});
+
+export default function({ name = '', update = () => {}, view }) {
+  // make first letter upper case to match react style
+  let componentName = getComponentName(name);
 
   view.displayName = componentName;
 

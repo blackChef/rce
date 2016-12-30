@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import uncontrolled from 'helpers/createUncontrolledComponent.jsx';
+import uncontrolled from 'helpers/createModelHolder.jsx';
 import { Router, Route, IndexRoute, Link, IndexLink, hashHistory } from 'react-router';
 import { view as counter, init as counterInit } from 'components/counter.jsx';
 import { view as checkbox, init as checkboxInit } from 'components/checkbox.jsx';

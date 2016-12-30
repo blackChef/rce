@@ -5,7 +5,7 @@ import range from 'lodash/range';
 import curry from 'lodash/curry';
 import createComponent from 'helpers/createComponent.jsx';
 import { view as Counter } from './counter.jsx';
-import { arrayAppend, arrayRemove, arrayPop } from 'dataCursor/index.jsx';
+import { arrAppend, arrRemove, arrPop } from 'dataCursor/index.jsx';
 
 let name = 'counterList';
 
@@ -17,18 +17,18 @@ let init = function() {
 
 let update = function({ type, payload, model, dispatch }) {
   if (type == 'add') {
-    arrayAppend(model, {
+    arrAppend(model, {
       id: Date.now(),
       count: 0
     });
   }
 
   else if (type == 'removeLast') {
-    arrayPop(model);
+    arrPop(model);
   }
 
   else if (type == 'removeItem') {
-    arrayRemove(model, item => item.id == payload);
+    arrRemove(model, item => item.id == payload);
   }
 };
 
