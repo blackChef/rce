@@ -8,7 +8,7 @@ let safeAdd = function(a, b) {
 };
 
 
-// array node -> targetIndex -> value | [value] -> ()
+// array node -> targetIndex -> newItem | [newItem] -> ()
 let insert = function(node, targetIndex, maybeArray) {
   if (targetIndex < 0) {
     console.warn('Negative index is not supported');
@@ -51,7 +51,7 @@ let insert = function(node, targetIndex, maybeArray) {
     return [...preVal, diffItem];
   }, []);
 
-  node.$requestUpdate(diffs, node);
+  node.$requestUpdate(diffs);
 };
 
 export default insert;

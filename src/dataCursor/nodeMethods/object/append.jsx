@@ -1,30 +1,19 @@
 import isObject from 'lodash/isPlainObject';
 
 
-// object node -> key -> value -> ()
-// object node -> { key1: value, key2: value } -> ()
-let add = function(node, ...args) {
+// object node -> { key: value... } -> ()
+let add = function(node, newItems) {
   let diffs;
-  if ( isObject(args[0]) ) {
-    let newItems = args[0];
-    diffs = Object.keys(newItems).map( function(key) {
-      return {
-        kind: 'N',
-        path: [key],
-        rhs: newItems[key]
-      };
-    });
 
-  } else {
-    let [key, value] = args;
-    diffs = [{
+  diffs = Object.keys(newItems).map( function(key) {
+    return {
       kind: 'N',
       path: [key],
-      rhs: value,
-    }];
-  }
+      rhs: newItems[key]
+    };
+  });
 
-  node.$requestUpdate(diffs, node);
+  node.$requestUpdate(diffs);
 };
 
 

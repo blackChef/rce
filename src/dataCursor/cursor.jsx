@@ -3,23 +3,24 @@ import isObject from 'lodash/isPlainObject';
 import createNode from './utils/createNode.jsx';
 import curry from 'lodash/curry';
 import oMapValues from 'lodash/mapValues';
-import { diff as deepDiff } from 'deep-diff';
-import { s_path, s_val } from './symbols.jsx';
+import { s_path, s_rawVal } from './symbols.jsx';
 import toArray from './nodeMethods/toArray.jsx';
+import setVal from './nodeMethods/setVal.jsx';
+import getVal from './nodeMethods/getVal.jsx';
 
-let wrapObject = function(createInstance, value, path) {
+let wrapObject = function(factory, value, path) {
   return oMapValues(value, function(val, key) {
-    return createInstance( val, path.concat(key) );
+    return factory( val, path.concat(key) );
   });
 };
 
-let wrapArray = function(createInstance, value, path) {
+let wrapArray = function(factory, value, path) {
   return value.map( function(item, index) {
-    return createInstance( item, path.concat(index) );
+    return factory( item, path.concat(index) );
   });
 };
 
-let wrapChildren = curry(function(createInstance, value, path) {
+let wrapChildren = curry(function(factory, value) {
   if (value === undefined) {
     return;
 
@@ -49,22 +50,15 @@ let parseDiff = function(rawDiff) {
 class BaseClass {
   constructor(value, path) {
     this[s_path] = path;
-
-    // store raw value
-    this[s_val] = value;
-
-    // return parsed value
-    this.$val = () => value;
+    this[s_rawVal] = value;
   }
 
-  $set(newValue) {
-    let curVal = this.$val();
-    if (curVal === newValue) return;
+  $val() {
+    return getVal(this);
+  }
 
-    let rawDiff = deepDiff(curVal, newValue);
-    if (!rawDiff) return;
-
-    this.$requestUpdate(rawDiff, this);
+  $set(newValue, opts) {
+    return setVal(this, newValue, opts);
   }
 
   $toArray() {
@@ -73,7 +67,7 @@ class BaseClass {
 };
 
 
-let createFactory = function(onChange) {
+let createFactory = function(onRequestUpdate) {
   class Cursor extends BaseClass {
     constructor(...args) {
       let [value, path] = args;
@@ -84,15 +78,15 @@ let createFactory = function(onChange) {
       Object.assign(this, children);
     }
 
-    $requestUpdate(rawDiff, setTarget) {
-      onChange(rawDiff.map( parseDiff), setTarget);
+    $requestUpdate(rawDiff) {
+      onRequestUpdate(rawDiff.map(parseDiff), this);
     }
   };
 
-  let createInstance = createNode(Cursor);
-  let _wrapChildren = wrapChildren(createInstance);
+  let factory = createNode(Cursor);
+  let _wrapChildren = wrapChildren(factory);
 
-  return createInstance;
+  return factory;
 };
 
 

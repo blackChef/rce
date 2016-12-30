@@ -2,12 +2,8 @@ import { s_isTransformedFromArr } from '../symbols.jsx';
 import isArray from 'lodash/isArray';
 
 let toObj = function(arr) {
-  let ret = arr.reduce(function(preVal, curItem, index) {
-    return Object.assign(preVal, { [index]: curItem });
-  }, {});
-
+  let ret = Object.assign({}, arr);
   ret[s_isTransformedFromArr] = true;
-
   return ret;
 };
 

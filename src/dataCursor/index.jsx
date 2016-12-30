@@ -24,53 +24,69 @@ let applyDiffQueue = function(diffQueue, root) {
   return pipe(flow)(root);
 };
 
+let State = class {
+  constructor() {
+    this.diffQueue = [];
+    this.isUpdating = false;
+    this.isListening = true;
+    this.previousRoot = undefined;
+  }
 
-let initCursor = function(initialValue, onUpdate) {
-  let diffQueue = [];
-  let isUpdating = false;
-  let isListening = true;
-  let previousRoot;
+  enqueueDiffs(diffs, setTarget) {
+    this.diffQueue.push({ diffs, setTarget });
+  }
 
-  let enqueueDiffs = function(diffs, setTarget) {
-    diffQueue.push({ diffs, setTarget });
-  };
+  destory() {
+    delete this;
+  }
 
-  let cleanup = function() {
-    diffQueue = [];
-    isUpdating = false;
-  };
+  finishDiffs(newRoot) {
+    this.previousRoot = newRoot;
+    this.diffQueue = [];
+    this.isUpdating = false;
+  }
+};
 
-  let onChange = function(diffs, setTarget) {
-    if (!isListening) return;
+let createState = () => new State();
 
-    enqueueDiffs(diffs, setTarget);
+let onRequestUpdate = curry(function(state, onUpdate, diffs, setTarget) {
+  if (!state.isListening) {
+    state.destory();
 
-    if (!isUpdating) {
-      isUpdating = true;
+  } else {
+    state.enqueueDiffs(diffs, setTarget);
+
+    if (!state.isUpdating) {
+      state.isUpdating = true;
 
       defer(function applyResult() {
-        // let t = performance.now();
-        let newRoot = applyDiffQueue(diffQueue, previousRoot);
-        // console.log('perf', performance.now() - t);
+        let newRoot = applyDiffQueue(state.diffQueue, state.previousRoot);
+        state.finishDiffs(newRoot);
         onUpdate(newRoot);
-        previousRoot = newRoot;
-        cleanup();
       });
     }
-  };
+  }
+});
 
-  previousRoot = createFactory(onChange)(initialValue);
+let initCursor = function(initialValue, onUpdate) {
+  // store state inside closure
+  let state = createState();
 
-  Object.defineProperty(previousRoot, 'unListen', {
-    enumerable: false,
+  let initialRoot = createFactory(
+    onRequestUpdate(state, onUpdate)
+  )(initialValue);
+
+  Object.defineProperty(initialRoot, '$unListen', {
     value: function() {
-      isListening = false;
-      previousRoot = undefined;
+      state.isListening = false;
     }
   });
 
-  return previousRoot;
+  state.previousRoot = initialRoot;
+
+  return initialRoot;
 };
+
 
 // a way to define "computed/proxy cursor"
 let createProxyCursor = function(onRequestRead, onRequestUpdate = () => {}) {
@@ -78,19 +94,20 @@ let createProxyCursor = function(onRequestRead, onRequestUpdate = () => {}) {
 
   let proxy = initCursor(val, newValue => {
     onRequestUpdate(newValue.$val());
-    proxy.unListen();
+    proxy.$unListen();
   });
 
   return proxy;
 };
 
 
+export { initCursor, createProxyCursor };
 export { default as toArray } from './nodeMethods/toArray.jsx';
-export { default as arrayAppend } from './nodeMethods/array/append.jsx';
-export { default as arrayPop } from './nodeMethods/array/pop.jsx';
-export { default as arrayInsert } from './nodeMethods/array/insert.jsx';
-export { default as arrayRemove } from './nodeMethods/array/remove.jsx';
-export { default as objectRemove } from './nodeMethods/object/remove.jsx';
-export { default as objectAppend } from './nodeMethods/object/append.jsx';
-export default initCursor;
-export { createProxyCursor };
+export { default as setVal } from './nodeMethods/setVal.jsx';
+export { default as getVal } from './nodeMethods/getVal.jsx';
+export { default as arrAppend } from './nodeMethods/array/append.jsx';
+export { default as arrPop } from './nodeMethods/array/pop.jsx';
+export { default as arrInsert } from './nodeMethods/array/insert.jsx';
+export { default as arrRemove } from './nodeMethods/array/remove.jsx';
+export { default as objAppend } from './nodeMethods/object/append.jsx';
+export { default as objRemove } from './nodeMethods/object/remove.jsx';

@@ -2,7 +2,7 @@ import pipe from 'lodash/flow';
 import curry from 'lodash/curry';
 import cRemove from '../utils/collectionRemove.jsx';
 import { s_path } from '../symbols.jsx';
-import updateValGenerator from './updateValGenerator.jsx';
+import updateValue from './updateValue.jsx';
 
 let getNewVal = curry(function(diffTargetPath, oldVal, valPath) {
   let newVal = cRemove(valPath, oldVal);
@@ -19,7 +19,7 @@ let handler = function(diff, setTarget, root) {
 
   let ret = pipe([
     cRemove(diffTargetPath),
-    updateValGenerator(diffTargetPath, getNewVal(diffTargetPath)),
+    updateValue(diffTargetPath, getNewVal(diffTargetPath)),
   ])(root);
 
   return ret;

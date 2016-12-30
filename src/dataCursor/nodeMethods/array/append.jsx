@@ -1,12 +1,9 @@
 import insert from './insert.jsx';
 
 
-// array node -> value | values -> ()
+// array node -> newItem | [newItems] -> ()
 let append = function(node, newItems) {
-  let curNodeVal = node.$val();
-  let curNodeValLength = curNodeVal.length;
-
-  return insert(node, curNodeValLength, newItems);
+  return insert(node, node.$toArray().length, newItems);
 };
 
 export default append;
