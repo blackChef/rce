@@ -21,6 +21,7 @@
     "webpack-split-by-path": "0.1.0-beta.1"
   },
   "dependencies": {
+    "dc-cursor": "^1.0.0",
     "deep-diff": "^0.3.4",
     "event-emitter": "^0.3.4",
     "lodash": "^4.6.1",

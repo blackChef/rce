@@ -3,9 +3,7 @@ let webpack = require('webpack');
 let SplitByPathPlugin = require('webpack-split-by-path');
 
 let splitByPath = new SplitByPathPlugin([
-  { name: 'cursor', path: resolve(__dirname, './src/dataCursor') },
-  { name: 'react', path: resolve(__dirname, 'node_modules/react') },
-  { name: 'lodash', path: resolve(__dirname, 'node_modules/lodash') },
+  { name: 'lib', path: resolve(__dirname, 'node_modules') }
 ]);
 
 let definePlugin = new webpack.DefinePlugin({

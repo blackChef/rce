@@ -1,5 +1,5 @@
 import React from 'react';
-import { initCursor } from 'dataCursor/index.jsx';
+import { initCursor } from 'dc-cursor';
 import isFunction from 'lodash/isFunction';
 
 export default function(Component, initialValue) {
