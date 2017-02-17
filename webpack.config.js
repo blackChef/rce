@@ -1,14 +1,11 @@
-let { resolve } = require('path');
-let webpack = require('webpack');
 let SplitByPathPlugin = require('webpack-split-by-path');
+let { resolve } = require('path');
+let { resolvePlugin, resolvePreset } = require('webpack-babel-link');
+
 
 let splitByPath = new SplitByPathPlugin([
   { name: 'lib', path: resolve(__dirname, 'node_modules') }
 ]);
-
-let definePlugin = new webpack.DefinePlugin({
-  'process.env.NODE_ENV': process.env.NODE_ENV,
-});
 
 module.exports = {
   entry: {
@@ -19,7 +16,7 @@ module.exports = {
     filename: '[name].js',
     chunkFilename: '[name].js'
   },
-  plugins: [splitByPath, definePlugin],
+  plugins: [splitByPath],
   resolve: {
     modules: [
       resolve(__dirname, 'node_modules'),
@@ -33,12 +30,11 @@ module.exports = {
       loader: 'babel-loader',
       query: {
         plugins: [
-          'transform-es2015-modules-commonjs',
           'transform-es2015-destructuring',
           'transform-object-rest-spread',
-        ],
-        presets: ['react']
+        ].map( resolvePlugin(require) ),
+        presets: ['react'].map( resolvePreset(require) )
       }
-    }, ]
+    }]
   },
 };

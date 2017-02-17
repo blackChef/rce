@@ -381,7 +381,7 @@ babel-plugin-transform-es2015-modules-amd@^6.22.0:
     babel-runtime "^6.22.0"
     babel-template "^6.22.0"
 
-babel-plugin-transform-es2015-modules-commonjs@^6.10.3, babel-plugin-transform-es2015-modules-commonjs@^6.22.0:
+babel-plugin-transform-es2015-modules-commonjs@^6.22.0:
   version "6.23.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-es2015-modules-commonjs/-/babel-plugin-transform-es2015-modules-commonjs-6.23.0.tgz#cba7aa6379fb7ec99250e6d46de2973aaffa7b92"
   dependencies:
@@ -937,14 +937,6 @@ dashdash@^1.12.0:
 date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
-
-dc-cursor@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/dc-cursor/-/dc-cursor-0.1.1.tgz#121be43df38ba4a0d95432acb31ad883fade684b"
-  dependencies:
-    deep-diff "^0.3.4"
-    event-emitter "^0.3.4"
-    lodash "^4.6.1"
 
 debug@^2.1.1, debug@^2.2.0:
   version "2.6.1"
@@ -2020,7 +2012,7 @@ react-router@^2.4.1:
     loose-envify "^1.2.0"
     warning "^3.0.0"
 
-react@^15.0.1:
+react@^15.4.2:
   version "15.4.2"
   resolved "https://registry.yarnpkg.com/react/-/react-15.4.2.tgz#41f7991b26185392ba9bae96c8889e7e018397ef"
   dependencies:
@@ -2464,6 +2456,10 @@ watchpack@^1.2.0:
     chokidar "^1.4.3"
     graceful-fs "^4.1.2"
 
+webpack-babel-link@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/webpack-babel-link/-/webpack-babel-link-1.1.0.tgz#74429ef0d13f31d40d83f95e1075284038c50516"
+
 webpack-sources@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/webpack-sources/-/webpack-sources-0.1.4.tgz#ccc2c817e08e5fa393239412690bb481821393cd"
@@ -2475,7 +2471,7 @@ webpack-split-by-path@0.1.0-beta.1:
   version "0.1.0-beta.1"
   resolved "https://registry.yarnpkg.com/webpack-split-by-path/-/webpack-split-by-path-0.1.0-beta.1.tgz#c135ff9a21154124bd4b7ea0c41f41adeaf21bcf"
 
-webpack@^2.1.0-beta.27:
+webpack@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-2.2.1.tgz#7bb1d72ae2087dd1a4af526afec15eed17dda475"
   dependencies:
