@@ -1,5 +1,5 @@
 import React from 'react';
-import shallowEqual from './shallowEqual.jsx';
+import shallowEqual from './shallowEqual';
 import omit from 'lodash/fp/omit';
 import pick from 'lodash/fp/pick';
 import memoize from 'lodash/memoize';

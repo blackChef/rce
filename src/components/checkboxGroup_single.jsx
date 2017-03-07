@@ -1,9 +1,9 @@
 import React from 'react';
-import createComponent from 'helpers/createComponent.jsx';
+import createComponent from 'main/createComponent';
 import range from 'lodash/range';
 import curry from 'lodash/curry';
 import { createProxyCursor } from 'dc-cursor';
-import { view as Checkbox } from './checkbox.jsx';
+import { view as Checkbox } from './checkbox';
 
 let name = 'checkboxGroup_single';
 

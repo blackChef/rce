@@ -3,8 +3,8 @@ import memoize from 'lodash/memoize';
 import once from 'lodash/once';
 import range from 'lodash/range';
 import curry from 'lodash/curry';
-import createComponent from 'helpers/createComponent.jsx';
-import { view as Counter } from './counter.jsx';
+import createComponent from 'main/createComponent';
+import { view as Counter } from './counter';
 import { arrAppend, arrRemove, arrPop } from 'dc-cursor';
 
 let name = 'counterList';

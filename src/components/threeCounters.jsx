@@ -1,6 +1,6 @@
 import React from 'react';
-import createComponent from 'helpers/createComponent.jsx';
-import { view as Counter, init as counterInit } from 'components/counter.jsx';
+import createComponent from 'main/createComponent';
+import { view as Counter, init as counterInit } from 'components/counter';
 
 
 let name = 'threeCounters';

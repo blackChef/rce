@@ -2,7 +2,7 @@
   "name": "react-cortex-elm",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "rce.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,14 +18,12 @@
     "react-addons-perf": "^15.4.1",
     "webpack": "^2.2.1",
     "webpack-babel-link": "^1.1.0",
-    "webpack-split-by-path": "0.1.0-beta.1"
-  },
-  "dependencies": {
-    "deep-diff": "^0.3.4",
-    "event-emitter": "^0.3.4",
-    "lodash": "^4.6.1",
-    "react": "^15.4.2",
+    "webpack-split-by-path": "0.1.0-beta.1",
     "react-dom": "^15.0.1",
     "react-router": "^2.4.1"
+  },
+  "dependencies": {
+    "react": "^15.4.2",
+    "lodash": "^4.6.1"
   }
 }

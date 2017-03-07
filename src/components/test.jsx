@@ -1,7 +1,7 @@
 import React from 'react';
-import createComponent from 'helpers/createComponent.jsx';
-import uncontrolled from 'helpers/createModelHolder.jsx';
-import { view as Counter, init as counterInit } from './counter.jsx';
+import createComponent from 'main/createComponent';
+import uncontrolled from 'main/createModelHolder';
+import { view as Counter, init as counterInit } from './counter';
 
 let name = 'test';
 

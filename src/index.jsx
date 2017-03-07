@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import uncontrolled from 'helpers/createModelHolder.jsx';
+import uncontrolled from 'main/createModelHolder';
 import { Router, Route, IndexRoute, Link, IndexLink, hashHistory } from 'react-router';
-import { view as counter, init as counterInit } from 'components/counter.jsx';
-import { view as checkbox, init as checkboxInit } from 'components/checkbox.jsx';
-import { view as checkboxGroup_single, init as checkboxGroup_singleInit } from 'components/checkboxGroup_single.jsx';
-import { view as threeCounters, init as threeCountersInit } from 'components/threeCounters.jsx';
-import { view as counterList, init as counterListInit } from 'components/counterList.jsx';
-import { view as shoppingCart, init as shoppingCartInit } from 'components/shoppingCart.jsx';
-import { view as test, init as testInit } from 'components/test.jsx';
+import { view as counter, init as counterInit } from 'components/counter';
+import { view as checkbox, init as checkboxInit } from 'components/checkbox';
+import { view as checkboxGroup_single, init as checkboxGroup_singleInit } from 'components/checkboxGroup_single';
+import { view as threeCounters, init as threeCountersInit } from 'components/threeCounters';
+import { view as counterList, init as counterListInit } from 'components/counterList';
+import { view as shoppingCart, init as shoppingCartInit } from 'components/shoppingCart';
+import { view as test, init as testInit } from 'components/test';
 
 let _counter = uncontrolled(counter, counterInit);
 let _checkbox = uncontrolled(checkbox, checkboxInit);

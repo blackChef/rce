@@ -1,11 +1,5 @@
-let SplitByPathPlugin = require('webpack-split-by-path');
 let { resolve } = require('path');
 let { resolvePlugin, resolvePreset } = require('webpack-babel-link');
-
-
-let splitByPath = new SplitByPathPlugin([
-  { name: 'lib', path: resolve(__dirname, 'node_modules') }
-]);
 
 module.exports = {
   entry: {
@@ -16,8 +10,8 @@ module.exports = {
     filename: '[name].js',
     chunkFilename: '[name].js'
   },
-  plugins: [splitByPath],
   resolve: {
+    extensions: [".js", ".jsx"],
     modules: [
       resolve(__dirname, 'node_modules'),
       resolve(__dirname, 'src'),

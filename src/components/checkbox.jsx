@@ -1,5 +1,5 @@
 import React from 'react';
-import createComponent from 'helpers/createComponent.jsx';
+import createComponent from 'main/createComponent';
 
 let name = 'checkbox';
 
