@@ -5,7 +5,6 @@ import range from 'lodash/range';
 import curry from 'lodash/curry';
 import createComponent from 'main/createComponent';
 import { view as Counter } from './counter';
-import { arrAppend, arrRemove, arrPop } from 'dc-cursor';
 
 let name = 'counterList';
 
@@ -17,24 +16,30 @@ let init = function() {
 
 let update = function({ type, payload, model, dispatch }) {
   if (type == 'add') {
-    arrAppend(model, {
-      id: Date.now(),
-      count: 0
-    });
+    model.set(
+      [
+        ...model.val(),
+        { id: Date.now(), count: 0 }
+      ]
+    );
   }
 
   else if (type == 'removeLast') {
-    arrPop(model);
+    model.set(
+      model.val().slice(0, model.val().length - 1)
+    );
   }
 
   else if (type == 'removeItem') {
-    arrRemove(model, item => item.id == payload);
+    model.set(
+      model.val().filter(i => i.id !== payload)
+    );
   }
 };
 
 
 let renderItem = memoize(function(itemModel, dispatch) {
-  let id = itemModel.id.$val();
+  let id = itemModel.id.val();
   return (
     <div
       key={id}
@@ -52,7 +57,7 @@ let renderItem = memoize(function(itemModel, dispatch) {
 });
 
 let view = function({ model, dispatch, dispatcher }) {
-  let counters = model.$toArray().map(function(itemModel) {
+  let counters = model.map(function(itemModel) {
     return renderItem(itemModel, dispatch);
   });
 

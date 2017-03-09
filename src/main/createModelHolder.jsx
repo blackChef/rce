@@ -1,6 +1,6 @@
 import React from 'react';
-import { initCursor } from 'dc-cursor';
 import isFunction from 'lodash/isFunction';
+import Cortex from 'cortexjs';
 
 export default function(Component, initialValue) {
   let container = React.createClass({
@@ -9,17 +9,19 @@ export default function(Component, initialValue) {
     getInitialState() {
       let _initialValue = isFunction(initialValue)? initialValue() : initialValue;
 
-      let initialModel = initCursor(_initialValue, newModel => {
-        this.setState({ model: newModel });
+      let initialModel = new Cortex(_initialValue, newModel => {
+        if (this.isMounted) {
+          this.setState({ model: newModel });
+        }
       });
 
-      this.unListenToModel = initialModel.$unListen;
+      this.isMounted = true;
 
       return { model: initialModel };
     },
 
     componentWillUnmount() {
-      this.unListenToModel();
+      this.isMounted = false;
     },
 
     render() {

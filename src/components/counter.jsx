@@ -9,9 +9,9 @@ let init = function() {
 
 let update = function({ type, payload, model, dispatch }) {
   if (type == 'increment') {
-    model.$set( model.$val() + 1 );
+    model.set( model.val() + 1 );
   } else if (type == 'decrement') {
-    model.$set( model.$val() - 1 );
+    model.set( model.val() - 1 );
   }
 };
 
@@ -19,7 +19,7 @@ let view = function ({ model, dispatcher }) {
   return (
     <div>
       <button type="button" onClick={dispatcher('increment')} >+</button>
-      <span>{model.$val()}</span>
+      <span>{model.val()}</span>
       <button type="button" onClick={dispatcher('decrement')}>-</button>
     </div>
   );

@@ -13,7 +13,7 @@ let init = function() {
 };
 
 let update = function({ type, payload, model, dispatch }) {
-  model.$set( init() );
+  model.set( init() );
 };
 
 let view = function ({ model, dispatcher }) {
