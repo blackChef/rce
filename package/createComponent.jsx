@@ -11,7 +11,7 @@ export default function({ name = '', update = () => {}, view }) {
 
   let component = React.createClass({
     // "@" means it's a hoc/decorator
-    displayName: `@RCE_${componentName}`,
+    displayName: `@RCE_${name}`,
 
     dispatch(type, payload) {
       // model mutation is async, like react state

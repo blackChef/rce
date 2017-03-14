@@ -1,27 +1,25 @@
 import React from 'react';
 import isFunction from 'lodash/fp/isFunction';
-import Cortex from 'cortexjs';
+import createModel from './cursor';
 
 export default function(Component, initialValue) {
   let container = React.createClass({
     displayName: `@ModelHolder_${Component.displayName}`,
 
     getInitialState() {
-      let _initialValue = isFunction(initialValue)? initialValue() : initialValue;
+      let _initialValue = isFunction(initialValue)?
+        initialValue() :
+        initialValue;
 
-      let initialModel = new Cortex(_initialValue, newModel => {
-        if (this.isMounted) {
-          this.setState({ model: newModel });
-        }
+      this.model = createModel(_initialValue, newModel => {
+        this.setState({ model: newModel });
       });
 
-      this.isMounted = true;
-
-      return { model: initialModel };
+      return { model: this.model };
     },
 
     componentWillUnmount() {
-      this.isMounted = false;
+      this.model.unListen();
     },
 
     render() {
