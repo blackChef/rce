@@ -1,6 +1,6 @@
 import React from 'react';
-import createComponent from 'main/createComponent';
-import { view as Counter } from 'components/counter';
+import createComponent from '../../package/createComponent';
+import { view as Counter } from './counter';
 
 let apiCalls = {
   getOrder() {

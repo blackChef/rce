@@ -3,19 +3,13 @@ let { resolvePlugin, resolvePreset } = require('webpack-babel-link');
 
 module.exports = {
   entry: {
-    index: './src/index.jsx',
+    index: './demo/index.jsx',
   },
   output: {
-    path: 'dist',
-    filename: '[name].js',
-    chunkFilename: '[name].js'
+    filename: './demo/[name].js',
   },
   resolve: {
     extensions: [".js", ".jsx"],
-    modules: [
-      resolve(__dirname, 'node_modules'),
-      resolve(__dirname, 'src'),
-    ]
   },
   module: {
     rules: [{

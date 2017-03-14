@@ -1,8 +1,8 @@
 import React from 'react';
-import createComponent from 'main/createComponent';
+import createComponent from '../../package/createComponent';
 import range from 'lodash/range';
 import curry from 'lodash/curry';
-import createProxyCursor from 'main/createProxyCursor';
+import createProxyModel from '../../package/createProxyModel';
 import { view as Checkbox } from './checkbox';
 
 let name = 'checkboxGroup_single';
@@ -23,7 +23,7 @@ let update = function({ type, payload, model, dispatch }) {
 let renderCheckbox = curry(function(model, dispatch, index) {
   let curIsChecked = index == model.val();
   let onToggle = newIsChecked => dispatch('toggle', { index, newIsChecked });
-  let checkboxModel = createProxyCursor(curIsChecked, onToggle);
+  let checkboxModel = createProxyModel(curIsChecked, onToggle);
   return (
     <div key={index}>
       <Checkbox model={checkboxModel} label={index} />

@@ -3,7 +3,7 @@ import memoize from 'lodash/memoize';
 import once from 'lodash/once';
 import range from 'lodash/range';
 import curry from 'lodash/curry';
-import createComponent from 'main/createComponent';
+import createComponent from '../../package/createComponent';
 import { view as Counter } from './counter';
 
 let name = 'counterList';

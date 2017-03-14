@@ -1,6 +1,6 @@
 import Cortex from 'cortexjs';
 
-let createProxyCursor = function(onRequestRead, onRequestUpdate = () => {}) {
+let createProxyModel = function(onRequestRead, onRequestUpdate = () => {}) {
   let val = typeof onRequestRead === 'function' ?
     onRequestRead() :
     onRequestRead;
@@ -12,4 +12,4 @@ let createProxyCursor = function(onRequestRead, onRequestUpdate = () => {}) {
   return proxy;
 };
 
-export default createProxyCursor;
+export default createProxyModel;

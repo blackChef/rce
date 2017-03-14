@@ -1,5 +1,5 @@
 import React from 'react';
-import createComponent from 'main/createComponent';
+import createComponent from '../../package/createComponent';
 
 let name = 'counter';
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import createComponent from 'main/createComponent';
-import uncontrolled from 'main/createModelHolder';
+import createComponent from '../../package/createComponent';
+import uncontrolled from '../../package/createModelHolder';
 import { view as Counter, init as counterInit } from './counter';
 
 let name = 'test';
