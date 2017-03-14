@@ -1,7 +1,8 @@
 import Cortex from 'cortexjs';
+import isFunction from 'lodash/fp/isFunction';
 
 let createProxyModel = function(onRequestRead, onRequestUpdate = () => {}) {
-  let val = typeof onRequestRead === 'function' ?
+  let val = isFunction(onRequestRead) ?
     onRequestRead() :
     onRequestRead;
 

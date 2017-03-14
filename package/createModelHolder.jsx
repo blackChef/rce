@@ -1,5 +1,5 @@
 import React from 'react';
-import isFunction from 'lodash/isFunction';
+import isFunction from 'lodash/fp/isFunction';
 import Cortex from 'cortexjs';
 
 export default function(Component, initialValue) {
