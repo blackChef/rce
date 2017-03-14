@@ -3,7 +3,7 @@ Thumbs.db
 ehthumbs.db
 
 node_modules/
-dist/
+readyToPublish/
 prepros.cfg
 
 # Folder config file
