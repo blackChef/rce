@@ -7,7 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "makePackage": "cd ./tool && node makePackage"
   },
-  "author": "",
+  "author": "blackChef",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blackChef/rce.git"
+  },
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.7.2",

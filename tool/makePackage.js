@@ -11,6 +11,11 @@ copySync(
   resolve(dest, 'package.json')
 );
 
+copySync(
+  resolve('../README.md'),
+  resolve(dest, 'README.md')
+);
+
 compileEs6(
   readdirSync(src).map(i => resolve(src, i)),
   resolve(dest)
