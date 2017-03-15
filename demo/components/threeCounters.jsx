@@ -13,27 +13,29 @@ let init = function() {
 };
 
 let update = function({ type, payload, model, dispatch }) {
-  model.set( init() );
+  model.set( init() ); // only one type action
 };
 
 let view = function ({ model, dispatcher }) {
   return (
     <div>
       <section className="section">
-        <div>counterA</div>
+        <h4>counterA</h4>
         <Counter model={model.countA} />
       </section>
 
       <section className="section">
-        <p className="infoBanner">
-          counterB and counterC share same model
-        </p>
+        <h3>counterB and counterC share same model</h3>
 
-        <div>counterB</div>
-        <Counter model={model.countBC} />
+        <section>
+          <h4>counterB</h4>
+          <Counter model={model.countBC} />
+        </section>
 
-        <div>counterC</div>
-        <Counter model={model.countBC} />
+        <section>
+          <h4>counterC</h4>
+          <Counter model={model.countBC} />
+        </section>
       </section>
 
       <section className="section">

@@ -21,9 +21,10 @@ let update = function({ type, payload, model, dispatch }) {
 };
 
 let renderCheckbox = curry(function(model, dispatch, index) {
-  let curIsChecked = index == model.val();
+  let curIsChecked = index === model.val();
   let onToggle = newIsChecked => dispatch('toggle', { index, newIsChecked });
   let checkboxModel = createProxyModel(curIsChecked, onToggle);
+
   return (
     <div key={index}>
       <Checkbox model={checkboxModel} label={index} />

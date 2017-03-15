@@ -28,11 +28,3 @@ body {
 .section:last-child {
   border-bottom: 0;
 }
-
-.infoBanner {
-  margin: 0;
-  background-color: #D5E3FF;
-  color: #4941FF;
-  padding: 15px;
-  margin-bottom: 15px;
-}

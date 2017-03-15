@@ -2,7 +2,7 @@ import React from 'react';
 import createComponent from '../../package/createComponent';
 import { view as Counter } from './counter';
 
-let apiCalls = {
+let fakeApiCalls = {
   getOrder() {
     return new Promise(function(resolve, reject) {
       setTimeout(function() {
@@ -12,15 +12,13 @@ let apiCalls = {
             { name: 'banana', count: 3, price: 5, },
           ],
         });
-      }, 500);
+      }, 1000);
     });
   },
 
-  updateOrder(data) {
+  confirmOrder(data) {
     return new Promise(function(resolve, reject) {
-      setTimeout(function() {
-        resolve();
-      }, 500);
+      setTimeout(resolve, 1000);
     });
   }
 };
@@ -41,11 +39,11 @@ let init = function() {
 let update = function(props) {
   let { type, payload, model, getLatestModel } = props;
 
-  // use map, cleaner than if..else
+  // use map lookup
   let actions = {
     getData() {
       model.requestStatus.set('loading');
-      apiCalls.getOrder().then(function(res) {
+      fakeApiCalls.getOrder().then(function(res) {
         let { products } = res;
         let latestModel = getLatestModel();
         latestModel.requestStatus.set('success');
@@ -59,7 +57,7 @@ let update = function(props) {
 
       let { products } = model.val();
 
-      apiCalls.updateOrder({ products })
+      fakeApiCalls.confirmOrder({ products })
         .then(function() {
           let latestModel = getLatestModel();
           latestModel.requestStatus.set('success');
@@ -73,41 +71,54 @@ let update = function(props) {
 let renderLoading = function(model) {
   let requestStatus = model.requestStatus.val();
   if (requestStatus !== 'success') {
-    return <div className="infoBanner">{requestStatus}</div>;
+    return <h5>{requestStatus}</h5>;
   }
 };
 
 let renderItem = function({ name, count, price }) {
   return (
     <div key={name.val()} style={{ display: 'flex', marginBottom: '15px' }}>
-      <span style={{ marginRight: '10px' }}>{name.val()}</span>
-      <Counter model={count} />
-      <span style={{ marginLeft: '10px' }}>${count.val() * price.val()}</span>
+      <div style={{ marginRight: '10px' }}>{name.val()}</div>
+      <div style={{ marginRight: '10px' }}>${price.val()}</div>
+      <div style={{ marginRight: '10px' }}>
+        <Counter model={count} />
+      </div>
+      <div>${count.val() * price.val()}</div>
     </div>
+  );
+};
+
+let renderFooter = function(model) {
+  let requestStatus = model.requestStatus.val();
+  let total = model.products.val()
+    .reduce(function(preVal, { price, count }) {
+      return preVal + price * count;
+    }, 0);
+
+  return (
+    <footer>
+      <div>total: ${total}</div>
+      <div style={{ marginTop: '15px' }}>
+        <button
+          disabled={requestStatus === 'loading'}
+          type="submit"
+        >
+          confirm order
+        </button>
+      </div>
+    </footer>
   );
 };
 
 let renderContent = function(model, onSubmit) {
   if (model.isContentReady.val()) {
-    let requestStatus = model.requestStatus.val();
-    let items = model.products.map(renderItem);
-
     return (
       <form onSubmit={onSubmit}>
         <section className="section">
-          {items}
+          {model.products.map(renderItem)}
         </section>
 
-        <section className="section">
-          <div style={{ marginTop: '15px' }}>
-            <button
-              disabled={requestStatus == 'loading'}
-              type="submit"
-            >
-              confirm order
-            </button>
-          </div>
-        </section>
+        {renderFooter(model)}
       </form>
     );
   }

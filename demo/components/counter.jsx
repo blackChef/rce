@@ -4,13 +4,13 @@ import createComponent from '../../package/createComponent';
 let name = 'counter';
 
 let init = function() {
-  return 0;
+  return 0; // count
 };
 
 let update = function({ type, payload, model, dispatch }) {
-  if (type == 'increment') {
+  if (type === 'increment') {
     model.set( model.val() + 1 );
-  } else if (type == 'decrement') {
+  } else {
     model.set( model.val() - 1 );
   }
 };

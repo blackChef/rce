@@ -1,6 +1,4 @@
 import React from 'react';
-import memoize from 'lodash/memoize';
-import once from 'lodash/once';
 import range from 'lodash/range';
 import curry from 'lodash/curry';
 import createComponent from '../../package/createComponent';
@@ -14,31 +12,46 @@ let init = function() {
   });
 };
 
-let update = function({ type, payload, model, dispatch }) {
-  if (type == 'add') {
-    model.set(
-      [
-        ...model.val(),
-        { id: Date.now(), count: 0 }
-      ]
-    );
-  }
+let handleAdd = function({ model }) {
+  model.set(
+    [
+      ...model.val(),
+      { id: Date.now(), count: 0 }
+    ]
+  );
+};
 
-  else if (type == 'removeLast') {
-    model.set(
-      model.val().slice(0, model.val().length - 1)
-    );
-  }
+let handleRemoveLast = function({ model }) {
+  model.set(
+    model.val().slice(0, model.val().length - 1)
+  );
+};
 
-  else if (type == 'removeItem') {
-    model.set(
-      model.val().filter(i => i.id !== payload)
-    );
+let handleRemoveItem = function({ payload, model }) {
+  model.set(
+    model.val().filter(i => i.id !== payload)
+  );
+};
+
+let update = function(arg) {
+  // Update is just a function,
+  // we could use switch, map lookup, or any other tools to solve "too many ifs" problem.
+  switch (arg.type) {
+    case 'add':
+      handleAdd(arg);
+      break;
+
+    case 'removeLast':
+      handleRemoveLast(arg);
+      break;
+
+    case 'removeItem':
+      handleRemoveItem(arg);
+      break;
   }
 };
 
-
-let renderItem = memoize(function(itemModel, dispatch) {
+let renderItem = curry(function(dispatch, itemModel) {
   let id = itemModel.id.val();
   return (
     <div
@@ -57,9 +70,7 @@ let renderItem = memoize(function(itemModel, dispatch) {
 });
 
 let view = function({ model, dispatch, dispatcher }) {
-  let counters = model.map(function(itemModel) {
-    return renderItem(itemModel, dispatch);
-  });
+  let counters = model.map(renderItem(dispatch));
 
   return (
     <div>

@@ -23,12 +23,11 @@ let App = function({ children }) {
       <nav className="pageNav">
         <IndexLink activeClassName="link_active" to="/">home</IndexLink>
         <Link activeClassName="link_active" to="/counter">counter</Link>
-        <Link activeClassName="link_active" to="/checkbox">checkbox</Link>
-        <Link activeClassName="link_active" to="/checkboxGroup_single">checkboxGroup_single</Link>
         <Link activeClassName="link_active" to="/threeCounters">threeCounters</Link>
         <Link activeClassName="link_active" to="/counterList">counterList</Link>
-        <Link activeClassName="link_active" to="/shoppingCart">shoppingCart</Link>
-        <Link activeClassName="link_active" to="/test">test</Link>
+        <Link activeClassName="link_active" to="/checkbox">checkbox</Link>
+        <Link activeClassName="link_active" to="/checkboxGroup_single">checkboxGroup_single (proxy model)</Link>
+        <Link activeClassName="link_active" to="/shoppingCart">shoppingCart (async action)</Link>
       </nav>
 
       <main className="pageMain">
