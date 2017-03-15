@@ -5,7 +5,8 @@
   "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "makePackage": "cd ./tool && node makePackage"
+    "makePackage": "cd ./tool && node makePackage",
+    "makeGithubPage": "cd ./tool && node makeGithubPage"
   },
   "author": "",
   "license": "ISC",

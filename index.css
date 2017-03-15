@@ -1,0 +1,30 @@
+body {
+  padding: 30px;
+}
+
+.pageNav {
+  margin-bottom: 20px;
+}
+
+.pageNav a {
+  margin-right: 10px;
+}
+
+.pageMain {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.link_active {
+  color: red;
+}
+
+.section {
+  margin-bottom: 15px;
+  border-bottom: 1px solid silver;
+  padding-bottom: 15px;
+}
+
+.section:last-child {
+  border-bottom: 0;
+}
