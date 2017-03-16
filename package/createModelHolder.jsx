@@ -1,5 +1,5 @@
 import React from 'react';
-import isFunction from 'lodash/fp/isFunction';
+import getVal from './getVal';
 import createModel from './cursor';
 
 export default function(Component, initialValue) {
@@ -7,13 +7,10 @@ export default function(Component, initialValue) {
     displayName: `@ModelHolder_${Component.displayName}`,
 
     getInitialState() {
-      let _initialValue = isFunction(initialValue)?
-        initialValue() :
-        initialValue;
-
-      this.model = createModel(_initialValue, newModel => {
-        this.setState({ model: newModel });
-      });
+      this.model = createModel(
+        getVal(initialValue),
+        newModel => this.setState({ model: newModel })
+      );
 
       return { model: this.model };
     },

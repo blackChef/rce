@@ -14,20 +14,22 @@ export default function({ name = '', update = () => {}, view }) {
     displayName: `@RCE_${name}`,
 
     dispatch(type, payload) {
-      // model mutation is async, like react state
-      // inside component's update function, we loose reference after model updated
       let component = this;
-      let args = {
-        type, payload,
-        dispatch: component.dispatch,
-        currentModel: component.props.model,
-        model: component.props.model, // alias
-        getLatestModel() {
-          return component.props.model;
-        }
-      };
 
-      update(args, component);
+      let {
+        dispatch,
+        props: { model }
+      } = component;
+
+      update({
+        type, payload, dispatch,
+        // model mutation is async, like react state
+        // inside update function, we loose reference after model updated.
+        // if we want to access latest model,
+        // we have to request "component.props.model"
+        model,
+        getLatestModel: () => component.props.model
+      });
     },
 
     componentWillMount() {
@@ -35,12 +37,13 @@ export default function({ name = '', update = () => {}, view }) {
       // it's useful for creating stateless react components.
       let component = this;
       let dispatcher = function(type, payloadResolver = a => a) {
-        return function(event) {
-          let payload = payloadResolver(event, component.props);
-          component.dispatch(type, payload);
+        return function(payload) {
+          let resolvedPayload = payloadResolver(payload, component.props);
+          component.dispatch(type, resolvedPayload);
         };
       };
 
+      // assume payloadResolver is not going to change
       this.dispatcher = memoize(dispatcher);
     },
 
@@ -68,11 +71,11 @@ export default function({ name = '', update = () => {}, view }) {
 
     render() {
       let { dispatch, dispatcher } = this;
-      let otherProps = omit(['constantProps', 'variableProps'], this.props);
+      let otherProps = omit([
+        'constantProps', 'variableProps',
+        'dispatch', 'dispatcher'
+      ], this.props);
 
-      // order is important here
-      // if component receive "dispatch" or "dispatcher" as props,
-      // we should overwrite them
       return React.createElement(view, {
         ...otherProps, dispatch, dispatcher,
       });
