@@ -10,7 +10,10 @@ let babelOpts = {
     'transform-es2015-destructuring',
     'transform-object-rest-spread',
   ].map( resolvePlugin(require) ),
-  presets: ['react'].map( resolvePreset(require) )
+  presets: [
+    'react',
+    'es2015'
+  ].map( resolvePreset(require) )
 };
 
 
