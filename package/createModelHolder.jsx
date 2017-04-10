@@ -20,7 +20,7 @@ export default function(Component, initialValue) {
     },
 
     render() {
-      return <Component model={this.state.model} {...this.props} />;
+      return <Component {...this.props} model={this.state.model} />;
     }
   });
 
