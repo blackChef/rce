@@ -1,8 +1,8 @@
 import React from 'react';
 import shallowEqual from './shallowEqual';
-import omit from 'lodash/fp/omit';
-import pick from 'lodash/fp/pick';
-import memoize from 'lodash/fp/memoize';
+import omit from 'lodash/omit';
+import pick from 'lodash/pick';
+import memoize from 'lodash/memoize';
 
 
 export default function({ name = '', update = () => {}, view }) {
@@ -33,8 +33,16 @@ export default function({ name = '', update = () => {}, view }) {
     },
 
     componentWillMount() {
-      // dispatcher returns function that apply dispatch.
-      // it's useful for creating stateless react components.
+      // There are 4 ways to do dispatch in render function:
+      // 1. callback = { _ => dispatch(type) }
+      // 2. callback = { _ => dispatch(type, constant) }
+      // 3. callback = { payload => dispatch(type, resolver(payload)) }
+      //    Resolver is pure and constant, lives outside render function
+      // 4. callback = { _ => dispatch(type, variableComputedBasedOnComponentProps) }
+      //
+      // 1,2 can be considered as special cases of 3. 3 can be memoized.
+      // Dispatcher is a callback function generator that implement 3.
+
       let component = this;
       let dispatcher = function(type, payloadResolver = a => a) {
         return function(payload) {
@@ -43,7 +51,6 @@ export default function({ name = '', update = () => {}, view }) {
         };
       };
 
-      // assume payloadResolver is not going to change
       this.dispatcher = memoize(dispatcher);
     },
 
@@ -57,11 +64,11 @@ export default function({ name = '', update = () => {}, view }) {
       let { variableProps = [], constantProps = [] } = curProps;
 
       if (variableProps.length) {
-        let pickVar = pick(variableProps);
+        let pickVar = props => pick(props, variableProps);
         return !shallowEqual(pickVar(curProps), pickVar(nextProps));
 
       } else if (constantProps.length) {
-        let omitConst = omit([...constantProps, 'constantProps']);
+        let omitConst = props => omit(props, [...constantProps, 'constantProps']);
         return !shallowEqual(omitConst(curProps), omitConst(nextProps));
 
       } else {
@@ -71,10 +78,7 @@ export default function({ name = '', update = () => {}, view }) {
 
     render() {
       let { dispatch, dispatcher } = this;
-      let otherProps = omit([
-        'constantProps', 'variableProps',
-        'dispatch', 'dispatcher'
-      ], this.props);
+      let { constantProps, variableProps, ...otherProps } = this.props;
 
       return React.createElement(view, {
         ...otherProps, dispatch, dispatcher,
