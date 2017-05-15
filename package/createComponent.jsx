@@ -32,6 +32,7 @@ export default function({ name = '', update = () => {}, view }) {
       });
     },
 
+
     componentWillMount() {
       // There are 4 ways to do dispatch in render function:
       // 1. callback = { _ => dispatch(type) }
@@ -55,13 +56,23 @@ export default function({ name = '', update = () => {}, view }) {
     },
 
     shouldComponentUpdate(nextProps) {
-      // consumer can specify variableProps and constantProps.
+      // Consumer can specify variableProps and constantProps.
       // variableProps: only these props need to compare.
       // constantProps: these props wont change, dont compare them.
-      // if variableProps are defined, ignore contantProps.
-      // this is useful for props like children or callback
+      // If variableProps are defined, ignore contantProps.
+      // This is useful for props like children or callback
       let { props: curProps} = this;
-      let { variableProps = [], constantProps = [] } = curProps;
+      let { variableProps = [], constantProps = [], cursorProps = [] } = curProps;
+
+      // When passing props, only model is a cursor prop for sure.
+      // To achieve better performance,
+      // component consumer may want to pass other props as cursors.
+      // He could pass a cursorProps prop, specify which props are cursors.
+      // These props are extracted later in render function.
+      if (cursorProps.length) {
+        nextProps = omit(nextProps, ['cursorProps']);
+        curProps = omit(curProps, ['cursorProps']);
+      }
 
       if (variableProps.length) {
         let pickVar = props => pick(props, variableProps);
@@ -77,11 +88,25 @@ export default function({ name = '', update = () => {}, view }) {
     },
 
     render() {
-      let { dispatch, dispatcher } = this;
-      let { constantProps, variableProps, ...otherProps } = this.props;
+      let { dispatch, dispatcher, props } = this;
+      let {
+        constantProps,
+        variableProps,
+        cursorProps = [],
+        ...otherProps
+      } = props;
+
+      let extractedCursorProps = cursorProps.reduce(function(preVal, key) {
+        return Object.assign({}, preVal, {
+          [key]: props[key].val()
+        });
+      }, {});
 
       return React.createElement(view, {
-        ...otherProps, dispatch, dispatcher,
+        ...otherProps,
+        ...extractedCursorProps,
+        dispatch,
+        dispatcher,
       });
     },
   });
