@@ -3,6 +3,7 @@ import shallowEqual from './shallowEqual';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 import memoize from 'lodash/memoize';
+import isFunction from 'lodash/isFunction';
 
 
 export default function({ name = '', update = () => {}, view }) {
@@ -97,8 +98,14 @@ export default function({ name = '', update = () => {}, view }) {
       } = props;
 
       let extractedCursorProps = cursorProps.reduce(function(preVal, key) {
+        let maybeCursor = props[key];
+
+        let val = ( maybeCursor !== undefined && isFunction(maybeCursor.val) ) ?
+            maybeCursor.val() :
+            maybeCursor;
+
         return Object.assign({}, preVal, {
-          [key]: props[key].val()
+          [key]: val
         });
       }, {});
 
