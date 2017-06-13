@@ -1,13 +1,13 @@
 import React from 'react';
 import createComponent from '../../package/createComponent';
 import uncontrolled from '../../package/createModelHolder';
+import forEach from '../../package/array/forEach';
 import { view as Counter, init as counterInit } from './counter';
 
 let Inner = createComponent({
   name: 'Inner',
   view(props) {
     // console.log('render inner');
-    console.log(props);
     return null;
   }
 });
@@ -26,6 +26,12 @@ let view = React.createClass({
   },
 
   componentDidMount() {
+    let { model } = this.props;
+
+    forEach(model, function(i) {
+      console.log(i.val());
+    });
+
     // setInterval(() => {
     //   this.setState({ time: Date.now() });
     // }, 1000);
@@ -33,6 +39,7 @@ let view = React.createClass({
 
   render() {
     let { model } = this.props;
+    console.log(model.val());
     return (
       <div>
         <Inner foo={model} cursorProps={['foo']}/>

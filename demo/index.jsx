@@ -53,7 +53,6 @@ ReactDOM.render(
       <Route path="/counterList" component={_counterList}></Route>
       <Route path="/shoppingCart" component={_shoppingCart}></Route>
       <Route path="/test" component={test}></Route>
-
     </Route>
   </Router>,
   document.querySelector('.appContainer')
