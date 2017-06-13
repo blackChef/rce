@@ -1,7 +1,7 @@
 import isArray from 'lodash/isArray';
 let insert = function(node, index, maybeArray) {
   let newItems = isArray(maybeArray) ? maybeArray : [maybeArray];
-  let val = nodel.val();
+  let val = node.val();
 
   node.set([
     ...val.slice(0, index),
