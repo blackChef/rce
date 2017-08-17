@@ -24,10 +24,12 @@ export default function({ name = '', update = () => {}, view }) {
 
       update({
         type, payload, dispatch,
-        // model mutation is async, like react state
-        // inside update function, we loose reference after model updated.
-        // if we want to access latest model,
-        // we have to request "component.props.model"
+        // Model mutation is async, like react state.
+        // Inside update function, we loose reference after model updated.
+        // If we want to access latest model, we have to request `component.props.model`.
+        // We don't make model a getter here, because getter is only called when we do `object.getter`.
+        // If we do destruction at first: `let { getter } = props`, the getter is a static value,
+        // which can be a confusing behavior.
         model,
         getLatestModel: () => component.props.model
       });
