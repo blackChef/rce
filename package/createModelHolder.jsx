@@ -1,9 +1,10 @@
 import React from 'react';
+import createClass from 'create-react-class';
 import getVal from './getVal';
 import createModel from './cursor';
 
 export default function(Component, initialValue) {
-  let container = React.createClass({
+  let container = createClass({
     displayName: `@ModelHolder_${Component.displayName}`,
 
     getInitialState() {

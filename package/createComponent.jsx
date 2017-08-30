@@ -1,4 +1,5 @@
 import React from 'react';
+import createClass from 'create-react-class';
 import shallowEqual from './shallowEqual';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
@@ -10,7 +11,7 @@ export default function({ name = '', update = () => {}, view }) {
   // overwrite component name
   view.displayName = name;
 
-  let component = React.createClass({
+  let component = createClass({
     // "@" means it's a hoc/decorator
     displayName: `@RCE_${name}`,
 
