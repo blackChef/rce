@@ -7,7 +7,14 @@ import memoize from 'lodash/memoize';
 import isFunction from 'lodash/isFunction';
 
 
-export default function({ name = '', update = () => {}, view }) {
+export default function(props) {
+  let {
+    name = '',
+    view,
+    update = () => {},
+    shouldComponentUpdate: customShouldComponentUpdate,
+  } = props;
+
   // overwrite component name
   view.displayName = name;
 
@@ -36,8 +43,29 @@ export default function({ name = '', update = () => {}, view }) {
       });
     },
 
+    initExtractCursorProps() {
+      // cursorProps won't change during update
+      let { cursorProps = []} = this.props;
+      if (cursorProps.length === 0) {
+        this.extractCursorProps = () => null;
+      } else {
+        this.extractCursorProps = function() {
+          return cursorProps.reduce(function(preVal, key) {
+            let maybeCursor = props[key];
 
-    componentWillMount() {
+            let val = ( maybeCursor !== undefined && isFunction(maybeCursor.val) ) ?
+                maybeCursor.val() :
+                maybeCursor;
+
+            return Object.assign({}, preVal, {
+              [key]: val
+            });
+          }, {});
+        };
+      }
+    },
+
+    initDispacher() {
       // There are 4 ways to do dispatch in render function:
       // 1. callback = { _ => dispatch(type) }
       // 2. callback = { _ => dispatch(type, constant) }
@@ -47,7 +75,6 @@ export default function({ name = '', update = () => {}, view }) {
       //
       // 1,2 can be considered as special cases of 3. 3 can be memoized.
       // Dispatcher is a callback function generator that implement 3.
-
       let component = this;
       let dispatcher = function(type, payloadResolver = a => a) {
         return function(payload) {
@@ -59,7 +86,27 @@ export default function({ name = '', update = () => {}, view }) {
       this.dispatcher = memoize(dispatcher);
     },
 
-    shouldComponentUpdate(nextProps) {
+    componentWillMount() {
+      this.initExtractCursorProps();
+      this.initDispacher();
+    },
+
+    componentDidMount() {
+      this.initPickOmit();
+    },
+
+    initPickOmit() {
+      let {
+        variableProps = [],
+        constantProps = [],
+      } = this.props;
+
+      // variableProps and constantProps wont change
+      this.pickVar = props => pick(props, variableProps);
+      this.omitConst = props => omit(props, [...constantProps, 'constantProps']);
+    },
+
+    defaultShouldComponentUpdate(nextProps) {
       // Consumer can specify variableProps and constantProps.
       // variableProps: only these props need to compare.
       // constantProps: these props wont change, dont compare them.
@@ -79,11 +126,11 @@ export default function({ name = '', update = () => {}, view }) {
       }
 
       if (variableProps.length) {
-        let pickVar = props => pick(props, variableProps);
+        let { pickVar } = this;
         return !shallowEqual(pickVar(curProps), pickVar(nextProps));
 
       } else if (constantProps.length) {
-        let omitConst = props => omit(props, [...constantProps, 'constantProps']);
+        let { omitConst } = this;
         return !shallowEqual(omitConst(curProps), omitConst(nextProps));
 
       } else {
@@ -91,26 +138,31 @@ export default function({ name = '', update = () => {}, view }) {
       }
     },
 
+    shouldComponentUpdate(nextProps, nextState) {
+      let { defaultShouldComponentUpdate } = this;
+      if (customShouldComponentUpdate) {
+        return customShouldComponentUpdate(
+          nextProps, nextState,
+          defaultShouldComponentUpdate
+        );
+      }
+
+      return defaultShouldComponentUpdate(nextProps);
+    },
+
     render() {
-      let { dispatch, dispatcher, props } = this;
       let {
-        constantProps,
-        variableProps,
-        cursorProps = [],
-        ...otherProps
-      } = props;
+        dispatch,
+        dispatcher,
+        extractCursorProps,
+        props: {
+          constantProps,
+          variableProps,
+          ...otherProps
+        },
+      } = this;
 
-      let extractedCursorProps = cursorProps.reduce(function(preVal, key) {
-        let maybeCursor = props[key];
-
-        let val = ( maybeCursor !== undefined && isFunction(maybeCursor.val) ) ?
-            maybeCursor.val() :
-            maybeCursor;
-
-        return Object.assign({}, preVal, {
-          [key]: val
-        });
-      }, {});
+      let extractedCursorProps = extractCursorProps();
 
       return React.createElement(view, {
         ...otherProps,
