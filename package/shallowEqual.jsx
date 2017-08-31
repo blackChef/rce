@@ -32,6 +32,11 @@
     }
   }
 
+  // is {} or []
+  function isEmpty(o) {
+    return typeof o === 'object' && Object.keys(o).length === 0;
+  }
+
   /**
    * Performs equality by iterating through keys on an object and returning false
    * when any key has values which are not strictly equal between the arguments.
@@ -55,8 +60,19 @@
 
     // Test for A's keys different from B.
     for (let i = 0; i < keysA.length; i++) {
-      if (!hasOwnProperty.call(objB, keysA[i]) || !is(objA[keysA[i]], objB[keysA[i]])) {
+      let key = keysA[i];
+      let a = objA[key];
+      let b = objB[key];
+
+      if (!hasOwnProperty.call(objB, key)) {
         return false;
+      }
+
+      // consider {} and [] are equal
+      if (!is(a, b)) {
+        if (!isEmpty(a) || !isEmpty(b)) {
+          return false;
+        }
       }
     }
 
