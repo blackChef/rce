@@ -8,9 +8,25 @@ export default function(Component, initialValue) {
     displayName: `@ModelHolder_${Component.displayName}`,
 
     getInitialState() {
+      let _initialValue;
+
+      // If model is supplied, we use that model's value as initialValue,
+      // allow parent change child's model
+      if (this.props.model !== undefined) {
+        _initialValue = this.props.model.val();
+      } else {
+        _initialValue = getVal(initialValue);
+      }
+
+
       this.model = createModel(
-        getVal(initialValue),
-        newModel => this.setState({ model: newModel })
+        _initialValue,
+        newModel => {
+          this.setState({ model: newModel });
+          if (this.props.onModelChange) {
+            this.props.onModelChange(newModel);
+          }
+        }
       );
 
       return { model: this.model };
@@ -20,8 +36,22 @@ export default function(Component, initialValue) {
       this.model.unListen();
     },
 
+    componentWillReceiveProps(nextProps) {
+      // Create a traditional uncontrolled component behavior:
+      // Parent can change child's model, and receive new model in a callback
+      if (
+          nextProps.model !== undefined &&
+          nextProps.model !== this.props.model
+      ) {
+        this.state.model.set(
+          nextProps.model.val()
+        );
+      }
+    },
+
     render() {
-      return <Component {...this.props} model={this.state.model} />;
+      let { onModelChange, model, ...otherProps } = this.props;
+      return <Component {...otherProps} model={this.state.model} />;
     }
   });
 
