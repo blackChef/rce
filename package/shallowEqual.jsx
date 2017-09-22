@@ -34,7 +34,7 @@
 
   // is {} or []
   function isEmpty(o) {
-    return typeof o === 'object' && Object.keys(o).length === 0;
+    return o !== null && typeof o === 'object' && Object.keys(o).length === 0;
   }
 
   /**

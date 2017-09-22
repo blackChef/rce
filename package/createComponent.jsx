@@ -5,7 +5,7 @@ import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 import memoize from 'lodash/memoize';
 import isFunction from 'lodash/isFunction';
-
+import deepEqual from 'lodash/isEqual';
 
 export default function(props) {
   let {
@@ -108,12 +108,18 @@ export default function(props) {
 
     defaultShouldComponentUpdate(nextProps) {
       // Consumer can specify variableProps and constantProps.
-      // variableProps: only these props need to compare.
+      // variableProps: only these props need to shallow compare.
       // constantProps: these props wont change, dont compare them.
       // If variableProps are defined, ignore contantProps.
       // This is useful for props like children or callback
       let { props: curProps} = this;
-      let { variableProps = [], constantProps = [], cursorProps = [] } = curProps;
+      let {
+        variableProps = [],
+        constantProps = [],
+        cursorProps = [],
+        deepCompareProps = [],
+      } = curProps;
+
 
       // When passing props, only model is a cursor prop for sure.
       // To achieve better performance,
@@ -125,17 +131,35 @@ export default function(props) {
         curProps = omit(curProps, ['cursorProps']);
       }
 
+      // We only shallow compare first level props by default.
+      // Consumer can specify which props should be deep compared.
+      let isDeepEqual;
+      if (deepCompareProps.length) {
+        isDeepEqual = deepCompareProps.find(function(name) {
+          return !deepEqual(curProps[name], nextProps[name]);
+        }) === undefined;
+
+        nextProps = omit(nextProps, ['deepCompareProps', ...deepCompareProps]);
+        curProps = omit(curProps, ['deepCompareProps', ...deepCompareProps]);
+
+      } else {
+        isDeepEqual = true;
+      }
+
+      let isShallowEqual;
       if (variableProps.length) {
         let { pickVar } = this;
-        return !shallowEqual(pickVar(curProps), pickVar(nextProps));
+        isShallowEqual = shallowEqual(pickVar(curProps), pickVar(nextProps));
 
       } else if (constantProps.length) {
         let { omitConst } = this;
-        return !shallowEqual(omitConst(curProps), omitConst(nextProps));
+        isShallowEqual = shallowEqual(omitConst(curProps), omitConst(nextProps));
 
       } else {
-        return !shallowEqual(curProps, nextProps);
+        isShallowEqual = shallowEqual(curProps, nextProps);
       }
+
+      return !isShallowEqual || !isDeepEqual;
     },
 
     shouldComponentUpdate(nextProps, nextState) {
