@@ -1,28 +1,31 @@
 import React from 'react';
 import createClass from 'create-react-class';
 import shallowEqual from './shallowEqual';
+import pureCalcFunction from './pureCalcFunction';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
-import memoize from 'lodash/memoize';
 import isFunction from 'lodash/isFunction';
 import deepEqual from 'lodash/isEqual';
+import defaultShouldComponentUpdate from './shouldComponentUpdate';
 
 export default function(props) {
   let {
     name = '',
-    view,
-    update = () => {},
+    view: View,
+    update,
     shouldComponentUpdate: customShouldComponentUpdate,
   } = props;
 
   // overwrite component name
-  view.displayName = name;
+  View.displayName = name;
 
   let component = createClass({
     // "@" means it's a hoc/decorator
     displayName: `@RCE_${name}`,
 
     dispatch(type, payload) {
+      if (!update) return;
+
       let component = this;
 
       let {
@@ -45,13 +48,13 @@ export default function(props) {
 
     initExtractCursorProps() {
       // cursorProps won't change during update
-      let { cursorProps = []} = this.props;
+      let { cursorProps = [], ...otherProps } = this.props;
       if (cursorProps.length === 0) {
         this.extractCursorProps = () => null;
       } else {
         this.extractCursorProps = function() {
           return cursorProps.reduce(function(preVal, key) {
-            let maybeCursor = props[key];
+            let maybeCursor = otherProps[key];
 
             let val = ( maybeCursor !== undefined && isFunction(maybeCursor.val) ) ?
                 maybeCursor.val() :
@@ -83,95 +86,23 @@ export default function(props) {
         };
       };
 
-      this.dispatcher = memoize(dispatcher);
+      this.dispatcher = pureCalcFunction(dispatcher);
     },
 
     componentWillMount() {
       this.initExtractCursorProps();
       this.initDispacher();
+      this.initShouldComponentUpdate();
     },
 
-    componentDidMount() {
-      this.initPickOmit();
-    },
-
-    initPickOmit() {
-      let {
-        variableProps = [],
-        constantProps = [],
-      } = this.props;
-
-      // variableProps and constantProps wont change
-      this.pickVar = props => pick(props, variableProps);
-      this.omitConst = props => omit(props, [...constantProps, 'constantProps']);
-    },
-
-    defaultShouldComponentUpdate(nextProps) {
-      // Consumer can specify variableProps and constantProps.
-      // variableProps: only these props need to shallow compare.
-      // constantProps: these props wont change, dont compare them.
-      // If variableProps are defined, ignore contantProps.
-      // This is useful for props like children or callback
-      let { props: curProps} = this;
-      let {
-        variableProps = [],
-        constantProps = [],
-        cursorProps = [],
-        deepCompareProps = [],
-      } = curProps;
-
-
-      // When passing props, only model is a cursor prop for sure.
-      // To achieve better performance,
-      // component consumer may want to pass other props as cursors.
-      // He could pass a cursorProps prop, specify which props are cursors.
-      // These props are extracted later in render function.
-      if (cursorProps.length) {
-        nextProps = omit(nextProps, ['cursorProps']);
-        curProps = omit(curProps, ['cursorProps']);
-      }
-
-      // We only shallow compare first level props by default.
-      // Consumer can specify which props should be deep compared.
-      let isDeepEqual;
-      if (deepCompareProps.length) {
-        isDeepEqual = deepCompareProps.find(function(name) {
-          return !deepEqual(curProps[name], nextProps[name]);
-        }) === undefined;
-
-        nextProps = omit(nextProps, ['deepCompareProps', ...deepCompareProps]);
-        curProps = omit(curProps, ['deepCompareProps', ...deepCompareProps]);
-
-      } else {
-        isDeepEqual = true;
-      }
-
-      let isShallowEqual;
-      if (variableProps.length) {
-        let { pickVar } = this;
-        isShallowEqual = shallowEqual(pickVar(curProps), pickVar(nextProps));
-
-      } else if (constantProps.length) {
-        let { omitConst } = this;
-        isShallowEqual = shallowEqual(omitConst(curProps), omitConst(nextProps));
-
-      } else {
-        isShallowEqual = shallowEqual(curProps, nextProps);
-      }
-
-      return !isShallowEqual || !isDeepEqual;
-    },
-
-    shouldComponentUpdate(nextProps, nextState) {
-      let { defaultShouldComponentUpdate } = this;
+    initShouldComponentUpdate() {
       if (customShouldComponentUpdate) {
-        return customShouldComponentUpdate(
-          nextProps, nextState,
-          defaultShouldComponentUpdate
-        );
+        this.shouldComponentUpdate = customShouldComponentUpdate;
+      } else {
+        this.shouldComponentUpdate = nextProps => {
+          return defaultShouldComponentUpdate(this.props, nextProps);
+        };
       }
-
-      return defaultShouldComponentUpdate(nextProps);
     },
 
     render() {
@@ -188,12 +119,12 @@ export default function(props) {
 
       let extractedCursorProps = extractCursorProps();
 
-      return React.createElement(view, {
-        ...otherProps,
-        ...extractedCursorProps,
-        dispatch,
-        dispatcher,
-      });
+      return <View
+        {...otherProps}
+        {...extractedCursorProps}
+        dispatch={dispatch}
+        dispatcher={dispatcher}
+      />;
     },
   });
 
