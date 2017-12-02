@@ -46,28 +46,6 @@ export default function(props) {
       });
     },
 
-    initExtractCursorProps() {
-      // cursorProps won't change during update
-      let { cursorProps = [], ...otherProps } = this.props;
-      if (cursorProps.length === 0) {
-        this.extractCursorProps = () => null;
-      } else {
-        this.extractCursorProps = function() {
-          return cursorProps.reduce(function(preVal, key) {
-            let maybeCursor = otherProps[key];
-
-            let val = ( maybeCursor !== undefined && isFunction(maybeCursor.val) ) ?
-                maybeCursor.val() :
-                maybeCursor;
-
-            return Object.assign({}, preVal, {
-              [key]: val
-            });
-          }, {});
-        };
-      }
-    },
-
     initDispacher() {
       // There are 4 ways to do dispatch in render function:
       // 1. callback = { _ => dispatch(type) }
@@ -89,12 +67,6 @@ export default function(props) {
       this.dispatcher = pureCalcFunction(dispatcher);
     },
 
-    componentWillMount() {
-      this.initExtractCursorProps();
-      this.initDispacher();
-      this.initShouldComponentUpdate();
-    },
-
     initShouldComponentUpdate() {
       if (customShouldComponentUpdate) {
         this.shouldComponentUpdate = customShouldComponentUpdate;
@@ -105,19 +77,44 @@ export default function(props) {
       }
     },
 
+    componentWillMount() {
+      this.initDispacher();
+      this.initShouldComponentUpdate();
+    },
+
     render() {
       let {
         dispatch,
         dispatcher,
-        extractCursorProps,
         props: {
           constantProps,
           variableProps,
+          cursorProps,
+          deepCompareProps,
           ...otherProps
         },
       } = this;
 
-      let extractedCursorProps = extractCursorProps();
+      let t1 = performance.now();
+
+      let extractedCursorProps = (() => {
+        if (!cursorProps) return;
+
+        return cursorProps.reduce(function(preVal, key) {
+          let maybeCursor = otherProps[key];
+
+          let val = ( maybeCursor !== undefined && isFunction(maybeCursor.val) ) ?
+              maybeCursor.val() :
+              maybeCursor;
+
+          return Object.assign({}, preVal, {
+            [key]: val
+          });
+        }, {});
+      })();
+
+      let t2 = performance.now();
+      console.log(t2 - t1);
 
       return <View
         {...otherProps}
