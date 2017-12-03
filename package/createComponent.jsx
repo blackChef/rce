@@ -1,14 +1,36 @@
 import React from 'react';
 import createClass from 'create-react-class';
-import shallowEqual from './shallowEqual';
 import pureCalcFunction from './pureCalcFunction';
-import omit from 'lodash/omit';
-import pick from 'lodash/pick';
 import isFunction from 'lodash/isFunction';
-import deepEqual from 'lodash/isEqual';
 import defaultShouldComponentUpdate from './shouldComponentUpdate';
+import omit from 'lodash/omit';
 
-export default function(props) {
+
+let extractCursorProps = function(cursorPropNames, otherProps) {
+  if (!cursorPropNames) {
+    return otherProps;
+  }
+
+  let extractedProps = cursorPropNames.reduce(function(preVal, key) {
+    let maybeCursor = otherProps[key];
+
+    let val = ( maybeCursor !== undefined && isFunction(maybeCursor.val) ) ?
+        maybeCursor.val() :
+        maybeCursor;
+
+    return {
+      ...preVal,
+      [key]: val
+    };
+  }, {});
+
+  return {
+    ...omit(otherProps, cursorPropNames),
+    ...extractedProps
+  };
+};
+
+let createComponent = function(props) {
   let {
     name = '',
     view: View,
@@ -19,7 +41,7 @@ export default function(props) {
   // overwrite component name
   View.displayName = name;
 
-  let component = createClass({
+  let Component = createClass({
     // "@" means it's a hoc/decorator
     displayName: `@RCE_${name}`,
 
@@ -95,37 +117,16 @@ export default function(props) {
         },
       } = this;
 
-      let t1 = performance.now();
-
-      let extractedCursorProps = (() => {
-        if (!cursorProps) return;
-
-        return cursorProps.reduce(function(preVal, key) {
-          let maybeCursor = otherProps[key];
-
-          let val = ( maybeCursor !== undefined && isFunction(maybeCursor.val) ) ?
-              maybeCursor.val() :
-              maybeCursor;
-
-          return Object.assign({}, preVal, {
-            [key]: val
-          });
-        }, {});
-      })();
-
-      let t2 = performance.now();
-      console.log(t2 - t1);
-
       return <View
-        {...otherProps}
-        {...extractedCursorProps}
+        {...extractCursorProps(cursorProps, otherProps)}
         dispatch={dispatch}
         dispatcher={dispatcher}
       />;
     },
   });
 
-
-  return component;
+  return Component;
 };
+
+export default createComponent;
 

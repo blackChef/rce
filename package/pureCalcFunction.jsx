@@ -13,7 +13,6 @@ let isEqual = function(a, b) {
 let makePureCalcFunction = function(fn) {
   let cachedArgs = [];
   let cachedResult = undefined;
-
   return function(...args) {
     if (isEqual(cachedArgs, args)) {
       return cachedResult;
