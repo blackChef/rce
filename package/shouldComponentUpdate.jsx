@@ -56,7 +56,7 @@ let shouldComponentUpdate = function(curProps, nextProps) {
 
   let isShallowEqual = shallowEqual(
     curShallowCompareProps,
-    nextShallowCompareProps,
+    nextShallowCompareProps
   );
 
   if (!isShallowEqual) {
