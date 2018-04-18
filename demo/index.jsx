@@ -8,7 +8,7 @@ import { view as threeCounters, init as threeCountersInit } from './components/t
 import { view as counterList, init as counterListInit } from './components/counterList';
 import { view as shoppingCart, init as shoppingCartInit } from './components/shoppingCart';
 import { view as test, init as testInit } from './components/test';
-import { NavLink as Link, Route, Switch, HashRouter, IndexLink } from 'react-router-dom';
+import { NavLink as Link, Route, Switch, HashRouter } from 'react-router-dom';
 
 
 let _counter = uncontrolled(counter, counterInit);

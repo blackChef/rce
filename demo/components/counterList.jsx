@@ -1,6 +1,5 @@
 import React from 'react';
 import range from 'lodash/range';
-import curry from 'lodash/curry';
 import createComponent from '../../package/createComponent';
 import { view as Counter } from './counter';
 
@@ -51,26 +50,24 @@ let update = function(arg) {
   }
 };
 
-let renderItem = curry(function(dispatch, itemModel) {
-  let id = itemModel.id.val();
-  return (
-    <div
-      key={id}
-      style={{ display: 'flex' }}
-    >
-      <Counter model={itemModel.count}/>
-      <button
-        type="button"
-        onClick={() => dispatch('removeItem', id)}
-      >
-        remove this counter
-      </button>
-    </div>
-  );
-});
-
 let view = function({ model, dispatch, dispatcher }) {
-  let counters = model.map(renderItem(dispatch));
+  let counters = model.map(function(itemModel) {
+    let id = itemModel.id.val();
+    return (
+      <div
+        key={id}
+        style={{ display: 'flex' }}
+      >
+        <Counter model={itemModel.count}/>
+        <button
+          type="button"
+          onClick={() => dispatch('removeItem', id)}
+        >
+          remove this counter
+        </button>
+      </div>
+    );
+  });
 
   return (
     <div>

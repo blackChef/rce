@@ -26,4 +26,4 @@ let view = function({ model, label = 'checkbox', dispatcher }) {
 };
 
 view = createComponent({ name, update, view });
-export { name, init, view };
+export { init, view };
