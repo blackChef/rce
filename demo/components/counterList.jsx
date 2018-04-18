@@ -2,53 +2,45 @@ import React from 'react';
 import range from 'lodash/range';
 import createComponent from '../../package/createComponent';
 import { view as Counter } from './counter';
+import uniqueId from 'lodash/uniqueId';
 
 
 let name = 'counterList';
 
 let init = function() {
-  return range(5).map(item => {
-    return { id: item, count: 0 };
+  return range(5).map(() => {
+    return { id: uniqueId(), count: 0 };
   });
 };
 
-let handleAdd = function({ model }) {
-  model.set(
-    [
-      ...model.val(),
-      { id: Date.now(), count: 0 }
-    ]
-  );
-};
 
-let handleRemoveLast = function({ model }) {
-  model.set(
-    model.val().slice(0, model.val().length - 1)
-  );
-};
+let actions = {
+  // { payload, model, dispatch, getLatestModel }
+  add({ model }) {
+    model.set(
+      [
+        ...model.val(),
+        { id: uniqueId(), count: 0 }
+      ]
+    );
+  },
 
-let handleRemoveItem = function({ payload, model }) {
-  model.set(
-    model.val().filter(i => i.id !== payload)
-  );
-};
+  removeItem({ model, payload }) {
+    model.set(
+      model.val().filter(i => i.id !== payload)
+    );
+  },
 
-let update = function(arg) {
-  // Update is just a function,
-  // we could use switch, map lookup, or any other tools to solve "too many ifs" problem.
-  switch (arg.type) {
-    case 'add':
-      handleAdd(arg);
-      break;
-
-    case 'removeLast':
-      handleRemoveLast(arg);
-      break;
-
-    case 'removeItem':
-      handleRemoveItem(arg);
-      break;
+  removeLast({ model }) {
+    model.set(
+      model.val().slice(0, model.val().length - 1)
+    );
   }
+};
+
+let update = function(props) {
+  let { type, ...otherProps } = props;
+  actions[type](otherProps);
 };
 
 let view = function({ model, dispatcher }) {
