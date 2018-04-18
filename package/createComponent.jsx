@@ -109,10 +109,9 @@ let createComponent = function(props) {
         dispatch,
         dispatcher,
         props: {
-          constantProps,
-          variableProps,
+          // eslint-disable-next-line no-unused-vars
+          constantProps, variableProps, deepCompareProps,
           cursorProps,
-          deepCompareProps,
           ...otherProps
         },
       } = this;

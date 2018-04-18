@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import uncontrolled from '../package/createModelHolder';
-import { Router, Route, IndexRoute, Link, IndexLink, hashHistory } from 'react-router';
 import { view as counter, init as counterInit } from './components/counter';
 import { view as checkbox, init as checkboxInit } from './components/checkbox';
 import { view as checkboxGroup_single, init as checkboxGroup_singleInit } from './components/checkboxGroup_single';
@@ -9,6 +8,8 @@ import { view as threeCounters, init as threeCountersInit } from './components/t
 import { view as counterList, init as counterListInit } from './components/counterList';
 import { view as shoppingCart, init as shoppingCartInit } from './components/shoppingCart';
 import { view as test, init as testInit } from './components/test';
+import { NavLink as Link, Route, Switch, HashRouter, IndexLink } from 'react-router-dom';
+
 
 let _counter = uncontrolled(counter, counterInit);
 let _checkbox = uncontrolled(checkbox, checkboxInit);
@@ -16,21 +17,34 @@ let _checkboxGroup_single = uncontrolled(checkboxGroup_single, checkboxGroup_sin
 let _threeCounters = uncontrolled(threeCounters, threeCountersInit);
 let _counterList = uncontrolled(counterList, counterListInit);
 let _shoppingCart = uncontrolled(shoppingCart, shoppingCartInit);
+let Home = function() {
+  return <h1>welcome</h1>;
+};
 
 let App = function({ children }) {
   return (
     <div>
       <nav className="pageNav">
-        <IndexLink activeClassName="link_active" to="/">home</IndexLink>
-        <Link activeClassName="link_active" to="/counter">counter</Link>
-        <Link activeClassName="link_active" to="/threeCounters">threeCounters</Link>
-        <Link activeClassName="link_active" to="/counterList">counterList</Link>
-        <Link activeClassName="link_active" to="/checkbox">checkbox</Link>
-        <Link activeClassName="link_active" to="/checkboxGroup_single">checkboxGroup_single (proxy model)</Link>
-        <Link activeClassName="link_active" to="/shoppingCart">shoppingCart (async action)</Link>
+        <Link exact activeClassName="link_active" to="/">home</Link>
+        <Link exact activeClassName="link_active" to="/counter">counter</Link>
+        <Link exact activeClassName="link_active" to="/threeCounters">threeCounters</Link>
+        <Link exact activeClassName="link_active" to="/counterList">counterList</Link>
+        <Link exact activeClassName="link_active" to="/checkbox">checkbox</Link>
+        <Link exact activeClassName="link_active" to="/checkboxGroup_single">checkboxGroup_single (proxy model)</Link>
+        <Link exact activeClassName="link_active" to="/shoppingCart">shoppingCart (async action)</Link>
       </nav>
 
       <main className="pageMain">
+        <Switch>
+          <Route exact path="/" component={Home}></Route>
+          <Route exact path="/counter" component={_counter}></Route>
+          <Route exact path="/checkbox" component={_checkbox}></Route>
+          <Route exact path="/checkboxGroup_single" component={_checkboxGroup_single}></Route>
+          <Route exact path="/threeCounters" component={_threeCounters}></Route>
+          <Route exact path="/counterList" component={_counterList}></Route>
+          <Route exact path="/shoppingCart" component={_shoppingCart}></Route>
+          <Route path="/test" component={test}></Route>
+        </Switch>
         {children}
       </main>
     </div>
@@ -38,25 +52,11 @@ let App = function({ children }) {
 };
 
 
-let Home = function() {
-  return <h1>welcome</h1>;
-};
+
 
 ReactDOM.render(
-  <Router history={hashHistory}>
-    <Route path="/" component={App}>
-      <IndexRoute component={Home} />
-      <Route path="/counter" component={_counter}></Route>
-      <Route path="/checkbox" component={_checkbox}></Route>
-      <Route path="/checkboxGroup_single" component={_checkboxGroup_single}></Route>
-      <Route path="/threeCounters" component={_threeCounters}></Route>
-      <Route path="/counterList" component={_counterList}></Route>
-      <Route path="/shoppingCart" component={_shoppingCart}></Route>
-      <Route path="/test" component={test}></Route>
-    </Route>
-  </Router>,
+  <HashRouter>
+    <App/>
+  </HashRouter>,
   document.querySelector('.appContainer')
 );
-
-import Perf from 'react-addons-perf';
-window.Perf = Perf;

@@ -10,6 +10,7 @@ let extractProps = function(props) {
     // component consumer may want to pass other props as cursors.
     // He could pass a cursorProps prop, specify which props are cursors.
     // These props are extracted later in render function.
+    // eslint-disable-next-line no-unused-vars
     cursorProps,
 
     // Consumer can specify variableProps and constantProps.

@@ -1,6 +1,3 @@
-let { resolve } = require('path');
-let { resolvePlugin, resolvePreset } = require('webpack-babel-link');
-
 module.exports = {
   entry: {
     index: './demo/index.jsx',
@@ -20,8 +17,8 @@ module.exports = {
         plugins: [
           'transform-es2015-destructuring',
           'transform-object-rest-spread',
-        ].map( resolvePlugin(require) ),
-        presets: ['react'].map( resolvePreset(require) )
+        ],
+        presets: ['react']
       }
     }]
   },

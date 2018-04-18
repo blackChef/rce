@@ -1,4 +1,5 @@
 import React from 'react';
+import createClass from 'create-react-class';
 import createComponent from '../../package/createComponent';
 import uncontrolled from '../../package/createModelHolder';
 import forEach from '../../package/array/forEach';
@@ -20,7 +21,7 @@ let init = function() {
 
 let update = function({ type, payload, model, dispatch }) {};
 
-let view = React.createClass({
+let view = createClass({
   getInitialState() {
     return { time: 0 };
   },

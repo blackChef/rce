@@ -5,7 +5,8 @@
   "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "makePackage": "cd ./tool && node makePackage"
+    "makePackage": "cd ./tool && node makePackage",
+    "dev": "set NODE_ENV=\"dev\"&&webpack --debug --output-pathinfo --watch"
   },
   "author": "blackChef",
   "repository": {
@@ -22,7 +23,8 @@
     "filewalker": "^0.1.3",
     "fs-extra": "^2.0.0",
     "react-addons-perf": "^15.4.1",
-    "react-router": "^2.4.1",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
     "webpack": "^2.2.1",
     "webpack-babel-link": "^1.1.0",
     "webpack-split-by-path": "0.1.0-beta.1"

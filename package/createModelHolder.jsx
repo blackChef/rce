@@ -50,7 +50,11 @@ export default function(Component, initialValue) {
     },
 
     render() {
-      let { onModelChange, model, ...otherProps } = this.props;
+      let {
+        // eslint-disable-next-line no-unused-vars
+        onModelChange, model,
+        ...otherProps
+      } = this.props;
       return <Component {...otherProps} model={this.state.model} />;
     }
   });

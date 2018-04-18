@@ -1,4 +1,5 @@
 import React from 'react';
+import createClass from 'create-react-class';
 import createComponent from '../../package/createComponent';
 import { view as Counter } from './counter';
 
@@ -124,7 +125,7 @@ let renderContent = function(model, onSubmit) {
   }
 };
 
-let view = React.createClass({
+let view = createClass({
   componentDidMount() {
     this.props.dispatch('getData');
   },
