@@ -1,9 +1,9 @@
 import React from 'react';
 import createClass from 'create-react-class';
-import pureCalcFunction from './pureCalcFunction';
 import isFunction from 'lodash/isFunction';
 import defaultShouldComponentUpdate from './shouldComponentUpdate';
 import omit from 'lodash/omit';
+import memoize from 'shallow-memoize';
 
 
 let extractCursorProps = function(cursorPropNames, otherProps) {
@@ -69,24 +69,33 @@ let createComponent = function(props) {
     },
 
     initDispacher() {
-      // There are 4 ways to do dispatch in render function:
-      // 1. callback = { _ => dispatch(type) }
-      // 2. callback = { _ => dispatch(type, constant) }
-      // 3. callback = { payload => dispatch(type, resolver(payload)) }
-      //    Resolver is pure and constant, lives outside render function
-      // 4. callback = { _ => dispatch(type, variableComputedBasedOnComponentProps) }
-      //
-      // 1,2 can be considered as special cases of 3. 3 can be memoized.
-      // Dispatcher is a callback function generator that implement 3.
       let component = this;
-      let dispatcher = function(type, payloadResolver = a => a) {
-        return function(payload) {
-          let resolvedPayload = payloadResolver(payload, component.props);
-          component.dispatch(type, resolvedPayload);
+
+      // `dispatcher` is a function that return a function which will call dipatch.
+      // The second argument can be an undefined, a function or a constant.
+      // Because `dispatcher` is memoized. Using `dispatcher`
+      // rather than `() => dispatch(type)` in render function can be performance beneficial.
+      let dispatcher = function(type, arg) {
+        if (arg === undefined) {
+          return function(payload) {
+            component.dispatch(type, payload);
+          };
+        }
+
+        // If arg is a function. That function should return a resolved payload.
+        if (isFunction(arg)) {
+          return function(payload) {
+            let resolvedPayload = arg(payload, component.props);
+            component.dispatch(type, resolvedPayload);
+          };
+        }
+
+        return function() {
+          component.dispatch(type, arg);
         };
       };
 
-      this.dispatcher = pureCalcFunction(dispatcher);
+      this.dispatcher = memoize(dispatcher);
     },
 
     initShouldComponentUpdate() {

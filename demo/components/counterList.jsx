@@ -3,6 +3,7 @@ import range from 'lodash/range';
 import createComponent from '../../package/createComponent';
 import { view as Counter } from './counter';
 
+
 let name = 'counterList';
 
 let init = function() {
@@ -50,7 +51,7 @@ let update = function(arg) {
   }
 };
 
-let view = function({ model, dispatch, dispatcher }) {
+let view = function({ model, dispatcher }) {
   let counters = model.map(function(itemModel) {
     let id = itemModel.id.val();
     return (
@@ -61,7 +62,7 @@ let view = function({ model, dispatch, dispatcher }) {
         <Counter model={itemModel.count}/>
         <button
           type="button"
-          onClick={() => dispatch('removeItem', id)}
+          onClick={dispatcher('removeItem', id)}
         >
           remove this counter
         </button>
