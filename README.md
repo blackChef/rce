@@ -4,7 +4,7 @@ rce stands for react, data cursor, elm, is a lightweight react architecture.
 Features:
 - Simple and lightweight. No complex concepts, no complex codes.
 - With the help of data cursor(powered by cortexjs), you can have one single model stored at root level, but leave model update inside component itself. 
-- init: define initial model. update: handle model update. view: render model. This is the pattern inspired by elm that you will follow to create trully reuseable components.
+- init: define initial model. update: handle model update. view: render model. This is the pattern inspired by elm that you will follow to create truly reusable components.
 
 [中文文档](https://github.com/blackChef/rce/blob/chinese-doc/README.md)
 
