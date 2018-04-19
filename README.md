@@ -5,7 +5,7 @@ rce 代表 react, data cursor, elm。是一个轻量级的 react 架构。它有
 - 它利用数据指针，让组件的 model(state) 和 model management 存在与组件中，但又能享受不同组件共享 model 带来的好处。
 - 受 elm 启发。将组件的 initial model，组件 model 的 update，组件的 render，分为 init，update，view 三个清晰的部分。
 
-[英语文档](https://github.com/blackChef/rce/blob/english_doc/README.md)
+[English Document](https://github.com/blackChef/rce/blob/english_doc/README.md)
 
 # CortexJs
 > Cortex is an immutable data store for managing deeply nested structure with React
