@@ -30,42 +30,42 @@ yarn add rce-pattern
 ## A Counter
 
     import React from 'react';
-    import createComponent from 'rce-pattern/createComponent';
+    import createComponent from 'rce-pattern/createComponent';
     
     // name 用作 component 的 display name。有利于调试，但并不是必须的。
-    let name = 'counter'; 
+    let name = 'counter'; 
     
     // init 是一个函数，返回这个组件的初始状态。
-    let init = function() { 
-      return 0; // count
+    let init = function() { 
+      return 0; // count
     };
     
-    // update 是一个函数。在这里处理对组件状态的更新。
-    // 组件在其内部调用 dispatch(type, payload) 来触发 action。action 在 update 内被处理。
-    // type: String。action 的类型。
-    // payload: Any。dispatch 发来的信息。
-    // model: Cortex Cursor。update 执行时，组件内的 model。
-    // dispatch: Function。可以在 update 内 dispatch 其他 action。
-    // getLastetModel: Function。获取组件最新的 model。在异步处理的 callback 内应该用它来获取最新的 model。
-    let update = function({ type, payload, model, dispatch, getLatestModel }) {
-      // update 只是一个函数。在 type 很多时，可以用各种各样的技巧来解决 too many ifs 的问题。
-      if (type === 'increment') {
-        // 这里用 set 和 val 两个函数来修改、独取 model 的值。
-        model.set( model.val() + 1 );
+    // update 是一个函数。在这里处理对组件状态的更新。
+    // 组件在其内部调用 dispatch(type, payload) 来触发 action。action 在 update 内被处理。
+    // type: String。action 的类型。
+    // payload: Any。dispatch 发来的信息。
+    // model: Cortex Cursor。update 执行时，组件内的 model。
+    // dispatch: Function。可以在 update 内 dispatch 其他 action。
+    // getLastetModel: Function。获取组件最新的 model。在异步处理的 callback 内应该用它来获取最新的 model。
+    let update = function({ type, payload, model, dispatch, getLatestModel }) {
+      // update 只是一个函数。在 type 很多时，可以用各种各样的技巧来解决 too many ifs 的问题。
+      if (type === 'increment') {
+        // 这里用 set 和 val 两个函数来修改、独取 model 的值。
+        model.set( model.val() + 1 );
       } else {
         model.set( model.val() - 1 );
       }
     };
     
-    // view 是一个 react 组件。被 createComponent wrap 之后，它收到 model, dispatch, dispatcher 三个属性。
-    // model：Cortex Cursor。组件的 model，理解为组件的 state。
-    // dispatch: Function。dispatch(type, payload)。dispatch 触发 action，action 在 update 内被处理。
-    // dispatcher: Function。dispatcher(type, arg)。dispatcher 返回一个执行 dispatch 的函数。
-    // dispatcher 有利于编写 function 形式的 react 组件。
-    //   arg 为 undefine 时，返回 event => dispatch(type, event)。
-    //   arg 为 Function 时，返回 event => dispatch(type, arg(event))。
-    //   arg 为 其它时，返回 () => dispatch(type, arg)。
-    let view = function ({ model, dispatch, dispatcher }) {
+    // view 是一个 react 组件。被 createComponent wrap 之后，它收到 model, dispatch, dispatcher 三个属性。
+    // model：Cortex Cursor。组件的 model，理解为组件的 state。
+    // dispatch: Function。dispatch(type, payload)。dispatch 触发 action，action 在 update 内被处理。
+    // dispatcher: Function。dispatcher(type, arg)。dispatcher 返回一个执行 dispatch 的函数。
+    // dispatcher 有利于编写 function 形式的 react 组件。
+    //   arg 为 undefine 时，返回 event => dispatch(type, event)。
+    //   arg 为 Function 时，返回 event => dispatch(type, arg(event))。
+    //   arg 为 其它时，返回 () => dispatch(type, arg)。
+    let view = function ({ model, dispatch, dispatcher }) {
       return (
         <div>
           <button type="button" onClick={dispatcher('increment')} >+</button>
@@ -75,8 +75,8 @@ yarn add rce-pattern
       );
     };
     
-    // createComponent 是一个 HOC。它将 view，update 二者串联起来。同时提供 shallow compare 等性能优化的特性。
-    view = createComponent({ name, update, view });
+    // createComponent 是一个 HOC。它将 view，update 二者串联起来。同时提供 shallow compare 等性能优化的特性。
+    view = createComponent({ name, update, view });
     export { init, view };
 
 
