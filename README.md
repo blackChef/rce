@@ -18,8 +18,8 @@ rce 采用 cortexjs 实现的数据指针。
 要读取 `model.a.foo` 的值，我们这么做：`fooValue = model.a.foo.val()`
 
 # Demos
-实例：https://blackchef.github.io/rce/  
-代码: https://github.com/blackChef/rce/tree/master/demo/components
+- 示例：https://blackchef.github.io/rce/
+- 示例用到的代码: https://github.com/blackChef/rce/tree/master/demo/components
 
 # Quick Start
 
@@ -86,7 +86,18 @@ export { init, view };
 
 ## Three Counters
 
-现在我们利用之前的 `<Counter/>` 组件，编写一个包含三个 `<Counter/>` 的新组件。在线例子：https://blackchef.github.io/rce/#/threeCounters
+现在我们利用之前的 Counter 组件，编写一个包含三个 Counter，其中一个独立，另外两个共享状态的新组件： ThreeCounters。 
+在线例子：https://blackchef.github.io/rce/#/threeCounters
+
+我们先考虑如果用 react 的 state 来实现之前的 Counter。
+
+为了让不同组件间能共享状态，同步渲染。state 必须提到上一级父组件内保存和处理。而子组件变成模板，只负责渲染和调用父组件传来的函数。  
+
+编写组件时，我们总是希望能够 thinking in local，希望完成的结果能符合 open close 原则。但这时候我们不仅修改了之前的 Counter。也让 Counter 失去了作为一个组件，把功能封装，引入即可以使用的特性。
+
+如果我们需要 ThreeCounters 再和其他组件共享状态呢？
+
+利用数据指针，状态总是被保存在上一层，再由 prop 传下。而状态的处理逻辑总是保存在组件内部。下面这个例子里我们没有对之前的 Counter 做任何修改。
 
 ```
 import React from 'react';
@@ -98,10 +109,12 @@ import { view as Counter, init as counterInit } from './counter';
 let name = 'threeCounters';
 
 // 与之前的 Counter 一样。它也有 init 函数。在这个例子里，init 创建的 model 之后会通过 prop 传给 Counter。
-// 对 ThreeCounters 这个父组件来说，它可以直接用 Counter 的 init 函数来创建默认值，也可以自行设定其它值。
 let init = function() {
   return {
-    countA: counterInit(), 
+    // 父组件可以用子组件自己的 init 函数，也可以自行创建其他的默认值。
+    // 当父组件想引入一个子组件，直接使用它的功能时。父组件可以直接用那个子组件的 init 来生成子组件需要的 model。
+    // 它不需要管那个子组件需要的 model 是怎样的数据结构，有怎样的值。
+    countA: counterInit(), 
     countBC: 1,
   };
 };
