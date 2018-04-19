@@ -160,8 +160,7 @@ export { init, view };
 
 
 ## Model Holder
-最终，我们需要把 model 存在一个组件的 state 里。这个组件可以是一个区块，一个页面，或者是整个 app。用 `createModelHolder` 可以在任何时候将一个 component 变为 model holder，一个 uncontrolled 的 component。
-
+最终，我们需要把 model 存在一个组件的 state 里。这个组件可以是一个区块，一个页面，或者是整个 app。用 `createModelHolder` 可以在任何时候将一个 component 变为 model holder。
 ```
 import React from 'react';
 import ReactDOM from 'react-dom';
