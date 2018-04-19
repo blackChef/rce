@@ -42,14 +42,8 @@ let init = function() {
 };
 
 // update 是一个函数。在这里处理对组件状态的更新。
-// 组件在其内部调用 dispatch(type, payload) 来触发 action。action 在 update 内被处理。
-// type: String。action 的类型。
-// payload: Any。dispatch 发来的信息。
-// model: Cortex Cursor。update 执行时，组件内的 model。
-// dispatch: Function。可以在 update 内 dispatch 其他 action。
-// getLastetModel: Function。获取组件最新的 model。在异步处理的 callback 内应该用它来获取最新的 model。
-
-let update = function({ type, payload, model, dispatch, getLatestModel }) {
+// 组件在其内部调用 dispatch 来触发 action。action 在 update 内被处理。
+let update = function({ type, model }) {
   // update 只是一个函数。在 type 很多时，可以用各种各样的技巧来解决 too many ifs 的问题。
   if (type === 'increment') {
     // 这里用 set 和 val 两个函数来修改、读取 model 的值。
@@ -78,8 +72,7 @@ let view = function ({ model, dispatch, dispatcher }) {
   );
 };
 
-// createComponent 是一个 HOC。它将 view，update 二者串联起来。同时提供 shallow compare 等性能优化的特性。
-
+// createComponent 是一个 HOC。它将 view，update 二者串联起来。
 view = createComponent({ name, update, view });
 export { init, view };
 ```
@@ -113,7 +106,7 @@ let name = 'threeCounters';
 let init = function() {
   return {
     // 父组件可以用子组件自己的 init 函数，也可以自行创建其他的默认值。
-    // 当父组件想引入一个子组件，直接使用它的功能时。父组件可以直接用那个子组件的 init 来生成子组件需要的 model。
+    // 当父组件想引入一个子组件，直接使用它的功能时。父组件用那个子组件的 init 来生成子组件需要的 model。
     // 它不需要管那个子组件需要的 model 是怎样的数据结构，有怎样的值。
     countA: counterInit(), 
     countBC: 1,
@@ -122,7 +115,7 @@ let init = function() {
 
 // 只有一种 type 的 action。这时候就没必要对 type 进行判断。
 // 这里用 init 返回的默认值将 model 设定为初始状态。
-let update = function({ type, payload, model, dispatch, getLatestModel }) {
+let update = function({ model }) {
   model.set( init() ); 
 };
 
@@ -167,8 +160,7 @@ export { init, view };
 
 
 ## Model Holder
-最终，我们需要把 model 存在一个组件的 state 里。这个组件可以是一个区块，一个页面，或者是整个 app。用 `createModelHolder` 可以在任何时候将一个 component 变为 model holder，一个 uncontrolled 的 component。
-
+最终，我们需要把 model 存在一个组件的 state 里。这个组件可以是一个区块，一个页面，或者是整个 app。用 `createModelHolder` 可以在任何时候将一个 component 变为 model holder。
 ```
 import React from 'react';
 import ReactDOM from 'react-dom';
