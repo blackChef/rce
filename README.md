@@ -17,15 +17,13 @@ rce 采用 cortexjs 实现的数据指针。
 在创建成 cortex 数据之后，要修改 `model.a.foo` 的值。我们这么做：`model.a.foo.set(10)`。  
 要读取 `model.a.foo` 的值，我们这么做：`fooValue = model.a.foo.val()`
 
+
 # Demos
 - 示例：https://blackchef.github.io/rce/
 - 示例用到的代码: https://github.com/blackChef/rce/tree/master/demo/components
 
-# Quick Start
 
-## Install
-npm install rce-pattern --save  
-yarn add rce-pattern
+# Quick Start
 
 ## A Counter
 
@@ -65,7 +63,7 @@ let update = function({ type, payload, model, dispatch, getLatestModel }) {
 // model：Cortex Cursor。组件的 model，理解为组件的 state。
 // dispatch: Function。dispatch(type, payload)。dispatch 触发 action，action 在 update 内被处理。
 // dispatcher: Function。dispatcher(type, arg)。dispatcher 返回一个执行 dispatch 的函数。
-// dispatcher 有利于编写 function 形式的 react 组件。
+// dispatcher 有助于编写 function 形式的 react 组件。
 //   arg 为 undefine 时，返回 event => dispatch(type, event)。
 //   arg 为 Function 时，返回 event => dispatch(type, arg(event))。
 //   arg 为 其它时，返回 () => dispatch(type, arg)。
@@ -167,6 +165,7 @@ view = createComponent({ name, update, view });
 export { init, view };
 ```
 
+
 ## Model Holder
 最终，我们需要把 model 存在一个组件的 state 里。这个组件可以是一个区块，一个页面，或者是整个 app。用 `createModelHolder` 可以在任何时候将一个 component 变为 model holder，一个 uncontrolled 的 component。
 
@@ -187,4 +186,47 @@ ReactDOM.render(
 );
 
 ```
+
+
+## Install
+npm install rce-pattern --save  
+yarn add rce-pattern
+
+
+# API Reference
+## init, update, view
+- init: Function。返回组件的默认 model。
+- update：Function。`update({ type, payload, model, dispatch, getLastetModel })`  
+组件在其内部调用 dispatch(type, payload) 来触发 action。action 在 update 内被处理。
+  - type: String。action 的类型。
+  - payload: Any。dispatch 发来的信息。
+  - model: Cortex Cursor。update 执行时，组件内的 model。
+  - dispatch: Function。可以在 update 内 dispatch 其他 action。
+  - getLastetModel: Function。获取组件最新的 model。在异步处理的 callback 内应该用它来获取最新的 model。
+- view: React Component。
+
+
+## createComponent
+`createComponent({ name, view, update })` 一个 HOC，将 view 和 update 串联起来。
+
+- name: String, 非必须。组件的 display name。有利于调试。
+- view: React Component，必须。
+- update: Function，非必须。
+
+
+传入 `createComponent` 的组件收到 `model`, `dispatch`, `dispatcher`,  三个额外的 props。
+
+- model：Cortex Cursor。组件的 model，理解为组件的 state。
+- dispatch: Function。`dispatch(type, payload)`。dispatch 触发 action，action 在 update 内被处理。
+- dispatcher: Function。`dispatcher(type, arg)`。dispatcher 返回一个执行 dispatch 的函数。
+  - arg 为 undefine 时，返回 `event => dispatch(type, event)`。
+  - arg 为 Function 时，返回 `event => dispatch(type, arg(event))`。
+  - arg 为 其它时，返回 `() => dispatch(type, arg)`。  
+  dispatcher 有助于编写 function 形式的 react 组件。
+
+## createModelHolder
+`createModelHolder(view, arg)`
+- arg 为函数时，用那个函数返回的值作为 view 的初始 model。
+- arg 为其他时，用 arg 作为 view 的初始 model。
+
 
