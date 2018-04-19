@@ -1,15 +1,15 @@
 # rce
-Rce stands for react, cursor, elm, is a lightweight react architecture.
+Rce stands for react, data cursor, elm, is a lightweight react architecture.
 
 Features:
 - Simple and lightweight. No complex concepts, no complex codes.
 - With the help of data cursor(powered by cortexjs), you can have one single model stored at root level, but leave model update inside component itself. 
 - init: define initial model. update: handle model update. view: render model. This is the pattern inspired by elm that you will follow to create trully reuseable components.
 
-# CortexJs
-> Cortex is an immutable data store for managing deeply nested structure with React
+# Data Cursor
+Inside rce, data cursor is powered by [cortexjs](https://github.com/mquan/cortex).
 
-https://github.com/mquan/cortex
+> Cortex is an immutable data store for managing deeply nested structure with React
 
 Given data `model = { a: { foo: 5 } }`, after initialized to a cortex data:  
 In order to read value from `model.a.foo`, we do `fooValue = model.a.foo.val()`.  
