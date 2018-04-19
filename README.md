@@ -6,6 +6,8 @@ Features:
 - With the help of data cursor(powered by cortexjs), you can have one single model stored at root level, but leave model update inside component itself. 
 - init: define initial model. update: handle model update. view: render model. This is the pattern inspired by elm that you will follow to create trully reuseable components.
 
+[中文文档](https://github.com/blackChef/rce/blob/chinese-doc/README.md)
+
 # Data Cursor
 Inside rce, data cursor is powered by [cortexjs](https://github.com/mquan/cortex).
 
