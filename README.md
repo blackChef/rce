@@ -50,6 +50,7 @@ let init = function() {
 // model: Cortex Cursor。update 执行时，组件内的 model。
 // dispatch: Function。可以在 update 内 dispatch 其他 action。
 // getLastetModel: Function。获取组件最新的 model。在异步处理的 callback 内应该用它来获取最新的 model。
+
 let update = function({ type, payload, model, dispatch, getLatestModel }) {
   // update 只是一个函数。在 type 很多时，可以用各种各样的技巧来解决 too many ifs 的问题。
   if (type === 'increment') {
@@ -68,6 +69,7 @@ let update = function({ type, payload, model, dispatch, getLatestModel }) {
 //   arg 为 undefine 时，返回 event => dispatch(type, event)。
 //   arg 为 Function 时，返回 event => dispatch(type, arg(event))。
 //   arg 为 其它时，返回 () => dispatch(type, arg)。
+
 let view = function ({ model, dispatch, dispatcher }) {
   return (
     <div>
@@ -79,6 +81,7 @@ let view = function ({ model, dispatch, dispatcher }) {
 };
 
 // createComponent 是一个 HOC。它将 view，update 二者串联起来。同时提供 shallow compare 等性能优化的特性。
+
 view = createComponent({ name, update, view });
 export { init, view };
 ```
@@ -164,4 +167,24 @@ view = createComponent({ name, update, view });
 export { init, view };
 ```
 
+## Model Holder
+最终，我们需要把 model 存在一个组件的 state 里。这个组件可以是一个区块，一个页面，或者是整个 app。用 `createModelHolder` 可以在任何时候将一个 component 变为 model holder，一个 uncontrolled 的 component。
+
+```
+import React from 'react';
+import ReactDOM from 'react-dom';
+import createModelHolder from 'rce-pattern/createModelHolder';
+import { view as ThreeCounters, init as threeCountersInit } from './threeCounters';
+
+// createModelHolder(view, arg)
+//   arg 为函数时，用那个函数返回的值作为 view 的初始 model。
+//   arg 为其他时，用 arg 作为 view 的初始 model。
+let App = createModelHolder(ThreeCounters, threeCountersInit);
+
+ReactDOM.render(
+  <App/>
+  document.querySelector('.appContainer')
+);
+
+```
 
