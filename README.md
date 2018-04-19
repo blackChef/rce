@@ -52,7 +52,7 @@ let init = function() {
 let update = function({ type, payload, model, dispatch, getLatestModel }) {
   // update 只是一个函数。在 type 很多时，可以用各种各样的技巧来解决 too many ifs 的问题。
   if (type === 'increment') {
-    // 这里用 set 和 val 两个函数来修改、独取 model 的值。
+    // 这里用 set 和 val 两个函数来修改、读取 model 的值。
     model.set( model.val() + 1 );
   } else {
     model.set( model.val() - 1 );
