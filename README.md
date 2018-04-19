@@ -115,7 +115,7 @@ let init = function() {
 
 // 只有一种 type 的 action。这时候就没必要对 type 进行判断。
 // 这里用 init 返回的默认值将 model 设定为初始状态。
-let update = function({ type, payload, model, dispatch, getLatestModel }) {
+let update = function({ model }) {
   model.set( init() ); 
 };
 
