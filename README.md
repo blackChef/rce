@@ -11,7 +11,7 @@ Features:
 
 https://github.com/mquan/cortex
 
-Given data `model = { a: { foo: 5 } }`, after initialized to cortex data:  
+Given data `model = { a: { foo: 5 } }`, after initialized to a cortex data:  
 In order to read value from `model.a.foo`, we do `fooValue = model.a.foo.val()`.  
 In order to change `model.a.foo` to 10, we do `model.a.foo.set(10)`.   
 
