@@ -1,5 +1,5 @@
 # rce
-Rce stands for react, data cursor, elm, is a lightweight react architecture.
+rce stands for react, data cursor, elm, is a lightweight react architecture.
 
 Features:
 - Simple and lightweight. No complex concepts, no complex codes.
@@ -16,7 +16,7 @@ Inside rce, data cursor is powered by [cortexjs](https://github.com/mquan/cortex
 Given data `model = { a: { foo: 5 } }`, after initialized to a cortex data:  
 In order to read value from `model.a.foo`, we do `fooValue = model.a.foo.val()`.  
 In order to change `model.a.foo` to 10, we do `model.a.foo.set(10)`.   
-Updating cortex data is asynchronous and batched. Rce will rerender your view when cortex data is updated. It works just like react state.
+Updating cortex data is asynchronous and batched. rce will rerender your view when cortex data is updated. It works just like react state.
 
 
 # Demos
