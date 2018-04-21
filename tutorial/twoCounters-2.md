@@ -38,42 +38,44 @@ let TwoCountersNoShare = createClass({
 上面的代码还是有让我们难受的地方：每次在 state 内增加一个新的部分，我们就得为那个部分写一个 set 函数。
 既然 state 里的数据总是需要一个 set 函数，那么能不能在 state 内保存一种自带 set 方法的数据呢？
 
-```diff
-+ let createModel = function(initVal, onUpdate) {
-+   let model = {};
-+   for (let key in initVal) {
-+     model[key] = {
-+       __curVal__: initVal[key],
-+
-+       // 读取
-+       val() {
-+         return this.__curVal__;
-+       },
-+
-+       // 更新之后调用 onUpdate。在这里就是调用组件的 setState，触发重新渲染。
-+       set(newVal) {
-+         this.__curVal__ = newVal;
-+         onUpdate(model);
-+       }
-+     };
-+   }
-+
-+   return model;
-+ };
+新增 createModel 函数，为数据对象里的值增加 val 和 set 方法：
 
+```
+let createModel = function(initVal, onUpdate) {
+  let model = {};
+  for (let key in initVal) {
+    model[key] = {
+      __curVal__: initVal[key],
+
+      // 读取
+      val() {
+        return this.__curVal__;
+      },
+
+      // 更新之后调用 onUpdate
+      set(newVal) {
+        this.__curVal__ = newVal;
+        onUpdate(model);
+      }
+    };
+  }
+
+  return model;
+};
+```
+
+利用 createModel 函数，我们的 TwoCountersNoShare 就可以不用单独为 state 的不同部分写 set 函数了。
+
+```diff
 let TwoCountersNoShare = createClass({
   getInitialState() {
 +    let initModelVal = {
 +      countA: counterInit(),
 +      countB: counterInit(),
 +    };
+
++    // 数据更新时，调用组件的 setState，触发重新渲染。
 +    let onModelUpdate = newModel => this.setState({ model: newModel });
-+
-+    // initModel 是这样的：
-+    // {
-+    //   countA: { set, val },
-+    //   countA: { set, val },
-+    // }
 +    let initModel = createModel(initModelVal, onModelUpdate);
 +    return { model: initModel };
 -    return {
@@ -120,26 +122,36 @@ let Counter = createClass({
 
 而拥有两个 Counter 同步的 TwoCounters 修改成下面这样：
 
-```
+```diff
 let TwoCountersNoShare = createClass({
   getInitialState() {
-    let initModelVal = {
-      count: counterInit()
-    };
-    let onModelUpdate = newModel => this.setState({ model: newModel });
-    let initModel = createModel(initModelVal, onModelUpdate);
-    return { model: initModel };
++    let initModelVal = {
++      count: counterInit()
++    };
++    let onModelUpdate = newModel => this.setState({ model: newModel });
++    let initModel = createModel(initModelVal, onModelUpdate);
++    return { model: initModel };
+-    return { count: counterInit() };
   },
+-  setCount(newCount) {
+-   this.setState({ count: newCount });
+-  },
   render() {
+-    let counterProps = {
+-      count: this.state.count,
+-      setCount: this.setCount,
+-    };
+
     return (
       <div>
-        <Counter model={this.state.model.count} />
-        <Counter model={this.state.model.count} />
++        <Counter model={this.state.model.count} />
++        <Counter model={this.state.model.count} />
+-        <Counter {...counterProps}/>
+-        <Counter {...counterProps}/>
       </div>
     );
   },
 });
-
 ```
 
 ### 小结
