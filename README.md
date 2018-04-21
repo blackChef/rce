@@ -1,3 +1,5 @@
+[English Document](https://github.com/blackChef/rce/blob/english_doc/README.md)
+
 # rce
 rce 代表 react, data cursor, elm。是一个轻量级的 react 架构。它有以下几个特点:
 
@@ -5,7 +7,7 @@ rce 代表 react, data cursor, elm。是一个轻量级的 react 架构。它有
 - 它利用数据指针，让你能把组件的 model (state) 保存 app 的最上一层，又能让你把更新 model 的方法写在组件中。
 - init: 定义默认 model；update: 处理 model 的更新；view：渲染 model。遵循这个受 elm 启发的模式，你就能轻易写出可复用的组件。
 
-[English Document](https://github.com/blackChef/rce/blob/english_doc/README.md)
+[教程](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/home.md)
 
 # CortexJs
 rce 采用 [cortexjs](https://github.com/mquan/cortex) 实现的数据指针。
