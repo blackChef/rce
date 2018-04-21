@@ -74,8 +74,8 @@ let Counter = createClass({
 
 let TwoCounters = createClass({
   getInitialState() {
-    - return { count: 0 };
-    + return { count: counterInit() };
+-   return { count: 0 };
++   return { count: counterInit() };
   },
   increase() {
     this.setState({ count: this.state.count + 1 });
@@ -111,20 +111,20 @@ let counterInit = function() {
 };
 
 let Counter = createClass({
-  + increase() {
-  +   this.props.setCount(this.props.count + 1);
-  + },
-  + decrease() {
-  +   this.props.setCount(this.props.count - 1);
-  + },
++ increase() {
++   this.props.setCount(this.props.count + 1);
++ },
++ decrease() {
++   this.props.setCount(this.props.count - 1);
++ },
   render() {
     return (
       <div>
-        - <button type="button" onClick={this.props.decrease}>-</button>
-        + <button type="button" onClick={this.decrease}>-</button>
+-       <button type="button" onClick={this.props.decrease}>-</button>
++       <button type="button" onClick={this.decrease}>-</button>
         <span>{this.props.count}</span>
-        - <button type="button" onClick={this.props.increase}>+</button>
-        + <button type="button" onClick={this.increase}>+</button>
+-       <button type="button" onClick={this.props.increase}>+</button>
++       <button type="button" onClick={this.increase}>+</button>
       </div>
     );
   },
@@ -134,21 +134,21 @@ let TwoCounters = createClass({
   getInitialState() {
     return { count: counterInit() };
   },
-  + setCount(newCount) {
-  +   this.setState({ count: newCount });
-  + },
-  - increase() {
-  -   this.setState({ count: this.state.count + 1 });
-  - },
-  - decrease() {
-  -   this.setState({ count: this.state.count - 1 });
-  - },
++ setCount(newCount) {
++   this.setState({ count: newCount });
++ },
+- increase() {
+-   this.setState({ count: this.state.count + 1 });
+- },
+- decrease() {
+-   this.setState({ count: this.state.count - 1 });
+- },
   render() {
     let counterProps = {
       count: this.state.count,
-      + setCount: this.setCount,
-      - increase: this.increase,
-      - decrease: this.decrease,
++     setCount: this.setCount,
+-     increase: this.increase,
+-     decrease: this.decrease,
     };
 
     return (
@@ -162,7 +162,7 @@ let TwoCounters = createClass({
 ```
 
 ### 小结一下
-我们来总结一下 Counter（组件） 和 TwoCounters（组件使用者） 之间选择是怎样的关系：
+我们来总结一下 Counter（组件） 和 TwoCounters（组件使用者） 之间现在是怎样的关系：
 
 - Counter 把 increase 和 decrease 封装在组件里。TwoCounters 不需要关心功能是怎么实现的。
 - Counter 需要提供 init 方法，TwoCounters 可以选择用它来给 Counter 设定默认值，也可以自己设定其他值。
