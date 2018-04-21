@@ -92,7 +92,10 @@ let TwoCountersNoShare = createClass({
     );
   },
 });
+```
+Counter 也要小幅修改:
 
+```diff
 let Counter = createClass({
   increase() {
 +    this.props.model.set(this.props.model.val() + 1);
@@ -115,7 +118,7 @@ let Counter = createClass({
 });
 ```
 
-这时候，两个 Counter 同步的 TwoCounters 修改成下面这样：
+而拥有两个 Counter 同步的 TwoCounters 修改成下面这样：
 
 ```
 let TwoCountersNoShare = createClass({
