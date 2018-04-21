@@ -6,7 +6,7 @@
 
 接下来，我们写一个新的 TwoCounters 组件，这一次，我们希望两个 Counter 之间是独立的。
 
-这一次我们的 Counter 组件完全不需要修改。我们只要在 TwoCountersNoShare 内分配 state，为 state 里不同的部分编写 update 函数就行了。
+我们的 Counter 组件不需要任何修改。我们只要在 TwoCountersNoShare 内分配 state，为 state 里不同的部分编写 update 函数就行了。
 
 ```
 let TwoCountersNoShare = createClass({
