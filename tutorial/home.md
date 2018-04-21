@@ -8,4 +8,4 @@
 
 我们会研究复用组件时遇到的问题，给出解决方案。希望到教程结束时，你能知道如何写出自己的 rce 架构。
 
-
+[下一章](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/Counter.md)
