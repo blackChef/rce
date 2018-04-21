@@ -54,3 +54,4 @@ let TwoCounters = createClass({
 
 如果将来需要一个四个 Counter 同步的新组件，现在的 TwoCounters 岂不是又没用了？
 
+[下一章](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/twoCounters-1.md)
