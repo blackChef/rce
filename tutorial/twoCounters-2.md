@@ -67,7 +67,7 @@ let createModel = function(initVal, onUpdate) {
 };
 ```
 
-利用 createModel 函数，我们的 TwoCountersNoShare 就可以不用单独为 state 的不同部分写 set 函数了。
+利用 createModel 函数返回的新数据结构，我们的 TwoCountersNoShare 可以不用单独为 state 的不同部分写 set 函数了。
 
 ```diff
 let TwoCountersNoShare = createClass({
