@@ -38,7 +38,7 @@ let TwoCountersNoShare = createClass({
 上面的代码还是有让我们难受的地方：每次在 state 内增加一个新的部分，我们就得为那个部分写一个 set 函数。
 既然 state 里的数据总是需要一个 set 函数，那么能不能在 state 内保存一种自带 set 方法的数据呢？
 
-```
+```diff
 + let createModel = function(initVal, onUpdate) {
 +   let model = {};
 +   for (let key in initVal) {
