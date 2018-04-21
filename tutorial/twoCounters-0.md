@@ -1,5 +1,7 @@
 # Two counters, share state
 
+[上一章](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/Counter.md)
+
 接下来，我们来编写一个新组件。这个组件由两个 Counter 组成。当改变其中一个 Counter 值的时候，另外一个也会同时发生改变。
 
 我们之前已经完成了一个功能完善的 Counter，我们当然想要把它利用起来。现在只要能解决如何让两个 Counter 能同步就行了。
