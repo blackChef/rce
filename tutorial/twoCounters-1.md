@@ -1,5 +1,7 @@
 # Two counters，share state 2
 
+[上一章](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/twoCounters-0.md)
+
 我们喜欢使用组件，因为组件将功能封装在内部，我们不需要了解细节，引入它就可以使用。
 
 我们喜欢开发组件，因为组件化能让我们一次专注于解决一个问题。
