@@ -53,7 +53,7 @@ let TwoCounters = createClass({
 ### 把 initial state 还给 Counter
 
 把设置默认 state 的任务还给 Counter 的问题很容易解决。只要 Counter 能提供一个返回默认值的函数就行了。
-这里也可以看出，如果 TwoCounters，也就是 Counter 的使用者不想要 Counter 提供的默认值，它也可以自行设定其他值。
+这里也可以看到，如果 TwoCounters，也就是 Counter 的使用者不想要 Counter 提供的默认值，它也可以自行设定其他值。
 
 ```diff
 + let counterInit = function() {
@@ -161,13 +161,13 @@ let TwoCounters = createClass({
 });
 ```
 
-### 小结一下
-我们来总结一下 Counter（组件） 和 TwoCounters（组件使用者） 之间现在是怎样的关系：
+### 小结
 
 - Counter 把 increase 和 decrease 封装在组件里。TwoCounters 不需要关心功能是怎么实现的。
 - Counter 需要提供 init 方法，TwoCounters 可以选择用它来给 Counter 设定默认值，也可以自己设定其他值。
 - TwoCounters 需要替 Counter 保存所需的 state：state.count。
-- TwoCounters 需要提供修改 state.count 的方法。
+- TwoCounters 需要为 Counter 提供修改 state.count 的方法。
 
+现在如果另一个使用者想使用我们的 Counter 组件，他要做的就是在他的 state 内保存 count，并且提供 setCount 方法。
 
-
+[下一章](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/twoCounters-2.md)
