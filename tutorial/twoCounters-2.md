@@ -4,7 +4,7 @@
 
 在上一章里，我们成功的把 init，increase 和 decrease 还给了 Counter。新的 Counter 组件比之前的复用性更高了。
 
-接下来，我们写一个新的 TwoCounters 组件，这一次，我们希望两个 Counter 之间是独立的。
+接下来，我们写一个新的 TwoCountersNoShare 组件。在这个组件里，两个 Counter 之间是独立的。
 
 我们的 Counter 组件不需要任何修改。我们只要在 TwoCountersNoShare 内分配 state，为 state 里不同的部分编写 update 函数就行了。
 
@@ -35,10 +35,13 @@ let TwoCountersNoShare = createClass({
 
 ### 数据指针
 
-上面的代码还是有让我们难受的地方：每次在 state 内增加一个新的部分，我们就得为那个部分写一个 set 函数。
+尽管我们的 Counter 得到了重用，上面的代码还是有让我们困扰的地方：
+
+每在 state 内增加一个新的部分，我们就得为那个部分写一个 set 函数。
+
 既然 state 里的数据总是需要一个 set 函数，那么能不能在 state 内保存一种自带 set 方法的数据呢？
 
-新增 createModel 函数，为数据对象里的值增加 val 和 set 方法：
+新增 createModel 函数，为对象里的值增加 val 和 set 方法：
 
 ```
 let createModel = function(initVal, onUpdate) {
@@ -95,6 +98,7 @@ let TwoCountersNoShare = createClass({
   },
 });
 ```
+
 Counter 也要小幅修改:
 
 ```diff
@@ -120,7 +124,7 @@ let Counter = createClass({
 });
 ```
 
-而拥有两个 Counter 同步的 TwoCounters 修改成下面这样：
+拥有两个 Counter 同步的 TwoCounters 需要修改成这样：
 
 ```diff
 let TwoCountersNoShare = createClass({
