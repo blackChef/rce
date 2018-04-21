@@ -22245,22 +22245,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(/*! react-dom */ 17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__step4_twoCounters__ = __webpack_require__(/*! ./step4/twoCounters */ 38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__step6_twoCountersNoShare__ = __webpack_require__(/*! ./step6/twoCountersNoShare */ 42);
 
 
 
 
-__WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__step4_twoCounters__["a" /* default */], null), document.querySelector('.appContainer'));
+__WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__step6_twoCountersNoShare__["a" /* default */], null), document.querySelector('.appContainer'));
 
 /***/ }),
 /* 36 */,
 /* 37 */,
-/* 38 */
+/* 38 */,
+/* 39 */,
+/* 40 */,
+/* 41 */,
+/* 42 */
 /* exports provided: default */
 /* exports used: default */
-/*!************************************************!*\
-  !*** ./tutorialExamples/step4/twoCounters.jsx ***!
-  \************************************************/
+/*!*******************************************************!*\
+  !*** ./tutorialExamples/step6/twoCountersNoShare.jsx ***!
+  \*******************************************************/
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -22268,41 +22272,41 @@ __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_create_react_class__ = __webpack_require__(/*! create-react-class */ 10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_create_react_class___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_create_react_class__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__counter__ = __webpack_require__(/*! ./counter */ 39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__counter__ = __webpack_require__(/*! ./counter */ 43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__createModel__ = __webpack_require__(/*! ./createModel */ 45);
 
 
 
 
-let TwoCounters = __WEBPACK_IMPORTED_MODULE_1_create_react_class___default()({
+
+let TwoCountersNoShare = __WEBPACK_IMPORTED_MODULE_1_create_react_class___default()({
   getInitialState() {
-    return { count: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__counter__["a" /* counterInit */])() };
-  },
-  setCount(newCount) {
-    this.setState({ count: newCount });
+    let initModelVal = {
+      countA: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__counter__["a" /* counterInit */])(),
+      countB: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__counter__["a" /* counterInit */])()
+    };
+    let onModelUpdate = newModel => this.setState({ model: newModel });
+    let initModel = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__createModel__["a" /* default */])(initModelVal, onModelUpdate);
+    return { model: initModel };
   },
   render() {
-    let counterProps = {
-      count: this.state.count,
-      setCount: this.setCount
-    };
-
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
       null,
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__counter__["b" /* Counter */], counterProps),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__counter__["b" /* Counter */], counterProps)
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__counter__["b" /* Counter */], { model: this.state.model.countA }),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__counter__["b" /* Counter */], { model: this.state.model.countB })
     );
   }
 });
 
-/* harmony default export */ __webpack_exports__["a"] = TwoCounters;
+/* harmony default export */ __webpack_exports__["a"] = TwoCountersNoShare;
 
 /***/ }),
-/* 39 */
+/* 43 */
 /* exports provided: Counter, counterInit */
 /* exports used: counterInit, Counter */
 /*!********************************************!*\
-  !*** ./tutorialExamples/step4/counter.jsx ***!
+  !*** ./tutorialExamples/step6/counter.jsx ***!
   \********************************************/
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -22322,10 +22326,10 @@ let counterInit = function () {
 
 let Counter = __WEBPACK_IMPORTED_MODULE_1_create_react_class___default()({
   increase() {
-    this.props.setCount(this.props.count + 1);
+    this.props.model.set(this.props.model.val() + 1);
   },
   decrease() {
-    this.props.setCount(this.props.count - 1);
+    this.props.model.set(this.props.model.val() - 1);
   },
   render() {
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -22339,7 +22343,7 @@ let Counter = __WEBPACK_IMPORTED_MODULE_1_create_react_class___default()({
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'span',
         null,
-        this.props.count
+        this.props.model.val()
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'button',
@@ -22351,6 +22355,39 @@ let Counter = __WEBPACK_IMPORTED_MODULE_1_create_react_class___default()({
 });
 
 
+
+/***/ }),
+/* 44 */,
+/* 45 */
+/* exports provided: default */
+/* exports used: default */
+/*!************************************************!*\
+  !*** ./tutorialExamples/step6/createModel.jsx ***!
+  \************************************************/
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+let createModel = function (initVal, onUpdate) {
+  let model = {};
+
+  for (let key in initVal) {
+    model[key] = {
+      __curVal__: initVal[key],
+      val() {
+        return this.__curVal__;
+      },
+      set(newVal) {
+        this.__curVal__ = newVal;
+        onUpdate(model);
+      }
+    };
+  }
+
+  console.log(model);
+  return model;
+};
+
+/* harmony default export */ __webpack_exports__["a"] = createModel;
 
 /***/ })
 /******/ ]);

@@ -24,7 +24,7 @@ let TwoCounters = createClass({
   },
 
   // increase 和 decrease 之所以写在 TwoCounters 内，是因为 state 保存在 TwoCounters 内。
-  // 这里让我们想到了事件委托机制。上一级元素提供一个接口，让子元素可以把事件处理函数写在它内部。
+  // 这里让我们想到了事件委托机制。父元素提供接口，让子元素可以把事件处理函数写在它内部。
   // 父元素其实并不关心子元素的事件函数是怎样的。
   // 那么我们能否效仿事件委托，把 increase 和 decrease 还给 Counter？
   increase() {
@@ -102,7 +102,7 @@ let TwoCounters = createClass({
 
 ### 把 controller 还给 Counter
 
-改成下面的代码后，我们可以更清楚的看出 TwoCounters 的任务实际上是保存 state。但 state 如何修改它并用不关心。
+改成下面的代码后，我们可以更清楚的看出 TwoCounters 的任务实际上只是保存 state。
 把新增的 setCount 方法传递给 Counter 之后，increase 和 decrease 是怎么实现就完全由 Counter 控制了。
 
 ```diff
@@ -168,6 +168,6 @@ let TwoCounters = createClass({
 - TwoCounters 需要替 Counter 保存所需的 state：state.count。
 - TwoCounters 需要为 Counter 提供修改 state.count 的方法。
 
-现在如果另一个使用者想使用我们的 Counter 组件，他要做的就是在他的 state 内保存 count，并且提供 setCount 方法。
+现在如果另一个使用者想使用我们的 Counter 组件，他要做的就是在他的 state 内保存 count，并提供 setCount 方法。
 
 [下一章](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/twoCounters-2.md)
