@@ -132,9 +132,7 @@ TwoCountersShare = createModelHolder(TwoCountersShare, TwoCountersShareInit());
 
 如果我们在 app 的最上一层，也就是 reactDOM.render 时才调用 createModelHolder，那么我们 app 里的所有组件都是可高度复用的。
 
-### 小结
-
-到这里，你已经了解了如何用数据指针编写高度复用的组件。并且自己实现了 createModelHolder ———— rce 最重要的 api。
+** 到这里，你已经了解了如何用数据指针编写高度复用的组件。并且自己实现了 createModelHolder ———— rce 最重要的 api。**
 
 [下一章](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/createComponent.md)
 
