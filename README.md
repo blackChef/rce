@@ -20,8 +20,9 @@ npm install rce-pattern --save
 yarn add rce-pattern
 
 
-# API Reference
-## init, update, view
+# Reference
+
+### init, update, view
 - init: Function。返回组件的默认 model。
 - update：Function。`update({ type, payload, model, dispatch, getLastetModel })`  
   - type: String。action 的类型。
@@ -31,7 +32,7 @@ yarn add rce-pattern
   - getLastetModel: Function。获取组件最新的 model。在异步处理的 callback 内应该用它来获取最新的 model。
 - view: React Component。
 
-## createComponent
+### createComponent
 `createComponent({ name, view, update })` 一个 HOC，将 view 和 update 串联起来。
 
 - name: String, 非必须。组件的 displayName。有利于调试。
@@ -50,7 +51,7 @@ yarn add rce-pattern
   - arg 为 Function 时，返回 `event => dispatch(type, arg(event))`。
   - arg 为 其它时，返回 `() => dispatch(type, arg)`。  
   
-## createModelHolder
+### createModelHolder
 `createModelHolder(view, arg)`
 - arg 为函数时，用那个函数返回的值作为 view 的初始 model。
 - arg 为其他时，用 arg 作为 view 的初始 model。
