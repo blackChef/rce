@@ -6,9 +6,10 @@ rce 代表 react, cursor, elm。是一个轻量级的 react 架构。它有以�
 - 没有复杂的概念，没有复杂的代码。仅有两个 api，设计思路与 react 一致。会 react 就能快速上手 rce。
 - 利用数据指针，让你能把组件的 state 保存 app 的最上一层，但又能让将管理 state 的方法写在组件内部。
 - 每个组件都按下面的模式划分。 遵循这个受 elm 启发的模式，你就能轻易写出可高度复用的组件。
-  - init: 定义组件的默认状态。
+  - init: 定义组件的默认状态。 
   - view: 渲染 model。发布 action。
-  - update: 响应 view 传来的 action，修改 model。
+  - update: 响应 view 传来的 action，修改 model。
+
 
 [查看这个教程](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/home.md)。了解 rce 要解决的问题，它的设计理念和实现方式。
 
