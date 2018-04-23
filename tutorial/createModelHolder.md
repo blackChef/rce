@@ -143,7 +143,7 @@ TwoCountersShare = createModelHolder(TwoCountersShare, TwoCountersShareInit());
 
 通过上面描述的架构，我们成功解决了“共享状态和组件复用矛盾”的问题。
 
-到这里，你已经了解了如何用数据指针编写高度复用的组件。并且自己实现了 createModelHolder —— rce 最重要的 api。
+> 到这里，你已经了解了 rce 架构要解决的问题，并且亲手实现了 rce 架构的大部分。
 
 [下一章](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/model_init_view.md)
 
