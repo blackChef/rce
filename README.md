@@ -1,6 +1,6 @@
 [English Document](https://github.com/blackChef/rce/blob/english_doc/README.md)
 
-# Problem
+# 问题
 - 我们喜欢使用组件，因为组件将功能封装在内部，我们不需要了解细节，引入它就可以使用。
 - 我们喜欢开发组件，因为组件化能让我们一次专注于解决一个问题。
 - 我们喜欢 mvc 架构，因为我们总是会遇到让不同地方渲染相同的状态的场景。
