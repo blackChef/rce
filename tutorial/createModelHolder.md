@@ -132,7 +132,7 @@ TwoCountersShare = createModelHolder(TwoCountersShare, TwoCountersShareInit());
 
 我们可以把所有的组件都写成“init + reac 组件”的形式，直到我们确定某个组件不再需要跟其它组件共享状态时才调用 createModelHolder。这样一来，所有的组件都是可高度复用的状态。
 
-如果你碰巧知道 redux，你肯定知道它将整个 app 的 state 都保存在最上一层。使用我们的架构，只要在 app 的最上一层，即 reactDOM.render 时才调用 createModelHolder 就可以实现相同的效果了。
+如果你碰巧知道 redux，你肯定知道它将整个 app 的 state 都保存在最上一层，并因此得到很多好处。使用我们的架构，只要在 app 的最上一层，即 reactDOM.render 时才调用 createModelHolder 就可以实现相同的效果。
 
 ### 我们写了一个架构
 
