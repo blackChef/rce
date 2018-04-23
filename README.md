@@ -1,14 +1,16 @@
 [English Document](https://github.com/blackChef/rce/blob/english_doc/README.md)
 
 # rce
-rce 代表 react, data cursor, elm。是一个轻量级的 react 架构。它有以下几个特点:
+rce 代表 react, cursor, elm。是一个轻量级的 react 架构。它有以下几个特点:
 
-- 它是一个 react 架构。仅有两个 api。设计思路与 react 一致。会 react 就能快速上手 rce。
-- 它利用数据指针，让你能把组件的 model (state) 保存 app 的最上一层，又能让你把更新 model 的方法写在组件中。
-- init: 定义默认 model；update: 处理 model 的更新；view：渲染 model。遵循这个受 elm 启发的模式，你就能轻易写出可复用的组件。
+- 没有复杂的概念，没有复杂的代码。仅有两个 api，设计思路与 react 一致。会 react 就能快速上手 rce。
+- 利用数据指针，让你能把组件的 state 保存 app 的最上一层，但又能让将管理 state 的方法写在组件内部。
+- 每个组件都按下面的模式划分。 遵循这个受 elm 启发的模式，你就能轻易写出可高度复用的组件。
+  - init: 定义默认 model。
+  - update: 处理 model 的更新。
+  - view：渲染。
 
-[教程](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/home.md)
-
+[查看这个简短的教程](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/home.md)。了解 rce 要解决的问题，它的设计理念和实现方式。
 
 
 # Examples
