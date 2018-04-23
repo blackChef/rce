@@ -1,33 +1,52 @@
-let { resolve } = require('path');
-let { resolvePlugin, resolvePreset } = require('webpack-babel-link');
 let { transformFileSync } = require('babel-core');
-let { outputFileSync } = require('fs-extra');
-let _ = require('lodash');
+let { removeSync, outputFileSync } = require('fs-extra');
+let last = require('lodash/last');
+let filewalker = require('filewalker');
+let resolve = require('path').resolve.bind(undefined, __dirname);
 
 let babelOpts = {
   babelrc: false,
   plugins: [
-    'transform-es2015-destructuring',
     'transform-object-rest-spread',
-  ].map( resolvePlugin(require) ),
-  presets: ['react'].map( resolvePreset(require) )
+  ],
+  presets: [
+    'react',
+    ['env', {
+      targets: { browser: [`last 6 versions`] },
+      modules: false,
+      loose: true,
+    }]
+  ]
 };
 
+let doBabel = filePath => transformFileSync(filePath, babelOpts);
 
-let compileEs6 = function(files, outputPath) {
-  let entries = files.map(function(src) {
-    let name = _.last( src.split('\\') ).replace('.jsx', '.js');
+let renameJsx = fileName => last( fileName.split('\\') ).replace('.jsx', '.js');
 
-    return {
-      src,
-      dest: resolve(outputPath, name)
-    };
-  });
+let compileJsx = function(resolveDist) {
+  return function(path) {
+    if ( !/\.jsx$/.test(path) ) return;
 
-  entries.forEach(function({ src, dest }) {
-    let { code } = transformFileSync(src, babelOpts);
-    outputFileSync(dest, code);
-  });
+    let inputPath = resolveDist(path);
+    let outputPath = resolveDist( renameJsx(path) );
+
+    outputFileSync(
+      outputPath,
+      doBabel(inputPath).code
+    );
+
+    removeSync(inputPath);
+  };
 };
 
-module.exports = compileEs6;
+let logFinished = () => console.log('finished');;
+
+module.exports = function(dist) {
+  let resolveDist = resolve.bind(undefined, dist);
+
+  filewalker(resolveDist())
+    .on('file', compileJsx(resolveDist))
+    .on('done', logFinished)
+    .walk();
+};
+

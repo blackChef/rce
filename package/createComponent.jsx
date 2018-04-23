@@ -1,85 +1,140 @@
 import React from 'react';
-import shallowEqual from './shallowEqual';
-import omit from 'lodash/fp/omit';
-import pick from 'lodash/fp/pick';
-import memoize from 'lodash/fp/memoize';
+import createClass from 'create-react-class';
+import isFunction from 'lodash/isFunction';
+import defaultShouldComponentUpdate from './shouldComponentUpdate';
+import omit from 'lodash/omit';
+import memoize from 'shallow-memoize';
 
 
-export default function({ name = '', update = () => {}, view }) {
+let extractCursorProps = function(cursorPropNames, otherProps) {
+  if (!cursorPropNames) {
+    return otherProps;
+  }
+
+  let extractedProps = cursorPropNames.reduce(function(preVal, key) {
+    let maybeCursor = otherProps[key];
+
+    let val = ( maybeCursor !== undefined && isFunction(maybeCursor.val) ) ?
+        maybeCursor.val() :
+        maybeCursor;
+
+    return {
+      ...preVal,
+      [key]: val
+    };
+  }, {});
+
+  return {
+    ...omit(otherProps, cursorPropNames),
+    ...extractedProps
+  };
+};
+
+let createComponent = function(props) {
+  let {
+    name = '',
+    view: View,
+    update,
+    shouldComponentUpdate: customShouldComponentUpdate,
+  } = props;
+
   // overwrite component name
-  view.displayName = name;
+  View.displayName = name;
 
-  let component = React.createClass({
+  let Component = createClass({
     // "@" means it's a hoc/decorator
     displayName: `@RCE_${name}`,
 
     dispatch(type, payload) {
-      // model mutation is async, like react state
-      // inside component's update function, we loose reference after model updated
-      let component = this;
-      let args = {
-        type, payload,
-        dispatch: component.dispatch,
-        currentModel: component.props.model,
-        model: component.props.model, // alias
-        getLatestModel() {
-          return component.props.model;
-        }
-      };
+      if (!update) return;
 
-      update(args, component);
+      let component = this;
+
+      let {
+        dispatch,
+        props: { model }
+      } = component;
+
+      update({
+        type, payload, dispatch,
+        // Model mutation is async, like react state.
+        // Inside update function, we loose reference after model updated.
+        // If we want to access latest model, we have to request `component.props.model`.
+        // We don't make model a getter here, because getter is only called when we do `object.getter`.
+        // If we do destruction at first: `let { getter } = props`, the getter is a static value,
+        // which can be a confusing behavior.
+        model,
+        getLatestModel: () => component.props.model
+      });
     },
 
-    componentWillMount() {
-      // dispatcher returns function that apply dispatch.
-      // it's useful for creating stateless react components.
+    initDispacher() {
       let component = this;
-      let dispatcher = function(type, payloadResolver = a => a) {
-        return function(event) {
-          let payload = payloadResolver(event, component.props);
-          component.dispatch(type, payload);
+
+      // `dispatcher` is a function that return a function which will call dipatch.
+      // The second argument can be an undefined, a function or a constant.
+      // Because `dispatcher` is memoized. Using `dispatcher`
+      // rather than `() => dispatch(type)` in render function can be performance beneficial.
+      let dispatcher = function(type, arg) {
+        if (arg === undefined) {
+          return function(payload) {
+            component.dispatch(type, payload);
+          };
+        }
+
+        // If arg is a function. That function should return a resolved payload.
+        if (isFunction(arg)) {
+          return function(payload) {
+            let resolvedPayload = arg(payload, component.props);
+            component.dispatch(type, resolvedPayload);
+          };
+        }
+
+        return function() {
+          component.dispatch(type, arg);
         };
       };
 
       this.dispatcher = memoize(dispatcher);
     },
 
-    shouldComponentUpdate(nextProps) {
-      // consumer can specify variableProps and constantProps.
-      // variableProps: only these props need to compare.
-      // constantProps: these props wont change, dont compare them.
-      // if variableProps are defined, ignore contantProps.
-      // this is useful for props like children or callback
-      let { props: curProps} = this;
-      let { variableProps = [], constantProps = [] } = curProps;
-
-      if (variableProps.length) {
-        let pickVar = pick(variableProps);
-        return !shallowEqual(pickVar(curProps), pickVar(nextProps));
-
-      } else if (constantProps.length) {
-        let omitConst = omit([...constantProps, 'constantProps']);
-        return !shallowEqual(omitConst(curProps), omitConst(nextProps));
-
+    initShouldComponentUpdate() {
+      if (customShouldComponentUpdate) {
+        this.shouldComponentUpdate = customShouldComponentUpdate;
       } else {
-        return !shallowEqual(curProps, nextProps);
+        this.shouldComponentUpdate = nextProps => {
+          return defaultShouldComponentUpdate(this.props, nextProps);
+        };
       }
     },
 
-    render() {
-      let { dispatch, dispatcher } = this;
-      let otherProps = omit(['constantProps', 'variableProps'], this.props);
+    componentWillMount() {
+      this.initDispacher();
+      this.initShouldComponentUpdate();
+    },
 
-      // order is important here
-      // if component receive "dispatch" or "dispatcher" as props,
-      // we should overwrite them
-      return React.createElement(view, {
-        ...otherProps, dispatch, dispatcher,
-      });
+    render() {
+      let {
+        dispatch,
+        dispatcher,
+        props: {
+          // eslint-disable-next-line no-unused-vars
+          constantProps, variableProps, deepCompareProps,
+          cursorProps,
+          ...otherProps
+        },
+      } = this;
+
+      return <View
+        {...extractCursorProps(cursorProps, otherProps)}
+        dispatch={dispatch}
+        dispatcher={dispatcher}
+      />;
     },
   });
 
-
-  return component;
+  return Component;
 };
+
+export default createComponent;
 

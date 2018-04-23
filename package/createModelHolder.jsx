@@ -1,19 +1,33 @@
 import React from 'react';
-import isFunction from 'lodash/fp/isFunction';
+import createClass from 'create-react-class';
+import getVal from './getVal';
 import createModel from './cursor';
 
 export default function(Component, initialValue) {
-  let container = React.createClass({
+  let container = createClass({
     displayName: `@ModelHolder_${Component.displayName}`,
 
     getInitialState() {
-      let _initialValue = isFunction(initialValue)?
-        initialValue() :
-        initialValue;
+      let _initialValue;
 
-      this.model = createModel(_initialValue, newModel => {
-        this.setState({ model: newModel });
-      });
+      // If model is supplied, we use that model's value as initialValue,
+      // allow parent change child's model
+      if (this.props.model !== undefined) {
+        _initialValue = this.props.model.val();
+      } else {
+        _initialValue = getVal(initialValue);
+      }
+
+
+      this.model = createModel(
+        _initialValue,
+        newModel => {
+          this.setState({ model: newModel });
+          if (this.props.onModelChange) {
+            this.props.onModelChange(newModel);
+          }
+        }
+      );
 
       return { model: this.model };
     },
@@ -22,8 +36,26 @@ export default function(Component, initialValue) {
       this.model.unListen();
     },
 
+    componentWillReceiveProps(nextProps) {
+      // Create a traditional uncontrolled component behavior:
+      // Parent can change child's model, and receive new model in a callback
+      if (
+          nextProps.model !== undefined &&
+          nextProps.model !== this.props.model
+      ) {
+        this.state.model.set(
+          nextProps.model.val()
+        );
+      }
+    },
+
     render() {
-      return <Component model={this.state.model} {...this.props} />;
+      let {
+        // eslint-disable-next-line no-unused-vars
+        onModelChange, model,
+        ...otherProps
+      } = this.props;
+      return <Component {...otherProps} model={this.state.model} />;
     }
   });
 
