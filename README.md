@@ -30,9 +30,12 @@ rce 代表 react, cursor, elm。是一个轻量级的 react 架构。它有以�
 
 
 # 安装
+```
 npm install rce-pattern --save
+```
+```
 yarn add rce-pattern
-
+```
 
 # 参考
 
