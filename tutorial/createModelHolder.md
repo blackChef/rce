@@ -46,7 +46,7 @@ let TwoCountersShare = createClass({
 });
 ```
 
-在 getInitialState 内，这两个组件的代码除了 initModelVal，其他完全一样。我们可以将这个部分封装起来。
+在 getInitialState 内，这两个组件的代码除了 initModelVal，其他完全一样。我们可以将这个部分通过一个函数封装起来。
 
 ```
 let createModelHolder = function(Component, initModelVal) {
