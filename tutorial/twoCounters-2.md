@@ -159,8 +159,6 @@ let TwoCountersShare = createClass({
 });
 ```
 
-### 小结
-
 这种自带 set, val 方法的新数据结构被称作为数据指针。
 
 通过数据指针，我们进一步将组件使用者的负担降低。现在 Counter 和 TwoCounters 的关系是这样的：
