@@ -165,8 +165,6 @@ let TwoCounters = createClass({
 });
 ```
 
-### 小结
-
 通过把 init 和 controller 还给 Counter，TwoCounters 可以不用去关心 Counter 的具体实现。现在 Counter 和 TwoCounters 的关系是这样的：
 
 - Counter 需要提供 init 方法，TwoCounters 可以选择用它来给 Counter 设定默认值，也可以自己设定其他值。
