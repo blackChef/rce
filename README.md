@@ -1,5 +1,15 @@
 [English Document](https://github.com/blackChef/rce/blob/english_doc/README.md)
 
+# Problem
+- 我们喜欢使用组件，因为组件将功能封装在内部，我们不需要了解细节，引入它就可以使用。
+- 我们喜欢开发组件，因为组件化能让我们一次专注于解决一个问题。
+- 我们也喜欢 mvc，因为我们总是会遇到让不同地方渲染相同的状态的场景。
+
+但一个拥有本地状态，自己能控制状态更新的组件是没法和其他组件共享状态的。
+
+让一个组件能把功能封装，做到即插即用的同时，又能被外界控制，能和其他组件共享状态，就是 rce 解决的问题。
+
+
 # rce
 rce 代表 react, cursor, elm。是一个轻量级的 react 架构。它有以下几个特点:
 
@@ -14,17 +24,17 @@ rce 代表 react, cursor, elm。是一个轻量级的 react 架构。它有以�
 [查看这个教程](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/01.md)。了解 rce 要解决的问题，它的设计理念和实现方式。
 
 
-# Examples
+# 示例
 - 示例：https://blackchef.github.io/rce/
 - 示例用到的代码: https://github.com/blackChef/rce/tree/master/demo/components
 
 
-# Install
+# 安装
 npm install rce-pattern --save
 yarn add rce-pattern
 
 
-# Reference
+# 参考
 
 ### model, init, view, update
 - model: Cortex data。组件的 state 以 cortex data 保存和传递。
@@ -62,7 +72,7 @@ yarn add rce-pattern
 - arg 为其他时，用 arg 作为 view 的初始 model。
 
 
-# Quick Start
+# 快速开始
 
 ### CortexJs
 rce 采用 [cortexjs](https://github.com/mquan/cortex) 实现的数据指针。
@@ -70,9 +80,10 @@ rce 采用 [cortexjs](https://github.com/mquan/cortex) 实现的数据指针。
 > Cortex is an immutable data store for managing deeply nested structure with React
 
 考虑 `model = { a: { foo: 5 }, b: 5 }` 这样一个数据。 在将它创建成 cortex 数据之后：
-要读取 `model.a.foo` 的值，我们这么做：`fooValue = model.a.foo.val()`。
-要修改 `model.a.foo` 的值。我们这么做：`model.a.foo.set(10)`。
-更新 cortex 数据的操作是异步的。当 cortex 数据更新时，rce 会自动渲染你的 view。这就跟 react state 的工作方式一模一样。
+- 要读取 `model.a.foo` 的值，我们这么做：`fooValue = model.a.foo.val()`。
+- 要修改 `model.a.foo` 的值。我们这么做：`model.a.foo.set(10)`。
+
+更新 cortex 数据的操作是异步的。当 cortex 数据更新时，rce 会自动渲染你的 view。就跟 react state 的工作方式一样。
 
 ### A Counter
 我们来编写一个 Counter 组件。在线例子：https://blackchef.github.io/rce/#/counter
@@ -103,9 +114,8 @@ let update = function({ type, model }) {
 
 // view 是一个 react 组件。被 createComponent wrap 之后，它收到 model, dispatch, dispatcher 三个属性。
 // model：Cortex Cursor。组件的 model，理解为组件的 state。
-// dispatch: Function。dispatch(type, payload)。dispatch 触发 action。
-// dispatcher: Function。dispatcher(type, arg)。dispatcher 返回一个执行 dispatch 的函数。
-// dispatcher 有助于编写 function 形式的 react 组件。
+// dispatch(type, payload): dispatch 触发 action。
+// dispatcher(type, arg): dispatcher 返回一个执行 dispatch 的函数。 有助于编写 function 形式的 react 组件
 let view = function ({ model, dispatch, dispatcher }) {
   return (
     <div>
@@ -116,7 +126,7 @@ let view = function ({ model, dispatch, dispatcher }) {
   );
 };
 
-// createComponent 是一个 HOC。它将 view，update 二者串联起来。
+// createComponent 将 view，update 二者串联起来。
 view = createComponent({ name, update, view });
 export { init, view };
 ```
@@ -124,16 +134,6 @@ export { init, view };
 ### Three Counters
 现在我们利用之前的 Counter 组件，编写一个包含三个 Counter，其中一个独立，另外两个共享状态的新组件： ThreeCounters。
 在线例子：https://blackchef.github.io/rce/#/threeCounters
-
-在我们开始之前，先考虑一下如果我们用常规的 react state 的方式实现 Counter 会怎样。
-
-为了让不同组件间能共享状态，同步渲染。state 必须提到上一级父组件内保存和处理。而子组件变成模板，只负责渲染和调用父组件传来的函数。  
-
-编写组件时，我们总是希望能够 thinking in local，希望完成的结果能符合 open close 原则。但这时候我们不仅修改了之前的 Counter。也让 Counter 失去了作为一个组件，把功能封装，引入即可以使用的特性。
-
-如果我们需要这个父组件再和其他组件共享状态呢？
-
-利用数据指针，状态总是被保存在上一层，再由 prop 传下。而状态的处理逻辑总是保存在组件内部。下面的代码里我们没有对之前的 Counter 做任何修改。
 
 ```
 import React from 'react';
@@ -200,16 +200,16 @@ export { init, view };
 ```
 
 ### Model Holder
-最终，我们需要把 model 存在一个组件的 state 里。这个组件可以是一个区块，一个页面，或者是整个 app。用 `createModelHolder` 可以在任何时候将一个 component 变为 model holder。
+用 createModelHolder 把 model 保存在 state 里。传入 createModelHolder 之后，这个组件失去跟其他组件共享状态的能力。  
+这个组件可以是一个区块，一个页面，或者是整个 app。
+
 ```
 import React from 'react';
 import ReactDOM from 'react-dom';
 import createModelHolder from 'rce-pattern/createModelHolder';
 import { view as ThreeCounters, init as threeCountersInit } from './threeCounters';
 
-// createModelHolder(view, arg)
-//   arg 为函数时，用那个函数返回的值作为 view 的初始 model。
-//   arg 为其他时，用 arg 作为 view 的初始 model。
+// createModelHolder(view, init): 把 model 保存在 state 里。
 let App = createModelHolder(ThreeCounters, threeCountersInit);
 
 ReactDOM.render(
