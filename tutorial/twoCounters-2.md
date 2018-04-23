@@ -41,7 +41,8 @@ let TwoCountersNoShare = createClass({
 
 既然 state 里的数据总是需要一个 set 函数，那么能不能在 state 内保存一种自带 set 方法的数据呢？
 
-新增 createModel 函数，为对象里的值增加 val 和 set 方法：
+
+createModel 函数，为对象里的值增加 val 和 set 方法：
 
 ```
 let createModel = function(initVal, onUpdate) {
@@ -67,7 +68,7 @@ let createModel = function(initVal, onUpdate) {
 };
 ```
 
-利用 createModel 函数返回的新数据结构，我们的 TwoCountersNoShare 可以不用单独为 state 的不同部分写 set 函数了。
+利用 createModel 函数创建的新数据结构，我们的 TwoCountersNoShare 可以不用单独为 state 的不同部分写 set 函数了。
 
 ```diff
 let TwoCountersNoShare = createClass({
@@ -99,7 +100,7 @@ let TwoCountersNoShare = createClass({
 });
 ```
 
-Counter 也要小幅修改:
+Counter 可以直接调用 model 上的方法修改和读取数据：
 
 ```diff
 let Counter = createClass({
@@ -124,7 +125,7 @@ let Counter = createClass({
 });
 ```
 
-拥有两个 Counter 同步的 TwoCounters 需要修改成这样：
+之前编写的拥有两个 Counter 同步的组件修改成这样：
 
 ```diff
 let TwoCountersShare = createClass({
