@@ -2,7 +2,7 @@
 
 [上一章](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/twoCounters-2.md)
 
-我们的 createModel 函数很好的完成了将所需数据转为数据指针的任务。但在真实世界中，我们要面对的数据是深层次嵌套的数组和对象。想要把深层嵌套的复杂数据转为数据指针可没那么简单。
+我们的 createModel 函数很好的完成了将所需数据转为数据指针的任务。但在真实世界中，我们要面对的是对象、数组相互深层嵌套的数据。想要把深层嵌套的复杂数据转为数据指针可没那么简单。
 
 幸运的是，已经有人做出努力，让我们有现成的库来实现数据指针。[cortexjs](https://github.com/mquan/cortex) 就是其中之一。
 
