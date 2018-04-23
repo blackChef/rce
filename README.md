@@ -10,12 +10,13 @@ rce 代表 react, data cursor, elm。是一个轻量级的 react 架构。它有
 [教程](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/home.md)
 
 
+
 # Examples
 - 示例：https://blackchef.github.io/rce/
 - 示例用到的代码: https://github.com/blackChef/rce/tree/master/demo/components
 
 
-## Install
+# Install
 npm install rce-pattern --save  
 yarn add rce-pattern
 
@@ -57,7 +58,9 @@ yarn add rce-pattern
 - arg 为其他时，用 arg 作为 view 的初始 model。
 
 
-# CortexJs
+# Quick Start
+
+### CortexJs
 rce 采用 [cortexjs](https://github.com/mquan/cortex) 实现的数据指针。
 
 > Cortex is an immutable data store for managing deeply nested structure with React
@@ -67,11 +70,7 @@ rce 采用 [cortexjs](https://github.com/mquan/cortex) 实现的数据指针。
 要修改 `model.a.foo` 的值。我们这么做：`model.a.foo.set(10)`。  
 更新 cortex 数据的操作是异步的。当 cortex 数据更新时，rce 会自动渲染你的 view。这就跟 react state 的工作方式一模一样。
 
-
-# Quick Start
-
-## A Counter
-
+### A Counter
 我们来编写一个 Counter 组件。在线例子：https://blackchef.github.io/rce/#/counter
 
 ```
@@ -118,9 +117,7 @@ view = createComponent({ name, update, view });
 export { init, view };
 ```
 
-
-## Three Counters
-
+### Three Counters
 现在我们利用之前的 Counter 组件，编写一个包含三个 Counter，其中一个独立，另外两个共享状态的新组件： ThreeCounters。 
 在线例子：https://blackchef.github.io/rce/#/threeCounters
 
@@ -198,8 +195,7 @@ view = createComponent({ name, update, view });
 export { init, view };
 ```
 
-
-## Model Holder
+### Model Holder
 最终，我们需要把 model 存在一个组件的 state 里。这个组件可以是一个区块，一个页面，或者是整个 app。用 `createModelHolder` 可以在任何时候将一个 component 变为 model holder。
 ```
 import React from 'react';
