@@ -128,11 +128,22 @@ let TwoCountersShare = createClass({
 TwoCountersShare = createModelHolder(TwoCountersShare, TwoCountersShareInit());
 ```
 
-修改后的 TwoCounters 包含一个 init 函数和一个 react 组件，除了在最后调用了 createModelHolder 之外，跟我们的 Counter 有一样的结构。也就是说，如果我们不在这两个 TwoCounters 上调用 createModelHolder，那么它们就可以像 Counter 一样被其他组件应用。
+修改后的 TwoCounters 包含一个 init 函数和一个 react 组件，除了在最后调用了 createModelHolder 之外，跟我们的 Counter 有一样的结构。也就是说，如果我们不在这两个 TwoCounters 上调用 createModelHolder，那么它们就可以像 Counter 一样被其他组件使用。
 
-如果我们只在 app 的最上一层，也就是 reactDOM.render 时才调用 createModelHolder，那么所有的组件都是 init + component，可以高度复用的状态。
+我们可以把所有的组件都写成“init + reac 组件”的形式，直到我们确定某个组件不再需要跟其它组件共享状态时才调用 createModelHolder。这样一来，所有的组件都是可高度复用的状态。
 
-**到这里，你已经了解了如何用数据指针编写高度复用的组件。并且自己实现了 createModelHolder ———— rce 最重要的 api**
+如果你碰巧知道 redux，你肯定知道它将整个 app 的 state 都保存在最上一层。使用我们的架构，只要在 app 的最上一层，即 reactDOM.render 时才调用 createModelHolder 就可以实现相同的效果了。
+
+### 我们写了一个架构
+
+- 用数据指针保存和传递 state。
+- 用 init 函数返回组件 state 的默认值。
+- 用 react 组件更新和渲染 state。
+- 只在需要时才调用 createModelHolder，保持组件高度可复用的状态。
+
+通过上面描述的架构，我们成功解决了“共享状态和组件复用矛盾”的问题。
+
+到这里，你已经了解了如何用数据指针编写高度复用的组件。并且自己实现了 createModelHolder ———— rce 最重要的 api。
 
 [下一章](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/model_init_view.md)
 
