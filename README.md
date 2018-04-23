@@ -6,12 +6,12 @@ rce 代表 react, cursor, elm。是一个轻量级的 react 架构。它有以�
 - 没有复杂的概念，没有复杂的代码。仅有两个 api，设计思路与 react 一致。会 react 就能快速上手 rce。
 - 利用数据指针，让你能把组件的 state 保存 app 的最上一层，但又能让将管理 state 的方法写在组件内部。
 - 每个组件都按下面的模式划分。 遵循这个受 elm 启发的模式，你就能轻易写出可高度复用的组件。
-  - init: 定义组件的默认状态。 
+  - init: 定义组件的默认状态。
   - view: 渲染 model。发布 action。
   - update: 响应 view 传来的 action，修改 model。
 
 
-[查看这个教程](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/home.md)。了解 rce 要解决的问题，它的设计理念和实现方式。
+[查看这个教程](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/01.md)。了解 rce 要解决的问题，它的设计理念和实现方式。
 
 
 # Examples
@@ -20,7 +20,7 @@ rce 代表 react, cursor, elm。是一个轻量级的 react 架构。它有以�
 
 
 # Install
-npm install rce-pattern --save  
+npm install rce-pattern --save
 yarn add rce-pattern
 
 
@@ -30,7 +30,7 @@ yarn add rce-pattern
 - model: Cortex data。组件的 state 以 cortex data 保存和传递。
 - init: Function。返回组件的默认 model 的值。
 - view: React Component。
-- update：Function。`update({ type, payload, model, dispatch, getLastetModel })`  
+- update：Function。`update({ type, payload, model, dispatch, getLastetModel })`
   - type: String。action 的类型。
   - payload: Any。dispatch 发来的信息。
   - model: Cortex Cursor。update 执行时，组件内的 model。
@@ -54,8 +54,8 @@ yarn add rce-pattern
 - dispatcher: Function。`dispatcher(type, arg)`。dispatcher 返回一个执行 dispatch 的函数。
   - arg 为 undefine 时，返回 `event => dispatch(type, event)`。
   - arg 为 Function 时，返回 `event => dispatch(type, arg(event))`。
-  - arg 为 其它时，返回 `() => dispatch(type, arg)`。  
-  
+  - arg 为 其它时，返回 `() => dispatch(type, arg)`。
+
 ### createModelHolder
 `createModelHolder(view, arg)`
 - arg 为函数时，用那个函数返回的值作为 view 的初始 model。
@@ -70,8 +70,8 @@ rce 采用 [cortexjs](https://github.com/mquan/cortex) 实现的数据指针。
 > Cortex is an immutable data store for managing deeply nested structure with React
 
 考虑 `model = { a: { foo: 5 }, b: 5 }` 这样一个数据。 在将它创建成 cortex 数据之后：
-要读取 `model.a.foo` 的值，我们这么做：`fooValue = model.a.foo.val()`。  
-要修改 `model.a.foo` 的值。我们这么做：`model.a.foo.set(10)`。  
+要读取 `model.a.foo` 的值，我们这么做：`fooValue = model.a.foo.val()`。
+要修改 `model.a.foo` 的值。我们这么做：`model.a.foo.set(10)`。
 更新 cortex 数据的操作是异步的。当 cortex 数据更新时，rce 会自动渲染你的 view。这就跟 react state 的工作方式一模一样。
 
 ### A Counter
@@ -82,10 +82,10 @@ import React from 'react';
 import createComponent from 'rce-pattern/createComponent';
 
 // name 用作 component 的 displayName， 有利于调试。
-let name = 'counter'; 
+let name = 'counter';
 
 // 一个函数，返回这个组件的初始状态。
-let init = function() { 
+let init = function() {
   return 0; // count
 };
 
@@ -122,10 +122,10 @@ export { init, view };
 ```
 
 ### Three Counters
-现在我们利用之前的 Counter 组件，编写一个包含三个 Counter，其中一个独立，另外两个共享状态的新组件： ThreeCounters。 
+现在我们利用之前的 Counter 组件，编写一个包含三个 Counter，其中一个独立，另外两个共享状态的新组件： ThreeCounters。
 在线例子：https://blackchef.github.io/rce/#/threeCounters
 
-在我们开始之前，先考虑一下如果我们用常规的 react state 的方式实现 Counter 会怎样。  
+在我们开始之前，先考虑一下如果我们用常规的 react state 的方式实现 Counter 会怎样。
 
 为了让不同组件间能共享状态，同步渲染。state 必须提到上一级父组件内保存和处理。而子组件变成模板，只负责渲染和调用父组件传来的函数。  
 
@@ -146,8 +146,8 @@ let init = function() {
   return {
     // 一个父组件可以用子组件的 init 函数来生成子组件需要的 model。
     // 这时候它不需要管那个子组件需要的 model 是怎样的数据结构，有怎样的值。
-    countA: counterInit(), 
-    
+    countA: counterInit(),
+
     // 父组件也能用其他值为子组件设定默认值。
     countBC: 1,
   };
@@ -157,9 +157,9 @@ let init = function() {
 // 又因为父组件可以接触到子组件的 model，父组件也可以在父一级对子组件进行控制。
 let update = function({ model }) {
   // 只有一种 type 的 action。这时候就没必要对 type 进行判断。
-  model.set( init() ); 
+  model.set( init() );
 };
- 
+
 // 将 model 的子 model 传给不同的子组件。共享同一子 model 的组件会有相同的渲染。
 let view = function ({ model, dispatch, dispatcher }) {
   return (
