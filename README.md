@@ -3,7 +3,7 @@
 # Problem
 - 我们喜欢使用组件，因为组件将功能封装在内部，我们不需要了解细节，引入它就可以使用。
 - 我们喜欢开发组件，因为组件化能让我们一次专注于解决一个问题。
-- 我们也喜欢 mvc，因为我们总是会遇到让不同地方渲染相同的状态的场景。
+- 我们喜欢 mvc 架构，因为我们总是会遇到让不同地方渲染相同的状态的场景。
 
 但一个拥有本地状态，自己能控制状态更新的组件是没法和其他组件共享状态的。
 
@@ -21,7 +21,7 @@ rce 代表 react, cursor, elm。是一个轻量级的 react 架构。它有以�
   - update: 响应 view 传来的 action，修改 model。
 
 
-[查看这个教程](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/01.md)。了解 rce 要解决的问题，它的设计理念和实现方式。
+[查看这个教程](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/01.md)。了解 rce 的设计理念和实现方式。
 
 
 # 示例
