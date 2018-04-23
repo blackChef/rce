@@ -6,11 +6,11 @@ rce 代表 react, cursor, elm。是一个轻量级的 react 架构。它有以�
 - 没有复杂的概念，没有复杂的代码。仅有两个 api，设计思路与 react 一致。会 react 就能快速上手 rce。
 - 利用数据指针，让你能把组件的 state 保存 app 的最上一层，但又能让将管理 state 的方法写在组件内部。
 - 每个组件都按下面的模式划分。 遵循这个受 elm 启发的模式，你就能轻易写出可高度复用的组件。
-  - init: 定义默认 model。
-  - update: 处理 model 的更新。
-  - view：渲染。
+  - init: 定义组件的默认状态。
+  - view: 渲染 model。发布 action。
+  - update: 响应 view 传来的 action，修改 model。
 
-[查看这个简短的教程](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/home.md)。了解 rce 要解决的问题，它的设计理念和实现方式。
+[查看这个教程](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/home.md)。了解 rce 要解决的问题，它的设计理念和实现方式。
 
 
 # Examples
@@ -25,15 +25,16 @@ yarn add rce-pattern
 
 # Reference
 
-### init, update, view
-- init: Function。返回组件的默认 model。
+### model, init, view, update
+- model: Cortex data。组件的 state 以 cortex data 保存和传递。
+- init: Function。返回组件的默认 model 的值。
+- view: React Component。
 - update：Function。`update({ type, payload, model, dispatch, getLastetModel })`  
   - type: String。action 的类型。
   - payload: Any。dispatch 发来的信息。
   - model: Cortex Cursor。update 执行时，组件内的 model。
-  - dispatch: Function。可以在 update 内 dispatch 其他 action。
   - getLastetModel: Function。获取组件最新的 model。在异步处理的 callback 内应该用它来获取最新的 model。
-- view: React Component。
+  - dispatch: Function。可以在 update 内 dispatch 其他 action。
 
 ### createComponent
 `createComponent({ name, view, update })` 一个 HOC，将 view 和 update 串联起来。
