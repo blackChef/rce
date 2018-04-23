@@ -67,7 +67,7 @@ rce 采用 [cortexjs](https://github.com/mquan/cortex) 实现的数据指针。
 
 考虑 `model = { a: { foo: 5 }, b: 5 }` 这样一个数据。 在将它创建成 cortex 数据之后：
 要读取 `model.a.foo` 的值，我们这么做：`fooValue = model.a.foo.val()`。  
-要修改 `model.a.foo` 的值。我们这么做：`model.a.foo.set(10)`。  
+要修改 `model.a.foo` 的值。我们这么做：`model.a.foo.set(10)`。  
 更新 cortex 数据的操作是异步的。当 cortex 数据更新时，rce 会自动渲染你的 view。这就跟 react state 的工作方式一模一样。
 
 ### A Counter
