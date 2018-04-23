@@ -127,7 +127,7 @@ let Counter = createClass({
 拥有两个 Counter 同步的 TwoCounters 需要修改成这样：
 
 ```diff
-let TwoCountersNoShare = createClass({
+let TwoCountersShare = createClass({
   getInitialState() {
 +    let initModelVal = {
 +      count: counterInit()

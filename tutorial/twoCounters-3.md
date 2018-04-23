@@ -1,3 +1,74 @@
 # CortexJs
 
 [上一章](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/twoCounters-2.md)
+
+我们的 createModel 函数很好的完成了将所需数据转为数据指针的任务。但在真实世界中，我们要面对的数据是深层次嵌套的数组和对象。想要把深层嵌套的复杂数据转为数据指针可没那么简单。
+
+幸运的是，已经有人做出努力，让我们有现成的库来实现数据指针。[cortexjs](https://github.com/mquan/cortex) 就是其中之一。
+
+```
+// 创建一个 cortex 数据对象
+let cortexData;
+let initialVal = {a: 100, b: [1, 2, 3]};
+let onUpdate = function(newCortexData) {
+  cortexData = newCortexData;
+};
+cortexData = new Cortex(initialVal, onUpdate);
+
+// 读取
+let aVal = cortexData.a.val();
+
+// 修改
+cortexData.a.set(101);
+
+```
+
+cortexjs 的使用方式跟我们的 createModel 一模一样。这样一来，我们可以直接用 cortexjs 来取代之前的 createModel 了。
+
+```diff
+let TwoCountersNoShare = createClass({
+  getInitialState() {
+    let initModelVal = {
+      count: counterInit()
+    };
+    let onModelUpdate = newModel => this.setState({ model: newModel });
++    let initModel = new Cortex(initModelVal, onModelUpdate);
+-    let initModel = createModel(initModelVal, onModelUpdate);
+    return { model: initModel };
+  },
+  render() {
+    return (
+      <div>
+        <Counter model={this.state.model.count} />
+        <Counter model={this.state.model.count} />
+      </div>
+    );
+  },
+});
+
+let TwoCountersShare = createClass({
+  getInitialState() {
+    let initModelVal = {
+      count: counterInit()
+    };
+    let onModelUpdate = newModel => this.setState({ model: newModel });
++    let initModel = new Cortex(initModelVal, onModelUpdate);
+-    let initModel = createModel(initModelVal, onModelUpdate);
+    return { model: initModel };
+  },
+  render() {
+    return (
+      <div>
+        <Counter model={this.state.model.count} />
+        <Counter model={this.state.model.count} />
+      </div>
+    );
+  },
+});
+```
+
+[下一章](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/createModelHolder.md)
+
+
+
+

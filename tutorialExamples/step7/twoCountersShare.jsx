@@ -1,7 +1,7 @@
 import React from 'react';
 import createClass from 'create-react-class';
 import { Counter, counterInit } from './counter';
-import createModel from './createModel';
+import Cortex from 'cortexjs';
 
 let TwoCountersShare = createClass({
   getInitialState() {
@@ -9,7 +9,7 @@ let TwoCountersShare = createClass({
       count: counterInit()
     };
     let onModelUpdate = newModel => this.setState({ model: newModel });
-    let initModel = createModel(initModelVal, onModelUpdate);
+    let initModel = new Cortex(initModelVal, onModelUpdate);
     return { model: initModel };
   },
   render() {
