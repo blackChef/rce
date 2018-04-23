@@ -6,6 +6,7 @@ let init = function() {
 };
 
 let view = createClass({
+  displayName: 'Counter',
   increase() {
     this.props.model.set(this.props.model.val() + 1);
   },

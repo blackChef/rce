@@ -128,13 +128,13 @@ let TwoCountersShare = createClass({
 TwoCountersShare = createModelHolder(TwoCountersShare, TwoCountersShareInit());
 ```
 
-修改后的 TwoCounters 包含一个 init 函数和一个 react 组件，除了在最后调用了 createModelHolder 之外，跟我们的 Counter 有一模一样的结构。也就是说，如果我们不在这两个 TwoCounters 上调用 createModelHolder，那么它们就可以像 Counter 一样被其他组件应用。
+修改后的 TwoCounters 包含一个 init 函数和一个 react 组件，除了在最后调用了 createModelHolder 之外，跟我们的 Counter 有一样的结构。也就是说，如果我们不在这两个 TwoCounters 上调用 createModelHolder，那么它们就可以像 Counter 一样被其他组件应用。
 
-如果我们在 app 的最上一层，也就是 reactDOM.render 时才调用 createModelHolder，那么我们 app 里的所有组件都是可高度复用的。
+如果我们只在 app 的最上一层，也就是 reactDOM.render 时才调用 createModelHolder，那么所有的组件都是 init + component，可以高度复用的状态。
 
 **到这里，你已经了解了如何用数据指针编写高度复用的组件。并且自己实现了 createModelHolder ———— rce 最重要的 api**
 
-[下一章](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/createComponent.md)
+[下一章](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/model_init_view.md)
 
 
 

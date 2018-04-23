@@ -2,7 +2,6 @@ import React from 'react';
 import createClass from 'create-react-class';
 import { view as Counter, init as counterInit } from './counter';
 
-
 let init = function() {
   return {
     count: counterInit()
@@ -10,6 +9,7 @@ let init = function() {
 };
 
 let view = createClass({
+  displayName: 'TwoCountersShare',
   render() {
     return (
       <div>

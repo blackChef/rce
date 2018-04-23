@@ -10,6 +10,7 @@ let init = function() {
 };
 
 let view = createClass({
+  displayName: 'TwoCountersNoShare',
   render() {
     return (
       <div>

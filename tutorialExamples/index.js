@@ -23465,71 +23465,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(/*! react-dom */ 17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__step8_twoCountersShare__ = __webpack_require__(/*! ./step8/twoCountersShare */ 43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__step8_createModelHolder__ = __webpack_require__(/*! ./step8/createModelHolder */ 42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__step9_twoCountersNoShare__ = __webpack_require__(/*! ./step9/twoCountersNoShare */ 46);
 
 
 
 
-__WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__step8_twoCountersShare__["a" /* default */], null), document.querySelector('.appContainer'));
+
+let App = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__step8_createModelHolder__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_3__step9_twoCountersNoShare__["a" /* view */], __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__step9_twoCountersNoShare__["b" /* init */])());
+
+__WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(App, null), document.querySelector('.appContainer'));
 
 /***/ }),
 /* 39 */,
 /* 40 */,
-/* 41 */
-/* exports provided: Counter, counterInit */
-/* exports used: counterInit, Counter */
-/*!********************************************!*\
-  !*** ./tutorialExamples/step8/counter.jsx ***!
-  \********************************************/
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(/*! react */ 3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_create_react_class__ = __webpack_require__(/*! create-react-class */ 10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_create_react_class___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_create_react_class__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Counter; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return counterInit; });
-
-
-
-let counterInit = function () {
-  return 0;
-};
-
-let Counter = __WEBPACK_IMPORTED_MODULE_1_create_react_class___default()({
-  increase() {
-    this.props.model.set(this.props.model.val() + 1);
-  },
-  decrease() {
-    this.props.model.set(this.props.model.val() - 1);
-  },
-  render() {
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      'div',
-      null,
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'button',
-        { type: 'button', onClick: this.decrease },
-        '-'
-      ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'span',
-        null,
-        this.props.model.val()
-      ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'button',
-        { type: 'button', onClick: this.increase },
-        '+'
-      )
-    );
-  }
-});
-
-
-
-/***/ }),
+/* 41 */,
 /* 42 */
 /* exports provided: default */
 /* exports used: default */
@@ -23565,12 +23515,14 @@ let createModelHolder = function (Component, initModelVal) {
 /* harmony default export */ __webpack_exports__["a"] = createModelHolder;
 
 /***/ }),
-/* 43 */
-/* exports provided: default */
-/* exports used: default */
-/*!*****************************************************!*\
-  !*** ./tutorialExamples/step8/twoCountersShare.jsx ***!
-  \*****************************************************/
+/* 43 */,
+/* 44 */,
+/* 45 */
+/* exports provided: view, init */
+/* exports used: init, view */
+/*!********************************************!*\
+  !*** ./tutorialExamples/step9/counter.jsx ***!
+  \********************************************/
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23578,33 +23530,89 @@ let createModelHolder = function (Component, initModelVal) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_create_react_class__ = __webpack_require__(/*! create-react-class */ 10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_create_react_class___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_create_react_class__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__counter__ = __webpack_require__(/*! ./counter */ 41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__createModelHolder__ = __webpack_require__(/*! ./createModelHolder */ 42);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return view; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return init; });
 
 
 
-
-
-let TwoCountersShareInit = function () {
-  return {
-    count: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__counter__["a" /* counterInit */])()
-  };
+let init = function () {
+  return 0;
 };
 
-let TwoCountersShare = __WEBPACK_IMPORTED_MODULE_1_create_react_class___default()({
+let view = __WEBPACK_IMPORTED_MODULE_1_create_react_class___default()({
+  displayName: 'Counter',
+  increase() {
+    this.props.model.set(this.props.model.val() + 1);
+  },
+  decrease() {
+    this.props.model.set(this.props.model.val() - 1);
+  },
   render() {
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
       null,
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__counter__["b" /* Counter */], { model: this.props.model.count }),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__counter__["b" /* Counter */], { model: this.props.model.count })
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'button',
+        { type: 'button', onClick: this.decrease },
+        '-'
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'span',
+        null,
+        this.props.model.val()
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'button',
+        { type: 'button', onClick: this.increase },
+        '+'
+      )
     );
   }
 });
 
-TwoCountersShare = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__createModelHolder__["a" /* default */])(TwoCountersShare, TwoCountersShareInit());
 
-/* harmony default export */ __webpack_exports__["a"] = TwoCountersShare;
+
+/***/ }),
+/* 46 */
+/* exports provided: init, view */
+/* exports used: view, init */
+/*!*******************************************************!*\
+  !*** ./tutorialExamples/step9/twoCountersNoShare.jsx ***!
+  \*******************************************************/
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(/*! react */ 3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_create_react_class__ = __webpack_require__(/*! create-react-class */ 10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_create_react_class___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_create_react_class__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__counter__ = __webpack_require__(/*! ./counter */ 45);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return init; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return view; });
+
+
+
+
+let init = function () {
+  return {
+    countA: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__counter__["a" /* init */])(),
+    countB: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__counter__["a" /* init */])()
+  };
+};
+
+let view = __WEBPACK_IMPORTED_MODULE_1_create_react_class___default()({
+  displayName: 'TwoCountersNoShare',
+  render() {
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      null,
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__counter__["b" /* view */], { model: this.props.model.countA }),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__counter__["b" /* view */], { model: this.props.model.countB })
+    );
+  }
+});
+
+
 
 /***/ })
 /******/ ]);
