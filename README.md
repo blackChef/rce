@@ -10,6 +10,11 @@ rce 代表 react, data cursor, elm。是一个轻量级的 react 架构。它有
 [教程](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/home.md)
 
 
+# Examples
+- 示例：https://blackchef.github.io/rce/
+- 示例用到的代码: https://github.com/blackChef/rce/tree/master/demo/components
+
+
 ## Install
 npm install rce-pattern --save  
 yarn add rce-pattern
@@ -60,11 +65,6 @@ rce 采用 [cortexjs](https://github.com/mquan/cortex) 实现的数据指针。
 要读取 `model.a.foo` 的值，我们这么做：`fooValue = model.a.foo.val()`。  
 要修改 `model.a.foo` 的值。我们这么做：`model.a.foo.set(10)`。  
 更新 cortex 数据的操作是异步的。当 cortex 数据更新时，rce 会自动渲染你的 view。这就跟 react state 的工作方式一模一样。
-
-
-# Demos
-- 示例：https://blackchef.github.io/rce/
-- 示例用到的代码: https://github.com/blackChef/rce/tree/master/demo/components
 
 
 # Quick Start
