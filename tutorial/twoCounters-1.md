@@ -71,7 +71,9 @@ let Counter = createClass({
     );
   },
 });
+```
 
+```diff
 let TwoCounters = createClass({
   getInitialState() {
 -   return { count: 0 };
@@ -129,7 +131,9 @@ let Counter = createClass({
     );
   },
 });
+```
 
+```diff
 let TwoCounters = createClass({
   getInitialState() {
     return { count: counterInit() };
@@ -163,8 +167,10 @@ let TwoCounters = createClass({
 
 ### 小结
 
-- Counter 把 increase 和 decrease 封装在组件里。TwoCounters 不需要关心功能是怎么实现的。
+通过把 init 和 controller 还给 Counter，TwoCounters 可以不用去关心 Counter 的具体实现。现在 Counter 和 TwoCounters 的关系是这样的：
+
 - Counter 需要提供 init 方法，TwoCounters 可以选择用它来给 Counter 设定默认值，也可以自己设定其他值。
+- Counter 把 increase 和 decrease 封装在组件里。TwoCounters 不需要关心功能是怎么实现的。
 - TwoCounters 需要替 Counter 保存所需的 state：state.count。
 - TwoCounters 需要为 Counter 提供修改 state.count 的方法。
 

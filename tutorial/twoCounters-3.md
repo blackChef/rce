@@ -45,7 +45,9 @@ let TwoCountersNoShare = createClass({
     );
   },
 });
+```
 
+```diff
 let TwoCountersShare = createClass({
   getInitialState() {
     let initModelVal = {

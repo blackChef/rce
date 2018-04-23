@@ -24,7 +24,9 @@ let Counter = createClass({
     );
   },
 });
+```
 
+```
 let TwoCounters = createClass({
   getInitialState() {
     return { count: 0 };
