@@ -9,6 +9,48 @@ rce 代表 react, data cursor, elm。是一个轻量级的 react 架构。它有
 
 [教程](https://github.com/blackChef/rce/blob/chinese-doc/tutorial/home.md)
 
+
+## Install
+npm install rce-pattern --save  
+yarn add rce-pattern
+
+
+# API Reference
+## init, update, view
+- init: Function。返回组件的默认 model。
+- update：Function。`update({ type, payload, model, dispatch, getLastetModel })`  
+  - type: String。action 的类型。
+  - payload: Any。dispatch 发来的信息。
+  - model: Cortex Cursor。update 执行时，组件内的 model。
+  - dispatch: Function。可以在 update 内 dispatch 其他 action。
+  - getLastetModel: Function。获取组件最新的 model。在异步处理的 callback 内应该用它来获取最新的 model。
+- view: React Component。
+
+## createComponent
+`createComponent({ name, view, update })` 一个 HOC，将 view 和 update 串联起来。
+
+- name: String, 非必须。组件的 displayName。有利于调试。
+- view: React Component，必须。
+- update: Function，非必须。
+
+
+传入 `createComponent` 的组件收到 `model`, `dispatch`, `dispatcher`,  三个额外的 props。
+
+- model：Cortex data。
+- dispatch: Function。`dispatch(type, payload)`。发布一个 action。
+  - type: String，必须。
+  - payload：Any，非必须。
+- dispatcher: Function。`dispatcher(type, arg)`。dispatcher 返回一个执行 dispatch 的函数。
+  - arg 为 undefine 时，返回 `event => dispatch(type, event)`。
+  - arg 为 Function 时，返回 `event => dispatch(type, arg(event))`。
+  - arg 为 其它时，返回 `() => dispatch(type, arg)`。  
+  
+## createModelHolder
+`createModelHolder(view, arg)`
+- arg 为函数时，用那个函数返回的值作为 view 的初始 model。
+- arg 为其他时，用 arg 作为 view 的初始 model。
+
+
 # CortexJs
 rce 采用 [cortexjs](https://github.com/mquan/cortex) 实现的数据指针。
 
@@ -177,45 +219,6 @@ ReactDOM.render(
 ```
 
 
-## Install
-npm install rce-pattern --save  
-yarn add rce-pattern
 
-
-# API Reference
-## init, update, view
-- init: Function。返回组件的默认 model。
-- update：Function。`update({ type, payload, model, dispatch, getLastetModel })`  
-  - type: String。action 的类型。
-  - payload: Any。dispatch 发来的信息。
-  - model: Cortex Cursor。update 执行时，组件内的 model。
-  - dispatch: Function。可以在 update 内 dispatch 其他 action。
-  - getLastetModel: Function。获取组件最新的 model。在异步处理的 callback 内应该用它来获取最新的 model。
-- view: React Component。
-
-
-## createComponent
-`createComponent({ name, view, update })` 一个 HOC，将 view 和 update 串联起来。
-
-- name: String, 非必须。组件的 displayName。有利于调试。
-- view: React Component，必须。
-- update: Function，非必须。
-
-
-传入 `createComponent` 的组件收到 `model`, `dispatch`, `dispatcher`,  三个额外的 props。
-
-- model：Cortex data。
-- dispatch: Function。`dispatch(type, payload)`。发布一个 action。
-  - type: String，必须。
-  - payload：Any，非必须。
-- dispatcher: Function。`dispatcher(type, arg)`。dispatcher 返回一个执行 dispatch 的函数。
-  - arg 为 undefine 时，返回 `event => dispatch(type, event)`。
-  - arg 为 Function 时，返回 `event => dispatch(type, arg(event))`。
-  - arg 为 其它时，返回 `() => dispatch(type, arg)`。  
-  
-## createModelHolder
-`createModelHolder(view, arg)`
-- arg 为函数时，用那个函数返回的值作为 view 的初始 model。
-- arg 为其他时，用 arg 作为 view 的初始 model。
 
 
