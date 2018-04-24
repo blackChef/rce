@@ -201,9 +201,8 @@ export { init, view };
 ```
 
 ### Model Holder
-用 createModelHolder 把 model 保存在 state 里。传入 createModelHolder 之后，这个组件失去跟其他组件共享状态的能力。
-这个组件可以是一个区块，一个页面，或者是整个 app。
 
+在 app 的最上层使用 createModelHolder，将整个 app 内的 model 都保存在这里。
 ```
 import React from 'react';
 import ReactDOM from 'react-dom';
