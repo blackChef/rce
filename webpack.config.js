@@ -1,9 +1,9 @@
 module.exports = {
   entry: {
-    index: './demo/index.jsx',
+    index: './tutorialExamples/index.jsx',
   },
   output: {
-    filename: './demo/[name].js',
+    filename: './tutorialExamples/[name].js',
   },
   resolve: {
     extensions: [".js", ".jsx"],
