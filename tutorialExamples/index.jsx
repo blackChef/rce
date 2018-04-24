@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import createModelHolder from './step8/createModelHolder';
-import { view as TwoCounters, init as twoCountersInit } from './step9/twoCountersNoShare';
+import { view as _App, init } from './step11/counter';
 
-let App = createModelHolder(TwoCounters, twoCountersInit());
+let App = createModelHolder(_App, init());
 
 ReactDOM.render(
   <App />,
