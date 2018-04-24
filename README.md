@@ -1,5 +1,3 @@
-[English Document](https://github.com/blackChef/rce/blob/english_doc/README.md)
-
 # 问题
 - 我们喜欢使用组件，因为组件将功能封装在内部，我们不需要了解细节，引入它就可以使用。
 - 我们喜欢开发组件，因为组件化能让我们一次专注于解决一个问题。
@@ -203,7 +201,7 @@ export { init, view };
 ```
 
 ### Model Holder
-用 createModelHolder 把 model 保存在 state 里。传入 createModelHolder 之后，这个组件失去跟其他组件共享状态的能力。  
+用 createModelHolder 把 model 保存在 state 里。传入 createModelHolder 之后，这个组件失去跟其他组件共享状态的能力。
 这个组件可以是一个区块，一个页面，或者是整个 app。
 
 ```
