@@ -1,4 +1,3 @@
-import Cortex from 'cortexjs';
 import getVal from './getVal';
 import createModel from './cursor';
 
