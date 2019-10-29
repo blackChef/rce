@@ -14,7 +14,7 @@
 
   'use strict';
 
-  let hasOwnProperty = Object.prototype.hasOwnProperty;
+  const hasOwnProperty = Object.prototype.hasOwnProperty;
 
   /**
    * inlined Object.is polyfill to avoid requiring consumers ship their own
@@ -51,8 +51,8 @@
       return false;
     }
 
-    let keysA = Object.keys(objA);
-    let keysB = Object.keys(objB);
+    const keysA = Object.keys(objA);
+    const keysB = Object.keys(objB);
 
     if (keysA.length !== keysB.length) {
       return false;
@@ -60,9 +60,9 @@
 
     // Test for A's keys different from B.
     for (let i = 0; i < keysA.length; i++) {
-      let key = keysA[i];
-      let a = objA[key];
-      let b = objB[key];
+      const key = keysA[i];
+      const a = objA[key];
+      const b = objB[key];
 
       if (!hasOwnProperty.call(objB, key)) {
         return false;

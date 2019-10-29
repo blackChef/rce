@@ -15,26 +15,25 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "babel-core": "^6.7.2",
-    "babel-loader": "^6.2.4",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
-    "babel-preset-env": "^1.3.3",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "filewalker": "^0.1.3",
-    "fs-extra": "^2.0.0",
-    "react-addons-perf": "^15.4.1",
-    "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.2",
-    "webpack": "^2.2.1",
+    "fs-extra": "^8.1.0",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2",
+    "webpack": "^4.41.2",
     "webpack-babel-link": "^1.1.0",
-    "webpack-split-by-path": "0.1.0-beta.1"
+    "webpack-split-by-path": "2.0.0"
   },
   "dependencies": {
-    "cortexjs": "^2.1.0",
-    "create-react-class": "^15.6.2",
-    "lodash": "^4.6.1",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
+    "cortexjs": "^2.1.1",
+    "create-react-class": "^15.6.3",
+    "lodash": "^4.17.15",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
     "shallow-memoize": "^0.1.3"
   }
 }

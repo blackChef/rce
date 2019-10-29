@@ -1,64 +1,31 @@
 import React from 'react';
-import createClass from 'create-react-class';
+import { useState, useRef, useEffect } from 'react';
 import getVal from './getVal';
 import createModel from './cursor';
 
-export default function(Component, initialValue) {
-  let container = createClass({
-    displayName: `@ModelHolder_${Component.displayName}`,
-
-    getInitialState() {
-      let _initialValue;
-
-      // If model is supplied, we use that model's value as initialValue,
-      // allow parent change child's model
-      if (this.props.model !== undefined) {
-        _initialValue = this.props.model.val();
-      } else {
-        _initialValue = getVal(initialValue);
-      }
-
-
-      this.model = createModel(
-        _initialValue,
-        newModel => {
-          this.setState({ model: newModel });
-          if (this.props.onModelChange) {
-            this.props.onModelChange(newModel);
-          }
-        }
-      );
-
-      return { model: this.model };
-    },
-
-    componentWillUnmount() {
-      this.model.unListen();
-    },
-
-    componentWillReceiveProps(nextProps) {
-      // Create a traditional uncontrolled component behavior:
-      // Parent can change child's model, and receive new model in a callback
-      if (
-          nextProps.model !== undefined &&
-          nextProps.model !== this.props.model
-      ) {
-        this.state.model.set(
-          nextProps.model.val()
-        );
-      }
-    },
-
-    render() {
-      let {
-        // eslint-disable-next-line no-unused-vars
-        onModelChange, model,
-        ...otherProps
-      } = this.props;
-      return <Component {...otherProps} model={this.state.model} />;
-    }
+// initialValue: function | value
+const useModelHolder = function(initialValue) {
+  const onUpdate = useRef(null);
+  const [model, updateModel] = useState(function() {
+    return createModel(getVal(initialValue), newModel => { onUpdate.current(newModel); });
   });
+  onUpdate.current = updateModel;
 
-  return container;
+  useEffect(function() {
+    return () => model.unListen();
+  }, []);
+  return model;
 };
+
+const hoc = function(Component, initialValue) {
+  const RceModelHolder = function(props) {
+    const model = useModelHolder(initialValue);
+    return <Component {...props} model={model} />;
+  };
+  return RceModelHolder;
+};
+
+export default hoc;
+export { useModelHolder };
+
 

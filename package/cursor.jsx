@@ -1,9 +1,9 @@
 import Cortex from 'cortexjs';
 
-let createCursor = function(initVal, onUpdate) {
+const createCursor = function(initVal, onUpdate) {
   let isListening = true;
 
-  let instance = new Cortex(initVal, function(newInstance) {
+  const instance = new Cortex(initVal, function(newInstance) {
     if (isListening) {
       onUpdate(newInstance);
     }

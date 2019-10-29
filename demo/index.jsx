@@ -7,7 +7,7 @@ import { view as checkboxGroup_single, init as checkboxGroup_singleInit } from '
 import { view as threeCounters, init as threeCountersInit } from './components/threeCounters';
 import { view as counterList, init as counterListInit } from './components/counterList';
 import { view as shoppingCart, init as shoppingCartInit } from './components/shoppingCart';
-import { view as test, init as testInit } from './components/test';
+import { Test } from './components/test';
 import { NavLink as Link, Route, Switch, HashRouter } from 'react-router-dom';
 
 
@@ -26,6 +26,7 @@ let App = function({ children }) {
     <div>
       <nav className="pageNav">
         <Link exact activeClassName="link_active" to="/">home</Link>
+        <Link exact activeClassName="link_active" to="/test">test</Link>
         <Link exact activeClassName="link_active" to="/counter">counter</Link>
         <Link exact activeClassName="link_active" to="/threeCounters">threeCounters</Link>
         <Link exact activeClassName="link_active" to="/counterList">counterList</Link>
@@ -43,7 +44,7 @@ let App = function({ children }) {
           <Route exact path="/threeCounters" component={_threeCounters}></Route>
           <Route exact path="/counterList" component={_counterList}></Route>
           <Route exact path="/shoppingCart" component={_shoppingCart}></Route>
-          <Route path="/test" component={test}></Route>
+          <Route path="/test" component={Test}></Route>
         </Switch>
         {children}
       </main>
