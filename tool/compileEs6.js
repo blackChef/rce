@@ -1,10 +1,10 @@
-let { transformFileSync } = require('babel-core');
-let { removeSync, outputFileSync } = require('fs-extra');
-let last = require('lodash/last');
-let filewalker = require('filewalker');
-let resolve = require('path').resolve.bind(undefined, __dirname);
+const { transformFileSync } = require('babel-core');
+const { removeSync, outputFileSync } = require('fs-extra');
+const last = require('lodash/last');
+const filewalker = require('filewalker');
+const resolve = require('path').resolve.bind(undefined, __dirname);
 
-let babelOpts = {
+const babelOpts = {
   babelrc: false,
   plugins: [
     'transform-object-rest-spread',
@@ -19,16 +19,16 @@ let babelOpts = {
   ]
 };
 
-let doBabel = filePath => transformFileSync(filePath, babelOpts);
+const doBabel = filePath => transformFileSync(filePath, babelOpts);
 
-let renameJsx = fileName => last( fileName.split('\\') ).replace('.jsx', '.js');
+const renameJsx = fileName => last( fileName.split('\\') ).replace('.jsx', '.js');
 
-let compileJsx = function(resolveDist) {
+const compileJsx = function(resolveDist) {
   return function(path) {
     if ( !/\.jsx$/.test(path) ) return;
 
-    let inputPath = resolveDist(path);
-    let outputPath = resolveDist( renameJsx(path) );
+    const inputPath = resolveDist(path);
+    const outputPath = resolveDist( renameJsx(path) );
 
     outputFileSync(
       outputPath,
@@ -39,10 +39,10 @@ let compileJsx = function(resolveDist) {
   };
 };
 
-let logFinished = () => console.log('finished');;
+const logFinished = () => console.log('finished');;
 
 module.exports = function(dist) {
-  let resolveDist = resolve.bind(undefined, dist);
+  const resolveDist = resolve.bind(undefined, dist);
 
   filewalker(resolveDist())
     .on('file', compileJsx(resolveDist))

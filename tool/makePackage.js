@@ -1,16 +1,15 @@
-let { copySync, removeSync } = require('fs-extra');
-let { readdirSync } = require('fs');
-let resolve = require('path').resolve.bind(undefined, __dirname);
-let compileES6 = require('./compileES6');
+const { copySync, removeSync } = require('fs-extra');
+const resolve = require('path').resolve.bind(undefined, __dirname);
+const compileES6 = require('./compileES6');
 
-let src = '../package';
-let dist = '../readyToPublish';
+const src = '../package';
+const dist = '../readyToPublish';
 
-let resolveRoot = resolve.bind(undefined, '../');
-let resolveSrc = resolve.bind(undefined, src);
-let resolveDist = resolve.bind(undefined, dist);
+const resolveRoot = resolve.bind(undefined, '../');
+const resolveSrc = resolve.bind(undefined, src);
+const resolveDist = resolve.bind(undefined, dist);
 
-let copyFiles = function() {
+const copyFiles = function() {
   copySync(
     resolveSrc(),
     resolveDist()
@@ -26,7 +25,9 @@ let copyFiles = function() {
       resolveRoot('README.md'),
       resolveDist('README.md')
     );
-  } catch(e) {}
+  } catch(e) {
+    console.log(e);
+  }
 };
 
 removeSync(resolveDist());
