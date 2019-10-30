@@ -55,7 +55,7 @@ const createComponent = function(props) {
       // which can be a confusing behavior.
       const { dispatch, props: { model } } = this;
       const getModel = () => this.props.model;
-      update({
+      return update({
         type, payload, dispatch,
         model, getModel, getLatestModel: getModel, getNewModel: getModel,
       });
@@ -71,7 +71,7 @@ const createComponent = function(props) {
       const dispatcher = function(type, arg) {
         if (arg === undefined) {
           return function(payload) {
-            component.dispatch(type, payload);
+            return component.dispatch(type, payload);
           };
         }
 
@@ -79,12 +79,12 @@ const createComponent = function(props) {
         if (isFunction(arg)) {
           return function(payload) {
             const resolvedPayload = arg(payload, component.props);
-            component.dispatch(type, resolvedPayload);
+            return component.dispatch(type, resolvedPayload);
           };
         }
 
         return function() {
-          component.dispatch(type, arg);
+          return component.dispatch(type, arg);
         };
       };
 
