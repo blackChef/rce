@@ -65,24 +65,12 @@ const createComponent = function(props) {
       const component = this;
 
       // `dispatcher` is a function that return a function which will call dipatch.
-      // The second argument can be an undefined, a function or a constant.
-      // Because `dispatcher` is memoized. Using `dispatcher`
-      // rather than `() => dispatch(type)` in render function can be performance beneficial.
       const dispatcher = function(type, arg) {
         if (arg === undefined) {
           return function(payload) {
             return component.dispatch(type, payload);
           };
         }
-
-        // If arg is a function. That function should return a resolved payload.
-        if (isFunction(arg)) {
-          return function(payload) {
-            const resolvedPayload = arg(payload, component.props);
-            return component.dispatch(type, resolvedPayload);
-          };
-        }
-
         return function() {
           return component.dispatch(type, arg);
         };
